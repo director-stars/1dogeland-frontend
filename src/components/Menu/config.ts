@@ -32,7 +32,7 @@ const config: MenuEntry[] = [
     items: [
       {
         label: 'Buy 1doge',
-        href: 'https://github.com/goosedefi/',
+        href: 'https://pancakeswap.finance/swap#/swap?outputCurrency=0x40619dc9F00ea34e51D96b6EC5d8a6aD75457434&inputCurrency=BNB',
       },
       {
         label: 'How to Play',

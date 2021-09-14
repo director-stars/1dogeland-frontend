@@ -14,6 +14,7 @@ interface MartketCardProps {
 
 const StyledHeading = styled(Heading)`
     text-align: center;
+    margin-bottom: 20px;
 `
 const DogeInfo = styled.div`
     display: flex;

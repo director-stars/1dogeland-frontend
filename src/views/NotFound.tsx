@@ -13,6 +13,8 @@ const StyledNotFound = styled.div`
 `
 const StyledHead = styled(Heading)`
   margin-bottom: 30px;
+  display:flex;
+  column-gap: 20px;
 `
 
 const NotFound = () => {
@@ -22,7 +24,14 @@ const NotFound = () => {
     <Page>
       <StyledNotFound>
         {/* <LogoIcon width="64px" mb="8px" /> */}
-        <StyledHead size="xxl">Coming Soon !</StyledHead>
+        <StyledHead size="xxl">
+          <Heading as="h1" size="xxl" mb="24px" color="contrast">
+            Coming
+          </Heading>
+          <Heading as="h1" size="xxl" mb="24px" color="primary">
+            Soon!
+          </Heading>
+        </StyledHead>
         {/* <Text mb="16px">{TranslateString(999, 'Oops, page not found.')}</Text> */}
         <Button as="a" href="/" size="sm">
           {TranslateString(999, 'Back Home')}
