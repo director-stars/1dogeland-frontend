@@ -59,7 +59,7 @@ export const useBuyCryptoDoge = () => {
   const handleBuy = useCallback(
     async () => {
       try {
-        // const txHash = await buyDoge(cryptoDogeControllerContract, account)
+        const txHash = await buyDoge(cryptoDogeControllerContract, account)
         const lastTokenId = await getLastTokenId(cryptoDogeNFTContract, account);
         console.log('lastTokenId', lastTokenId);
         return 'txHash'
@@ -67,7 +67,7 @@ export const useBuyCryptoDoge = () => {
         return false
       }
     },
-    [account, cryptoDogeNFTContract],
+    [account, cryptoDogeControllerContract, cryptoDogeNFTContract],
   )
 
   return { onBuyDoge: handleBuy }
