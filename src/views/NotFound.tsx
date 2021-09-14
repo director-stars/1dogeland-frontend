@@ -11,6 +11,9 @@ const StyledNotFound = styled.div`
   height: calc(100vh - 64px);
   justify-content: center;
 `
+const StyledHead = styled(Heading)`
+  margin-bottom: 30px;
+`
 
 const NotFound = () => {
   const TranslateString = useI18n()
@@ -18,9 +21,9 @@ const NotFound = () => {
   return (
     <Page>
       <StyledNotFound>
-        <LogoIcon width="64px" mb="8px" />
-        <Heading size="xxl">404</Heading>
-        <Text mb="16px">{TranslateString(999, 'Oops, page not found.')}</Text>
+        {/* <LogoIcon width="64px" mb="8px" /> */}
+        <StyledHead size="xxl">Coming Soon !</StyledHead>
+        {/* <Text mb="16px">{TranslateString(999, 'Oops, page not found.')}</Text> */}
         <Button as="a" href="/" size="sm">
           {TranslateString(999, 'Back Home')}
         </Button>

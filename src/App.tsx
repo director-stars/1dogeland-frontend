@@ -49,7 +49,7 @@ const App: React.FC = () => {
             <Route path="/" exact>
               <Home />
             </Route>
-            <Route path="/marketplace">
+            {/* <Route path="/marketplace">
               <MarketPlace />
             </Route>
             <Route path="/nests">
@@ -60,7 +60,7 @@ const App: React.FC = () => {
             </Route>
             <Route path="/battle-bosses">
              <BattleBosses />
-            </Route>
+            </Route> */}
             {/* <Route path="/lottery"> */}
             {/*  <Lottery /> */}
             {/* </Route> */}
