@@ -1,12 +1,16 @@
-import React from 'react'
-import { Heading, Text, BaseLayout, Card, CardBody, CardHeader, CardFooter, Button, Image } from '@pancakeswap-libs/uikit'
+import React, { useEffect } from 'react'
+import { Heading, Text, useWalletModal, Card, CardBody, CardHeader, CardFooter, Button, Image } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
+import { useFetchPublicData } from 'state/hooks'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
 
 interface BossCardProps {
     imgUrl: string
+    id: string
     name: string
-    price: string
-    owner: string
+    reward: string
+    status: string
+    health: string
 }
 
 const Block = styled.div`
@@ -35,12 +39,26 @@ const OwnerInfo = styled.div`
     display: flex;
     justify-content: space-evenly;
 `
-const BossCard: React.FC<BossCardProps> = ({imgUrl, name, price, owner}) => {
-    const owner1 = '0x67926b0C4753c42b31289C035F8A656D800cD9e7';
-    const ownerAddress = `${owner1.substring(0, 4)}...${owner1.substring(owner1.length - 4)}`;
+const BossCard: React.FC<BossCardProps> = ({imgUrl, id, name, reward, status, health }) => {
     const fight = () => {
         console.log('fightBoss')
     }
+    let displayStatus = "Alive";
+    if(!status){
+      displayStatus = "Ended";
+    }
+
+    const { account, connect, reset } = useWallet()
+    useEffect(() => {
+        if (!account && window.localStorage.getItem('accountStatus')) {
+        connect('injected')
+        }
+    }, [account, connect])
+    
+    useFetchPublicData()
+
+    const { onPresentConnectModal } = useWalletModal(connect, reset)
+
     return (
         <div>
             <Card>
@@ -48,17 +66,18 @@ const BossCard: React.FC<BossCardProps> = ({imgUrl, name, price, owner}) => {
                     <Image width={210} height={210} src={imgUrl}/>
                 </CardHeader>
                 <CardBody>
-                    <Button fullWidth size="sm" onClick={() => {
+                    {account? (<Button fullWidth size="sm" onClick={() => {
                         fight();
-                    }}>Fight</Button>
+                    }}>Fight</Button>)
+                    : (<Button fullWidth size="sm" onClick={onPresentConnectModal}>Connect Wallet</Button>)}
                 </CardBody>
                 <CardFooter>
                     <StyledHeading size="lg">{name}</StyledHeading>
                     <BossInfo>
-                        <Block><Label>HP:</Label><Text>200HP</Text></Block>
-                        <Block><Label>Success Rate:</Label><Text>~90%</Text></Block>
-                        <Block><Label>Token Reward:</Label><Text>100 1doge</Text></Block>
-                        <Block><Label>EXP Reward:</Label><Text>20 EXP</Text></Block>
+                        <Block><Label>ID:</Label><Text>{id}</Text></Block>
+                        <Block><Label>Reward:</Label><Text>{reward}BNB</Text></Block>
+                        <Block><Label>Status:</Label><Text>{displayStatus}</Text></Block>
+                        <Block><Label>Health:</Label><Text>{health}HP</Text></Block>
                     </BossInfo>
                 </CardFooter>
             </Card>

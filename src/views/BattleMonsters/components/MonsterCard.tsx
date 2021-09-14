@@ -1,12 +1,16 @@
-import React from 'react'
-import { Heading, Text, BaseLayout, Card, CardBody, CardHeader, CardFooter, Button, Image } from '@pancakeswap-libs/uikit'
+import React, { useEffect } from 'react'
+import { Heading, Text, useWalletModal, Card, CardBody, CardHeader, CardFooter, Button, Image } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
+import { useFetchPublicData } from 'state/hooks'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
 
 interface MonsterCardProps {
     imgUrl: string
     name: string
-    price: string
-    owner: string
+    health: string
+    successRate: string
+    tokenReward: string
+    expReward: string
 }
 
 const Block = styled.div`
@@ -35,12 +39,21 @@ const OwnerInfo = styled.div`
     display: flex;
     justify-content: space-evenly;
 `
-const MonsterCard: React.FC<MonsterCardProps> = ({imgUrl, name, price, owner}) => {
-    const owner1 = '0x67926b0C4753c42b31289C035F8A656D800cD9e7';
-    const ownerAddress = `${owner1.substring(0, 4)}...${owner1.substring(owner1.length - 4)}`;
+const MonsterCard: React.FC<MonsterCardProps> = ({imgUrl, name, health, successRate, tokenReward, expReward}) => {
     const fight = () => {
         console.log('fightMonster')
     }
+
+    const { account, connect, reset } = useWallet()
+    useEffect(() => {
+        if (!account && window.localStorage.getItem('accountStatus')) {
+        connect('injected')
+        }
+    }, [account, connect])
+    
+    useFetchPublicData()
+
+    const { onPresentConnectModal } = useWalletModal(connect, reset)
     return (
         <div>
             <Card>
@@ -48,17 +61,18 @@ const MonsterCard: React.FC<MonsterCardProps> = ({imgUrl, name, price, owner}) =
                     <Image width={210} height={210} src={imgUrl}/>
                 </CardHeader>
                 <CardBody>
-                    <Button fullWidth size="sm" onClick={() => {
+                    {account? (<Button fullWidth size="sm" onClick={() => {
                         fight();
-                    }}>Fight</Button>
+                    }}>Fight</Button>)
+                    : (<Button fullWidth size="sm" onClick={onPresentConnectModal}>Connect Wallet</Button>)}
                 </CardBody>
                 <CardFooter>
                     <StyledHeading size="lg">{name}</StyledHeading>
                     <MonsterInfo>
-                        <Block><Label>HP:</Label><Text>200HP</Text></Block>
-                        <Block><Label>Success Rate:</Label><Text>~90%</Text></Block>
-                        <Block><Label>Token Reward:</Label><Text>100 1doge</Text></Block>
-                        <Block><Label>EXP Reward:</Label><Text>20 EXP</Text></Block>
+                        <Block><Label>HP:</Label><Text>{health}HP</Text></Block>
+                        <Block><Label>Success Rate:</Label><Text>~{successRate}%</Text></Block>
+                        <Block><Label>Token Reward:</Label><Text>{tokenReward} 1doge</Text></Block>
+                        <Block><Label>EXP Reward:</Label><Text>{expReward} EXP</Text></Block>
                     </MonsterInfo>
                 </CardFooter>
             </Card>

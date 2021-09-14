@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { AbiItem } from 'web3-utils'
 import { ContractOptions } from 'web3-eth-contract'
 import useWeb3 from 'hooks/useWeb3'
-import { getMasterChefAddress, getCakeAddress, getLotteryAddress, getLotteryTicketAddress } from 'utils/addressHelpers'
+import { getMasterChefAddress, getCakeAddress, getLotteryAddress, getLotteryTicketAddress, getCryptoDogeControllerAddress, getOneDogeAddress, getCryptoDogeNFTAddress } from 'utils/addressHelpers'
 import { poolsConfig } from 'config/constants'
 import { PoolCategory } from 'config/constants/types'
 import ifo from 'config/abi/ifo.json'
@@ -14,6 +14,9 @@ import lotteryTicket from 'config/abi/lotteryNft.json'
 import masterChef from 'config/abi/masterchef.json'
 import sousChef from 'config/abi/sousChef.json'
 import sousChefBnb from 'config/abi/sousChefBnb.json'
+import cryptoDogeController from 'config/abi/cryptoDogeController.json'
+import oneDoge from 'config/abi/oneDoge.json'
+import cryptoDogeNFT from 'config/abi/cryptoDogeNFT.json'
 
 const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOptions) => {
   const web3 = useWeb3()
@@ -74,6 +77,21 @@ export const useSousChef = (id) => {
   const rawAbi = config.poolCategory === PoolCategory.BINANCE ? sousChefBnb : sousChef
   const abi = (rawAbi as unknown) as AbiItem
   return useContract(abi, config.contractAddress[process.env.REACT_APP_CHAIN_ID])
+}
+
+export const useCryptoDogeController = () => {
+  const abi = (cryptoDogeController as unknown) as AbiItem
+return useContract(abi, getCryptoDogeControllerAddress())
+}
+
+export const useOneDoge = () => {
+  const abi = (oneDoge as unknown) as AbiItem
+return useContract(abi, getOneDogeAddress())
+}
+
+export const useCryptoDogeNFT = () => {
+  const abi = (cryptoDogeNFT as unknown) as AbiItem
+  return useContract(abi, getCryptoDogeNFTAddress());
 }
 
 export default useContract

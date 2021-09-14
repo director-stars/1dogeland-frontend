@@ -4,6 +4,7 @@ import Carousel from 'components/Carousel'
 import { Button, Heading, Text } from '@pancakeswap-libs/uikit'
 import Page from 'components/layout/Page'
 import { useFarms, usePriceBnbBusd, usePriceCakeBusd } from 'state/hooks'
+import { useBattleBosses, useDoges } from 'hooks/useDogesLand'
 import FlexLayout from 'components/layout/Flex'
 import BossCard from './components/BossCard'
 import DogeCard from './components/DogeCard'
@@ -48,18 +49,23 @@ const DogeItem = styled.div`
   max-width: 250px;
   margin: auto;
 `
+const BossCardDetail = styled.div`
+
+`
 
 const BattleBosses: React.FC<BattleBossesProps> = (props) => {
   const { url, title } = props
   const [activeItemIndex, setActiveItemIndex] = useState(0);
   const chevronWidth = 40;
-  const farmsLP = useFarms()
+  const doges = useDoges();
+  const battleBosses = useBattleBosses();
+  console.log('dog_views',doges);
   const dogeList = useCallback(
     (dogesToDisplay, removed: boolean) => {
-      return dogesToDisplay.map((farm) => (
+      return dogesToDisplay.map((doge) => (
         <DogeItem>
           <DogeCard 
-            imgUrl="header"
+            imgUrl={process.env.REACT_APP_API_URL+doge.asset.url}
             name="name"
             price="price"
             owner="owner"
@@ -72,14 +78,24 @@ const BattleBosses: React.FC<BattleBossesProps> = (props) => {
   )
   const bossList = useCallback(
     (bossesToDisplay, removed: boolean) => {
-      return bossesToDisplay.map((farm) => (
+      return bossesToDisplay.map((boss) => (
         <div style={{ padding: "32px", width: "500px" }}>
           <BossCard 
-            imgUrl="header"
-            name="name"
-            price="price"
-            owner="owner"
+            imgUrl={process.env.REACT_APP_API_URL+boss.asset.url}
+            id={boss.BossID}
+            name={boss.name}
+            reward={boss.reward}
+            status={boss.status}
+            health={boss.health}
           />
+          <BossCardDetail>
+            <div><span>Start At</span>{boss.starts_at}</div>
+            <div><span>Ends At</span>{boss.ends_at}</div>
+            <div><span>Boss Health</span>{boss.starts_at}</div>
+            <div><span>Boss Battle Fees</span>{boss.battle_fee}</div>
+            <div><span>Boss Level</span>{boss.level}</div>
+            <div><span>Boss Tier</span>Legendary</div>
+          </BossCardDetail>
         </div>
       ))
     }
@@ -104,7 +120,7 @@ const BattleBosses: React.FC<BattleBossesProps> = (props) => {
             Choose A Doge
         </Text>
         <Carousel>
-          {dogeList(farmsLP, true)}
+          {dogeList(doges, true)}
         </Carousel>
       </MyDoges>
       <Bosses>
@@ -112,7 +128,7 @@ const BattleBosses: React.FC<BattleBossesProps> = (props) => {
           Choose A Boss
         </Text>
         <FlexLayout>
-          {bossList(farmsLP, true)}
+          {bossList(battleBosses, true)}
         </FlexLayout>
       </Bosses>
     </Page>

@@ -65,41 +65,25 @@ const Cards = styled(BaseLayout)`
 `
 const StyledHead = styled.div`
   display:flex;
+  column-gap: 20px;
 `
 
 const Home: React.FC = () => {
   const { path } = useRouteMatch()
   const TranslateString = useI18n()
-  const farmsLP = useFarms()
-  const cakePrice = usePriceCakeBusd()
-  const bnbPrice = usePriceBnbBusd()
-  const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
+  // const farmsLP = useFarms()
+  // const cakePrice = usePriceCakeBusd()
+  // const bnbPrice = usePriceBnbBusd()
+  // const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
   // const {tokenMode} = farmsProps;
 
   const dispatch = useDispatch()
   const { fastRefresh } = useRefresh()
-  useEffect(() => {
-    if (account) {
-      dispatch(fetchFarmUserDataAsync(account))
-    }
-  }, [account, dispatch, fastRefresh])
-
-  const farmsList = useCallback(
-    (farmsToDisplay, removed: boolean) => {
-      return farmsToDisplay.map((farm) => (
-        <div style={{ padding: "32px", width: "500px" }}>
-          <MarketCard 
-            imgUrl="header"
-            name="name"
-            price="price"
-            owner="owner"
-          />
-        </div>
-      ))
-    }
-    ,
-    [],
-  )
+  // useEffect(() => {
+  //   if (account) {
+  //     dispatch(fetchFarmUserDataAsync(account))
+  //   }
+  // }, [account, dispatch, fastRefresh])
 
   return (
     <Page>
@@ -115,14 +99,14 @@ const Home: React.FC = () => {
         <Text>Choose your young doge here, then train and build your 1doge army!</Text>
       </Hero>
       <div>
-        {/* <Cards>
-          <FarmStakingCard />
-          <TwitterCard/>
-          <CakeStats />
-          <TotalValueLockedCard />
-        </Cards> */}
         <FlexLayout>
-          {farmsList(farmsLP, true)}
+          <div style={{ padding: "32px", width: "500px" }}>
+            <MarketCard 
+              imgUrl="/images/egg/egg.png"
+              name="Random Egg"
+              price="9999"
+            />
+          </div>
         </FlexLayout>
       </div>
     </Page>

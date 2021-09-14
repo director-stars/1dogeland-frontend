@@ -1,6 +1,8 @@
-import React from 'react'
-import { Heading, Text, BaseLayout, Card, CardBody, CardHeader, CardFooter, Button, Image } from '@pancakeswap-libs/uikit'
+import React, { useEffect } from 'react'
+import { Heading, Text, useWalletModal, Card, CardBody, CardHeader, CardFooter, Button, Image } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
+import { useFetchPublicData } from 'state/hooks'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
 
 interface MartketCardProps {
     imgUrl: string
@@ -32,6 +34,17 @@ const MarketCard: React.FC<MartketCardProps> = ({imgUrl, name, price, owner}) =>
     const buyDoge = () => {
         console.log('buyDoge')
     }
+    
+    const { account, connect, reset } = useWallet()
+    useEffect(() => {
+        if (!account && window.localStorage.getItem('accountStatus')) {
+        connect('injected')
+        }
+    }, [account, connect])
+    
+    useFetchPublicData()
+
+    const { onPresentConnectModal } = useWalletModal(connect, reset)
     return (
         <div>
             <Card>
@@ -39,9 +52,10 @@ const MarketCard: React.FC<MartketCardProps> = ({imgUrl, name, price, owner}) =>
                     <Image width={210} height={210} src={imgUrl}/>
                 </CardHeader>
                 <CardBody>
-                    <Button fullWidth size="sm" onClick={() => {
+                    {account? (<Button fullWidth size="sm" onClick={() => {
                         buyDoge();
-                    }}>Buy Doge</Button>
+                    }}>Buy Doge</Button>)
+                    : (<Button fullWidth size="sm" onClick={onPresentConnectModal}>Connect Wallet</Button>)}
                 </CardBody>
                 <CardFooter>
                     <StyledHeading size="lg">{name}</StyledHeading>

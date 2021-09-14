@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Carousel from 'components/Carousel'
 import { Button, Heading, Text } from '@pancakeswap-libs/uikit'
 import Page from 'components/layout/Page'
-import { useFarms, usePriceBnbBusd, usePriceCakeBusd } from 'state/hooks'
+import { useMonsters, useDoges } from 'hooks/useDogesLand'
 import FlexLayout from 'components/layout/Flex'
 import DogeCard from './components/DogeCard'
 import MonsterCard from './components/MonsterCard'
@@ -53,13 +53,15 @@ const BattleMonsters: React.FC<BattleMonstersProps> = (props) => {
   const { url, title } = props
   const [activeItemIndex, setActiveItemIndex] = useState(0);
   const chevronWidth = 40;
-  const farmsLP = useFarms()
+  const monsters = useMonsters();
+  const doges = useDoges();
+  console.log('doges', doges)
   const dogeList = useCallback(
     (dogesToDisplay, removed: boolean) => {
-      return dogesToDisplay.map((farm) => (
+      return dogesToDisplay.map((doge) => (
         <DogeItem>
           <DogeCard 
-            imgUrl="header"
+            imgUrl={process.env.REACT_APP_API_URL+doge.asset.url}
             name="name"
             price="price"
             owner="owner"
@@ -72,13 +74,15 @@ const BattleMonsters: React.FC<BattleMonstersProps> = (props) => {
   )
   const monsterList = useCallback(
     (monstersToDisplay, removed: boolean) => {
-      return monstersToDisplay.map((farm) => (
+      return monstersToDisplay.map((monster) => (
         <div style={{ padding: "32px", width: "500px" }}>
           <MonsterCard 
-            imgUrl="header"
-            name="name"
-            price="price"
-            owner="owner"
+            imgUrl={process.env.REACT_APP_API_URL+monster.asset.url}
+            name={monster.name}
+            health={monster.HP}
+            successRate={monster.Success_Rate}
+            tokenReward={monster.Token_Reward}
+            expReward={monster.Exp_Reward}
           />
         </div>
       ))
@@ -104,7 +108,7 @@ const BattleMonsters: React.FC<BattleMonstersProps> = (props) => {
             Choose A Doge
         </Text>
         <Carousel>
-          {dogeList(farmsLP, true)}
+          {dogeList(doges, true)}
         </Carousel>
       </MyDoges>
       <Monsters>
@@ -112,7 +116,7 @@ const BattleMonsters: React.FC<BattleMonstersProps> = (props) => {
           Choose A Monster
         </Text>
         <FlexLayout>
-          {monsterList(farmsLP, true)}
+          {monsterList(monsters, true)}
         </FlexLayout>
       </Monsters>
     </Page>

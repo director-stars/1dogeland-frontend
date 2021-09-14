@@ -27,4 +27,16 @@ export default {
     56: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
     97: '',
   },
+  cryptoDogeController: {
+    56: '0x38B53bB303C257c8054F2Aa8177E73a4A45cC7F5',
+    97: '0x38B53bB303C257c8054F2Aa8177E73a4A45cC7F5',
+  },
+  oneDoge: {
+    56: '0x4A8D2D2ee71c65bC837997e79a45ee9bbd360d45',
+    97: '0x4A8D2D2ee71c65bC837997e79a45ee9bbd360d45', 
+  },
+  cryptoDogeNFT: {
+    56: '0x100B112CC0328dB0746b4eE039803e4fDB96C34d',
+    97: '0x100B112CC0328dB0746b4eE039803e4fDB96C34d', 
+  }
 }

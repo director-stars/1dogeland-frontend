@@ -65,6 +65,7 @@ const Cards = styled(BaseLayout)`
 `
 const StyledHead = styled.div`
   display:flex;
+  column-gap: 20px;
 `
 
 const MarketPlace: React.FC = () => {
