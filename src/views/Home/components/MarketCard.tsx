@@ -32,6 +32,10 @@ const OwnerInfo = styled.div`
     display: flex;
     justify-content: space-between;
 `
+
+const StyledImage =  styled(Image)`
+    margin: auto;
+`
 const MarketCard: React.FC<MartketCardProps> = ({imgUrl, name, price}) => {
     // const owner1 = '0x67926b0C4753c42b31289C035F8A656D800cD9e7';
     // const ownerAddress = `${owner1.substring(0, 4)}...${owner1.substring(owner1.length - 4)}`;
@@ -74,7 +78,7 @@ const MarketCard: React.FC<MartketCardProps> = ({imgUrl, name, price}) => {
         <div>
             <Card>
                 <CardHeader>
-                    <Image width={210} height={210} src={imgUrl}/>
+                    <StyledImage width={210} height={210} src={imgUrl}/>
                 </CardHeader>
                 <CardBody>
                     <StyledHeading size="lg">{name}</StyledHeading>

@@ -35,6 +35,7 @@ const Hero = styled.div`
 `
 const StyledHead = styled.div`
   display:flex;
+  column-gap: 20px;
 `
 const MyDoges = styled.div`
   text-align: center;
@@ -103,14 +104,17 @@ const BattleMonsters: React.FC<BattleMonstersProps> = (props) => {
         </StyledHead>
         <Text>Choose your young doge here, then train and build your 1doge army!</Text>
       </Hero>
-      <MyDoges>
+      {(doges.length)?(
+        <MyDoges>
         <Text fontSize="24px" color="contrast">
             Choose A Doge
         </Text>
         <Carousel>
           {dogeList(doges, true)}
         </Carousel>
-      </MyDoges>
+        </MyDoges>
+      ):(<div />)}
+      
       <Monsters>
         <Text fontSize="24px" color="contrast">
           Choose A Monster

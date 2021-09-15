@@ -51,33 +51,16 @@ const App: React.FC = () => {
             </Route>
             {/* <Route path="/marketplace">
               <MarketPlace />
-            </Route>
-            <Route path="/nests">
+            </Route> */}
+            {/* <Route path="/nests">
               <Farms tokenMode/>
-            </Route>
-            <Route path="/battle-monsters">
+            </Route> */}
+            {/* <Route path="/battle-monsters">
              <BattleMonsters />
-            </Route>
-            <Route path="/battle-bosses">
+            </Route> */}
+            {/* <Route path="/battle-bosses">
              <BattleBosses />
             </Route> */}
-            {/* <Route path="/lottery"> */}
-            {/*  <Lottery /> */}
-            {/* </Route> */}
-            {/* <Route path="/ifo"> */}
-            {/*  <Ifos /> */}
-            {/* </Route> */}
-            {/* <Route path="/nft"> */}
-            {/*  <Nft /> */}
-            {/* </Route> */}
-            {/* Redirect */}
-            {/* <Route path="/staking"> */}
-            {/*  <Redirect to="/pools" /> */}
-            {/* </Route> */}
-            {/* <Route path="/syrup"> */}
-            {/*  <Redirect to="/pools" /> */}
-            {/* </Route> */}
-            {/* 404 */}
             <Route component={NotFound} />
           </Switch>
         </Suspense>

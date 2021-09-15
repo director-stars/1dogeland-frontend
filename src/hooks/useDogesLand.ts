@@ -3,7 +3,7 @@ import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
 import { useCryptoDogeController, useCryptoDogeNFT } from 'hooks/useContract'
 import useRefresh from './useRefresh'
-import { getBattleBosses, getDoges, getMonsters, buyDoge, getLastTokenId } from '../utils/dogelandUtils'
+import { getBattleBosses, getDoges, getMonsters, buyDoge, getLastTokenId, getDogeInfo, createDoge } from '../utils/dogelandUtils'
 
 export const useBattleBosses = () => {
   const [bosses, setBosses] = useState([])
@@ -61,8 +61,9 @@ export const useBuyCryptoDoge = () => {
       try {
         const txHash = await buyDoge(cryptoDogeControllerContract, account)
         const lastTokenId = await getLastTokenId(cryptoDogeNFTContract, account);
-        console.log('lastTokenId', lastTokenId);
-        return 'txHash'
+        const dogeInfo = await getDogeInfo(cryptoDogeNFTContract, lastTokenId);
+        await createDoge(dogeInfo, lastTokenId);
+        return txHash
       } catch (e) {
         return false
       }

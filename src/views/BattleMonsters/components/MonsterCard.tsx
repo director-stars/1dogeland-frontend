@@ -50,8 +50,6 @@ const MonsterCard: React.FC<MonsterCardProps> = ({imgUrl, name, health, successR
         connect('injected')
         }
     }, [account, connect])
-    
-    useFetchPublicData()
 
     const { onPresentConnectModal } = useWalletModal(connect, reset)
     return (

@@ -24,6 +24,46 @@ export const getDoges = async () => {
   return response
 }
 
+export const createDoge = async (dogeInfo, tokenId) => {
+  const tribe =parseInt(dogeInfo.tribe);
+  let dogeAsset = "";
+  let dogeName = "";
+  switch(tribe){
+    case 0:
+      dogeName = "Fire Doge";
+      dogeAsset = `${API_URL}/uploads/fire_1.gif`
+      break;
+    case 1:
+      dogeName = "Electric Doge";
+      dogeAsset = `${API_URL}/uploads/electric_1.gif`
+      break;
+    case 2:
+      dogeName = "Sky Doge";
+      dogeAsset = `${API_URL}/uploads/sky_1.gif`
+      break;
+    case 3:
+      dogeName = "Grass Doge";
+      dogeAsset = `${API_URL}/uploads/grass_1.gif`
+      break;
+    default:
+      break;
+  }
+  const res = await fetch(`${API_URL}/crypto-doges`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+          name: dogeName,
+          asset: dogeAsset,
+          Doge_ID: tokenId
+      })
+  });
+  console.log('res', res);
+  const response = await res.json();
+  return response
+}
+
 export const getMonsters = async () => {
   const res = await fetch(`${API_URL}/monsters`, {
       method: "GET",
@@ -47,13 +87,20 @@ export const buyDoge = async (cryptoDogeControllerContract, account) => {
 }
 
 export const getLastTokenId = async (cryptoDogeNFTContract, account) => {
-  console.log('account', account)
   try {
     const nftNumbers = await cryptoDogeNFTContract.methods
     .balanceOf(account).call();
-    console.log('nftNumbers', parseInt(nftNumbers.toString())-1)
+    // console.log('nftNumbers', parseInt(nftNumbers.toString())-1)
     return await cryptoDogeNFTContract.methods
     .tokenOfOwnerByIndex(account, parseInt(nftNumbers.toString())-1).call()
+  } catch (err) {
+    return console.error(err)
+  }
+}
+
+export const getDogeInfo = async(cryptoDogeNFTContract, tokenId) => {
+  try{
+    return await cryptoDogeNFTContract.methods.getdoger(tokenId).call();
   } catch (err) {
     return console.error(err)
   }

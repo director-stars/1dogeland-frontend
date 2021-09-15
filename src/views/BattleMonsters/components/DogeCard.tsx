@@ -41,8 +41,6 @@ const DogeCard: React.FC<MartketCardProps> = ({imgUrl, name, price, owner}) => {
         connect('injected')
         }
     }, [account, connect])
-    
-    useFetchPublicData()
 
     const { onPresentConnectModal } = useWalletModal(connect, reset)
     return (
