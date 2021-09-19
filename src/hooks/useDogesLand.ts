@@ -21,16 +21,19 @@ export const useBattleBosses = () => {
 }
 
 export const useDoges = () => {
+  const { account } = useWallet()
+  const cryptoDogeNFTContract = useCryptoDogeNFT();
+  // console.log(account);
   const [doges, setDoges] = useState([])
   const { fastRefresh } = useRefresh()
   useEffect(() => {
     const fetchBalance = async () => {
-      const res = await getDoges()
-      console.log('doges:', res)
+      const res = await getDoges(cryptoDogeNFTContract, account);
+      // console.log('doges:', res)
       setDoges(res)
     }
     fetchBalance()
-  }, [fastRefresh])
+  }, [account, fastRefresh, cryptoDogeNFTContract])
 
   return doges
 }
@@ -62,7 +65,7 @@ export const useBuyCryptoDoge = () => {
         const txHash = await buyDoge(cryptoDogeControllerContract, account)
         const lastTokenId = await getLastTokenId(cryptoDogeNFTContract, account);
         const dogeInfo = await getDogeInfo(cryptoDogeNFTContract, lastTokenId);
-        await createDoge(dogeInfo, lastTokenId);
+        await createDoge(dogeInfo, lastTokenId, account);
         return txHash
       } catch (e) {
         return false

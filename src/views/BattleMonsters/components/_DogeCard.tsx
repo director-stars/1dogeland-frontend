@@ -4,24 +4,12 @@ import styled from 'styled-components'
 import { useFetchPublicData } from 'state/hooks'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 
-interface MonsterCardProps {
+interface MartketCardProps {
     imgUrl: string
     name: string
-    health: string
-    successRate: string
-    tokenReward: string
-    expReward: string
+    price: string
+    owner: string
 }
-
-const Block = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-`
-const Label = styled.div`
-  color: ${({ theme }) => theme.colors.textSubtle};
-  font-size: 14px;
-`
 
 const StyledImage = styled.div<{
     imgUrl?: string
@@ -37,8 +25,9 @@ const StyledHeading = styled(Heading)`
     text-align: center;
     margin-bottom: 10px;
 `
-const MonsterInfo = styled.div`
-    display: grid;
+const DogeInfo = styled.div`
+    display: flex;
+    justify-content: space-between;
 `
 const PriceInfo = styled.div`
     display: flex;
@@ -48,11 +37,13 @@ const TokenIcon = styled(Image)`
 `
 const OwnerInfo = styled.div`
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
 `
-const MonsterCard: React.FC<MonsterCardProps> = ({imgUrl, name, health, successRate, tokenReward, expReward}) => {
-    const fight = () => {
-        console.log('fightMonster')
+const DogeCard: React.FC<MartketCardProps> = ({imgUrl, name, price, owner}) => {
+    const owner1 = '0x67926b0C4753c42b31289C035F8A656D800cD9e7';
+    const ownerAddress = `${owner1.substring(0, 4)}...${owner1.substring(owner1.length - 4)}`;
+    const selectDoge = () => {
+        console.log('selectDoge')
     }
 
     const { account, connect, reset } = useWallet()
@@ -71,22 +62,27 @@ const MonsterCard: React.FC<MonsterCardProps> = ({imgUrl, name, health, successR
                 </CardHeader>
                 <CardBody>
                     {account? (<Button fullWidth size="sm" onClick={() => {
-                        fight();
-                    }}>Fight</Button>)
+                        selectDoge();
+                    }}>Select Doge</Button>)
                     : (<Button fullWidth size="sm" onClick={onPresentConnectModal}>Connect Wallet</Button>)}
                 </CardBody>
                 <CardFooter>
                     <StyledHeading size="lg">{name}</StyledHeading>
-                    <MonsterInfo>
-                        <Block><Label>HP:</Label><Text>{health}HP</Text></Block>
-                        <Block><Label>Success Rate:</Label><Text>~{successRate}%</Text></Block>
-                        <Block><Label>Token Reward:</Label><PriceInfo><TokenIcon width={24} height={24} src="/images/egg/9.png"/><Text>{tokenReward} 1doge</Text></PriceInfo></Block>
-                        <Block><Label>EXP Reward:</Label><Text>{expReward} EXP</Text></Block>
-                    </MonsterInfo>
+                    <DogeInfo>
+                        <Text>Price</Text>
+                        <PriceInfo>
+                            <TokenIcon width={24} height={24} src="/images/egg/9.png"/>
+                            <Text>{price}</Text>
+                        </PriceInfo>
+                    </DogeInfo>
+                    <OwnerInfo>
+                        <Text>Owner</Text>
+                        <Text>{ownerAddress}</Text>
+                    </OwnerInfo>
                 </CardFooter>
             </Card>
         </div>
     )
 }
 
-export default MonsterCard;
+export default DogeCard;

@@ -1,9 +1,6 @@
 import React, { useEffect, useCallback, useState } from 'react'
 import { Heading, Text, useWalletModal, Card, CardBody, CardHeader, CardFooter, Button, Image } from '@pancakeswap-libs/uikit'
-import styled from 'styled-components'
-// import { useFetchPublicData } from 'state/hooks'
-// import { useWallet } from '@binance-chain/bsc-use-wallet'
-// import { useBuyCryptoDoge } from 'hooks/useDogesLand'
+import styled, { keyframes } from 'styled-components'
 import MarketCardActions from './MarketCardActions'
 
 interface MartketCardProps {
@@ -11,6 +8,63 @@ interface MartketCardProps {
     name: string
     price: string
 }
+
+const round = keyframes`
+    16.66666% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+`;
+
+const StyledImage =  styled.div<{
+    imageUrl?:string
+}>`
+    margin: auto;
+    position:absolute;
+    opacity:0;
+    width:100%;
+    min-height: 260px;
+    background-size: cover;
+    background-position: center;
+    background-image: url(${({imageUrl}) => imageUrl})
+`
+
+const ImageSlider = styled.div`
+    min-height:260px;
+
+    & div {
+        animation: ${round} 3s infinite;
+    }
+
+    & ${StyledImage}:nth-child(6) {
+        animation-delay: 3s;
+    }
+
+    & ${StyledImage}:nth-child(1) {
+        animation-delay: 2.5s;
+    }
+
+    & ${StyledImage}:nth-child(2) {
+        animation-delay: 2s;
+    }
+    
+    & ${StyledImage}:nth-child(3) {
+        animation-delay: 1.5s;
+    }
+
+    & ${StyledImage}:nth-child(4) {
+        animation-delay: 1s;
+    }
+
+    & ${StyledImage}:nth-child(5) {
+        animation-delay: 0.5s;
+    }
+`
+const StyledCardHeader = styled(CardHeader)`
+    padding: 0px;
+`
 
 const StyledHeading = styled(Heading)`
     text-align: center;
@@ -33,53 +87,20 @@ const OwnerInfo = styled.div`
     justify-content: space-between;
 `
 
-const StyledImage =  styled(Image)`
-    margin: auto;
-`
 const MarketCard: React.FC<MartketCardProps> = ({imgUrl, name, price}) => {
-    // const owner1 = '0x67926b0C4753c42b31289C035F8A656D800cD9e7';
-    // const ownerAddress = `${owner1.substring(0, 4)}...${owner1.substring(owner1.length - 4)}`;
-
-    // const { account, connect, reset } = useWallet()
-    // useEffect(() => {
-    //     if (!account && window.localStorage.getItem('accountStatus')) {
-    //     connect('injected')
-    //     }
-    // }, [account, connect])
-    
-    // useFetchPublicData()
-
-    // const { onPresentConnectModal } = useWalletModal(connect, reset)
-    // const [pendingTx, setPendingTx] = useState(false)
-    // const [, setRequestedBuy] = useState(false)
-    // const { onBuyDoge } = useBuyCryptoDoge()
-    // const handleBuy = useCallback(async () => {
-    //     try {
-    //       setRequestedBuy(true)
-    //       // @ts-ignore
-    //       // eslint-disable-next-line prefer-spread
-    //     //   const numbers = Array.apply(null, { length }).map(() => [
-    //     //     Math.floor(Math.random() * maxNumber) + 1,
-    //     //     Math.floor(Math.random() * maxNumber) + 1,
-    //     //     Math.floor(Math.random() * maxNumber) + 1,
-    //     //     Math.floor(Math.random() * maxNumber) + 1,
-    //     //   ])
-    //       const txHash = await onBuyDoge()
-    //       // user rejected tx or didn't go thru
-    //       if (txHash) {
-    //         setRequestedBuy(false)
-    //       }
-    //     } catch (e) {
-    //       console.error(e)
-    //     }
-    // }, [onBuyDoge, setRequestedBuy])
-
     return (
         <div>
             <Card>
-                <CardHeader>
-                    <StyledImage width={210} height={210} src={imgUrl}/>
-                </CardHeader>
+                <StyledCardHeader>
+                    <ImageSlider>
+                        <StyledImage imageUrl="/images/chests/1.gif"/>
+                        <StyledImage imageUrl="/images/chests/2.gif"/>
+                        <StyledImage imageUrl="/images/chests/3.gif"/>
+                        <StyledImage imageUrl="/images/chests/4.gif"/>
+                        <StyledImage imageUrl="/images/chests/5.gif"/>
+                        <StyledImage imageUrl="/images/chests/6.gif"/>
+                    </ImageSlider>
+                </StyledCardHeader>
                 <CardBody>
                     <StyledHeading size="lg">{name}</StyledHeading>
                     <DogeInfo>

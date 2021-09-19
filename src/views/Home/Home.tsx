@@ -22,7 +22,6 @@ import MarketCard from './components/MarketCard'
 
 const Hero = styled.div`
   align-items: center;
-  // background-image: url('/images/egg/3.png');
   background-repeat: no-repeat;
   background-position: top center;
   display: flex;
@@ -34,7 +33,6 @@ const Hero = styled.div`
   text-align: center;
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    // background-image: url('/images/egg/3.png'), url('/images/egg/3b.png');
     background-position: left center, right center;
     height: 165px;
     padding-top: 0;
@@ -100,10 +98,10 @@ const Home: React.FC = () => {
       </Hero>
       <div>
         <FlexLayout>
-          <div style={{ padding: "32px", width: "500px" }}>
+          <div style={{ width: "500px" }}>
             <MarketCard 
               imgUrl="/images/egg/egg.png"
-              name="Random Egg"
+              name="Random Doge"
               price="9999"
             />
           </div>

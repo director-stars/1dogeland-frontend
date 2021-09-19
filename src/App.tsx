@@ -15,7 +15,7 @@ import NftGlobalNotification from './views/Nft/components/NftGlobalNotification'
 const Home = lazy(() => import('./views/Home'))
 const BattleMonsters = lazy(() => import('./views/BattleMonsters'))
 const BattleBosses = lazy(() => import('./views/BattleBosses'))
-const Farms = lazy(() => import('./views/Farms'))
+const DogeArmy = lazy(() => import('./views/DogeArmy'))
 const MarketPlace = lazy(() => import('./views/MarketPlace'))
 // const Lottery = lazy(() => import('./views/Lottery'))
 // const Pools = lazy(() => import('./views/Pools'))
@@ -52,12 +52,12 @@ const App: React.FC = () => {
             {/* <Route path="/marketplace">
               <MarketPlace />
             </Route> */}
-            {/* <Route path="/nests">
-              <Farms tokenMode/>
-            </Route> */}
-            {/* <Route path="/battle-monsters">
+            <Route path="/my-doge">
+              <DogeArmy />
+            </Route>
+            <Route path="/battle-monsters">
              <BattleMonsters />
-            </Route> */}
+            </Route>
             {/* <Route path="/battle-bosses">
              <BattleBosses />
             </Route> */}

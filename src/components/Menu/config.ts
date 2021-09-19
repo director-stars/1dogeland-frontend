@@ -14,7 +14,7 @@ const config: MenuEntry[] = [
   {
     label: 'My 1Doge Army',
     icon: 'FarmIcon',
-    href: '/my-1doge',
+    href: '/my-doge',
   },
   {
     label: 'Battle Monsters',

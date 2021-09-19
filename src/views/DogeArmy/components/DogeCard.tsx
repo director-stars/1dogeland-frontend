@@ -46,22 +46,13 @@ const Id = styled.div`
     border-radius: 10rem;
     margin: 10px;
 `
-const DogeCardAction = styled.div`
-    margin-top: 10px;
-`
 const DogeCard: React.FC<MartketCardProps> = ({imgUrl, name, rare, level, exp, tribe, id}) => {
-    const usdDoge = () => {
-        console.log('usd this doge')
-    }
-
     const { account, connect, reset } = useWallet()
     useEffect(() => {
         if (!account && window.localStorage.getItem('accountStatus')) {
         connect('injected')
         }
     }, [account, connect])
-
-    const { onPresentConnectModal } = useWalletModal(connect, reset)
 
     return (
         <div>
@@ -90,14 +81,7 @@ const DogeCard: React.FC<MartketCardProps> = ({imgUrl, name, rare, level, exp, t
                             <Text>{tribe}</Text>
                         </div>
                     </DogeInfo>
-                    <DogeCardAction>
-                    {account? (<Button fullWidth size="sm" onClick={() => {
-                        usdDoge();
-                    }}>Use this Doge</Button>)
-                    : (<Button fullWidth size="sm" onClick={onPresentConnectModal}>Connect Wallet</Button>)}
-                    </DogeCardAction>
                 </CardFooter>
-                
             </Card>
         </div>
     )
