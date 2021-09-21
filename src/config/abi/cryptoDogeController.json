@@ -8,6 +8,38 @@
     "anonymous": false,
     "inputs": [
       {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "dna",
+        "type": "uint256"
+      }
+    ],
+    "name": "DNASet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "_win",
+        "type": "bool"
+      }
+    ],
+    "name": "Fight",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": true,
         "internalType": "address",
         "name": "previousOwner",
@@ -22,6 +54,40 @@
     ],
     "name": "OwnershipTransferred",
     "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "claimTokenAmount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [],
+    "name": "cooldownTime",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
   },
   {
     "inputs": [],
@@ -59,6 +125,46 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "rewardExp",
+    "outputs": [
+      {
+        "internalType": "uint32",
+        "name": "",
+        "type": "uint32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "rewardTokenAmount",
+    "outputs": [
+      {
+        "internalType": "uint32",
+        "name": "",
+        "type": "uint32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
     "inputs": [],
     "name": "token",
     "outputs": [
@@ -88,6 +194,26 @@
   {
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "victoryProbability",
+    "outputs": [
+      {
+        "internalType": "uint32",
+        "name": "",
+        "type": "uint32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "_nftAddress",
         "type": "address"
@@ -107,6 +233,139 @@
       }
     ],
     "name": "buyEgg",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "setDNA",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_owner",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "attackVictoryProbability",
+        "type": "uint256"
+      }
+    ],
+    "name": "fight",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "claimToken",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint32",
+        "name": "_probability1",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint32",
+        "name": "_probability2",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint32",
+        "name": "_probability3",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint32",
+        "name": "_probability4",
+        "type": "uint32"
+      }
+    ],
+    "name": "setVictoryProbability",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint32",
+        "name": "rewardTokenAmount1",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint32",
+        "name": "rewardTokenAmount2",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint32",
+        "name": "rewardTokenAmount3",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint32",
+        "name": "rewardTokenAmount4",
+        "type": "uint32"
+      }
+    ],
+    "name": "setRewardTokenAmount",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint32",
+        "name": "rewardExp1",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint32",
+        "name": "rewardExp2",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint32",
+        "name": "rewardExp3",
+        "type": "uint32"
+      },
+      {
+        "internalType": "uint32",
+        "name": "rewardExp4",
+        "type": "uint32"
+      }
+    ],
+    "name": "setRewardExp",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

@@ -183,3 +183,20 @@ export const getDogeInfo = async(cryptoDogeNFTContract, tokenId) => {
     return console.error(err)
   }
 }
+
+export const fightMonster = async (cryptoDogeControllerContract, tokenId, account, probability) => {
+  try {
+    const result = await cryptoDogeControllerContract.methods.fight(tokenId, account, probability).send({ from: account });
+    console.log(result.events.Fight.returnValues);
+    return result.events.Fight.returnValues._win;
+    // return cryptoDogeControllerContract.methods
+    //   .fight(tokenId, account, probability)
+    //   .send({ from: account })
+    //   .on('logs', (tx) => {
+    //     console.log(tx);
+    //     return tx.transactionHash
+    //   })
+  } catch (err) {
+    return console.error(err)
+  }
+}

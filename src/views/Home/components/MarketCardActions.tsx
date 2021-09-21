@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useState } from 'react'
 import styled from 'styled-components'
-import { Button, useModal, useWalletModal } from '@pancakeswap-libs/uikit'
+import { Button, ToastContainer, useModal, useWalletModal } from '@pancakeswap-libs/uikit'
 import { useCryptoDogeControllerAllowance } from 'hooks/useAllowance'
 import { useCryptoDogeControllerApprove } from 'hooks/useApprove'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
@@ -18,6 +18,7 @@ const CardActions = styled.div`
 
 const MarketCardActions: React.FC = () => {
   const [requestedApproval, setRequestedApproval] = useState(false)
+  const [toasts, setToasts] = useState([]);
   const allowance = useCryptoDogeControllerAllowance()
   const { onApprove } = useCryptoDogeControllerApprove()
   // const [onPresentApprove] = useModal(<PurchaseWarningModal />)
@@ -61,6 +62,22 @@ const MarketCardActions: React.FC = () => {
     }
   }, [onBuyDoge, setRequestedBuy])
 
+  const handleClick = (description = "") => {
+    const now = Date.now();
+    const randomToast = {
+      id: `id-${now}`,
+      title: `New Doge has been borned.`,
+      description,
+      type: "success",
+    };
+
+    setToasts((prevToasts) => [randomToast, ...prevToasts]);
+  };
+
+  const handleRemove = (id: string) => {
+    setToasts((prevToasts) => prevToasts.filter((prevToast) => prevToast.id !== id));
+  };
+
   const renderDogeCardButtons = () => {
     if (!allowance.toNumber()) {
       return (
@@ -76,6 +93,7 @@ const MarketCardActions: React.FC = () => {
             setPendingTx(true)
             await handleBuy()
             setPendingTx(false)
+            handleClick()
         }}>{pendingTx ? 'Pending Buy Doge' : 'Buy Doge'}</Button>
     )
   }
@@ -84,6 +102,7 @@ const MarketCardActions: React.FC = () => {
     <CardActions>
       {account? (renderDogeCardButtons())
         : (<Button fullWidth size="sm" onClick={onPresentConnectModal}>Connect Wallet</Button>)}
+    <ToastContainer toasts={toasts} onRemove={handleRemove} />
     </CardActions>
   )
 }

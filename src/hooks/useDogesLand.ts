@@ -3,7 +3,7 @@ import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
 import { useCryptoDogeController, useCryptoDogeNFT } from 'hooks/useContract'
 import useRefresh from './useRefresh'
-import { getBattleBosses, getDoges, getMonsters, buyDoge, getLastTokenId, getDogeInfo, createDoge } from '../utils/dogelandUtils'
+import { getBattleBosses, getDoges, getMonsters, buyDoge, getLastTokenId, getDogeInfo, createDoge, fightMonster } from '../utils/dogelandUtils'
 
 export const useBattleBosses = () => {
   const [bosses, setBosses] = useState([])
@@ -45,7 +45,6 @@ export const useMonsters = () => {
   useEffect(() => {
     const fetchBalance = async () => {
       const res = await getMonsters()
-      console.log('monsters:', res)
       setMonsters(res)
     }
     fetchBalance()
@@ -75,4 +74,22 @@ export const useBuyCryptoDoge = () => {
   )
 
   return { onBuyDoge: handleBuy }
+}
+
+export const useFightCryptoMonster = () => {
+  const { account } = useWallet()
+  const cryptoDogeControllerContract = useCryptoDogeController()
+  const handleFight = useCallback(
+    async (dogeId, probability) => {
+      try {
+        const fightResult = await fightMonster(cryptoDogeControllerContract, dogeId, account, probability)
+        return fightResult
+      } catch (e) {
+        return false
+      }
+    },
+    [account, cryptoDogeControllerContract],
+  )
+
+  return { onFightMonster: handleFight }
 }

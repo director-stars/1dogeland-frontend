@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState, useCallback } from 'react'
+import React, { useContext, useRef, useEffect, useState, useCallback } from 'react'
 import styled from 'styled-components'
 import Carousel from 'components/Carousel'
 import { Button, Heading, Text } from '@pancakeswap-libs/uikit'
@@ -41,6 +41,7 @@ const MyDoges = styled.div`
   text-align: center;
   overflow: hidden;
   align-content: center;
+  margin-bottom: 20px;
 `
 const Monsters = styled.div`
   text-align: center;
@@ -53,11 +54,12 @@ const DogeItem = styled.div`
 
 const BattleMonsters: React.FC<BattleMonstersProps> = (props) => {
   const { url, title } = props
-  const [activeItemIndex, setActiveItemIndex] = useState(0);
+  const [activeDogeId, setActiveDogeId] = useState();
   const chevronWidth = 40;
   const monsters = useMonsters();
   const doges = useDoges();
-  console.log('doges', doges)
+  // console.log('doges', doges)
+  // 
   const dogeList = useCallback(
     (dogesToDisplay, removed: boolean) => {
       return dogesToDisplay.map((doge) => (
@@ -71,12 +73,14 @@ const BattleMonsters: React.FC<BattleMonstersProps> = (props) => {
             exp={doge.exp}
             tribe={doge.tribe}
             id={doge.id}
+            activeDoge={activeDogeId}
+            setActiveDoge={setActiveDogeId}
           />
         </DogeItem>
       ))
     }
     ,
-    [],
+    [activeDogeId],
   )
   const monsterList = useCallback(
     (monstersToDisplay, removed: boolean) => {
@@ -90,13 +94,18 @@ const BattleMonsters: React.FC<BattleMonstersProps> = (props) => {
             successRate={monster.Success_Rate}
             tokenReward={monster.Token_Reward}
             expReward={monster.Exp_Reward}
+            activeDoge={activeDogeId}
           />
         </div>
       ))
     }
     ,
-    [],
+    [activeDogeId],
   )
+  useEffect(() => {
+    if(!(doges.length === 0) && (!activeDogeId))
+      setActiveDogeId(doges[0].id)
+  }, [activeDogeId, doges])
   return (
     <Page>
       <Hero>
@@ -118,11 +127,11 @@ const BattleMonsters: React.FC<BattleMonstersProps> = (props) => {
         <Carousel>
           {dogeList(doges, true)}
         </Carousel>
+        <Button size="sm" variant="success">
+          Selected DogeID: #{activeDogeId}
+        </Button>
         </MyDoges>
       ):(<div />)}
-
-      
-      
       <Monsters>
         <Heading as="h3" size="xl" mb="24px" color="contrast">
           Choose A Monster

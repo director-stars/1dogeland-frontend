@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { useFetchPublicData } from 'state/hooks'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 
-interface MartketCardProps {
+interface DogeCardProps {
     imgUrl: string
     name: string
     rare: string
@@ -12,6 +12,8 @@ interface MartketCardProps {
     level: string
     tribe: string
     id: string
+    activeDoge: number
+    setActiveDoge: any
 }
 
 const StyledImage = styled.div<{
@@ -49,10 +51,7 @@ const Id = styled.div`
 const DogeCardAction = styled.div`
     margin-top: 10px;
 `
-const DogeCard: React.FC<MartketCardProps> = ({imgUrl, name, rare, level, exp, tribe, id}) => {
-    const usdDoge = () => {
-        console.log('usd this doge')
-    }
+const DogeCard: React.FC<DogeCardProps> = ({imgUrl, name, rare, level, exp, tribe, id, activeDoge, setActiveDoge}) => {
 
     const { account, connect, reset } = useWallet()
     useEffect(() => {
@@ -92,7 +91,7 @@ const DogeCard: React.FC<MartketCardProps> = ({imgUrl, name, rare, level, exp, t
                     </DogeInfo>
                     <DogeCardAction>
                     {account? (<Button fullWidth size="sm" onClick={() => {
-                        usdDoge();
+                        setActiveDoge(id);
                     }}>Use this Doge</Button>)
                     : (<Button fullWidth size="sm" onClick={onPresentConnectModal}>Connect Wallet</Button>)}
                     </DogeCardAction>

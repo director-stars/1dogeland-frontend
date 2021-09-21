@@ -48,6 +48,11 @@ const DogeItem = styled.div`
   padding: 16px;
   margin: auto;
 `
+const StyledDiv = styled.div`
+  column-gap: 20px;
+  display: inline-flex;
+  margin-bottom: 20px;
+`
 
 const DogeArmy: React.FC<DogeArmyProps> = (props) => {
   const { url, title } = props
@@ -93,6 +98,14 @@ const DogeArmy: React.FC<DogeArmyProps> = (props) => {
       </Hero>
       
       <MyDoges>
+        <StyledDiv>
+          <Button as="a" href="/#/" size="sm">
+            Starter Doges
+          </Button>
+          <Button as="a" href="/#/marketplace" size="sm">
+            Marketplace
+          </Button>
+        </StyledDiv>
         <FlexLayout>
           {dogeList(doges, true)}
         </FlexLayout>
