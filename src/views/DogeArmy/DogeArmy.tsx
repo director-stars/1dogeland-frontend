@@ -72,7 +72,7 @@ const DogeArmy: React.FC<DogeArmyProps> = (props) => {
             level={doge.level}
             exp={doge.exp}
             tribe={doge.tribe}
-            id={doge.id}
+            id={doge.Doge_ID}
           />
         </DogeItem>
       ))

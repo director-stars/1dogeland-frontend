@@ -1,9 +1,9 @@
 import React, { useContext, useRef, useEffect, useState, useCallback } from 'react'
 import styled from 'styled-components'
 import Carousel from 'components/Carousel'
-import { Button, Heading, Text } from '@pancakeswap-libs/uikit'
+import { Button, Heading, Text, Image } from '@pancakeswap-libs/uikit'
 import Page from 'components/layout/Page'
-import { useMonsters, useDoges } from 'hooks/useDogesLand'
+import { useMonsters, useDoges, useRewardTokenInfo, useClaimReward } from 'hooks/useDogesLand'
 import FlexLayout from 'components/layout/Flex'
 import DogeCard from './components/DogeCard'
 import MonsterCard from './components/MonsterCard'
@@ -51,13 +51,25 @@ const DogeItem = styled.div`
   padding: 16px;
   margin: auto;
 `
+const TokenIcon = styled(Image)`
+    width: 30px;
 
+`
+const RewardInfo = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+`
 const BattleMonsters: React.FC<BattleMonstersProps> = (props) => {
   const { url, title } = props
   const [activeDogeId, setActiveDogeId] = useState();
+  const rewardTokenAmount = useRewardTokenInfo();
   const chevronWidth = 40;
   const monsters = useMonsters();
   const doges = useDoges();
+  const [pendingTx, setPendingTx] = useState(false)
+  const [, setRequestedClaim] = useState(false)
+  const { onClaimReward } = useClaimReward()
   // console.log('doges', doges)
   // 
   const dogeList = useCallback(
@@ -72,9 +84,10 @@ const BattleMonsters: React.FC<BattleMonstersProps> = (props) => {
             level={doge.level}
             exp={doge.exp}
             tribe={doge.tribe}
-            id={doge.id}
+            id={doge.Doge_ID}
             activeDoge={activeDogeId}
             setActiveDoge={setActiveDogeId}
+            farmTime={doge.farmTime}
           />
         </DogeItem>
       ))
@@ -102,9 +115,33 @@ const BattleMonsters: React.FC<BattleMonstersProps> = (props) => {
     ,
     [activeDogeId],
   )
+
+  const handleClaimReward = useCallback(async () => {
+    try {
+      setRequestedClaim(true)
+      const claimResult = await onClaimReward()
+      console.log('claimResult: ',claimResult);
+      if(claimResult){
+        setRequestedClaim(false);
+      }
+      // user rejected tx or didn't go thru
+    } catch (e) {
+      console.error(e)
+    }
+  }, [onClaimReward, setRequestedClaim])
   useEffect(() => {
-    if(!(doges.length === 0) && (!activeDogeId))
-      setActiveDogeId(doges[0].id)
+    if(!(doges.length === 0) && (!activeDogeId)){
+      console.log(doges.length)
+      for(let i = 0; i< doges.length; i++){
+        if(parseInt(doges[i].farmTime)*1000 < Date.now()){
+          setActiveDogeId(doges[i].Doge_ID)
+          break;
+        }
+        if(i === doges.length -1){
+          setActiveDogeId(null)
+        }
+      }
+    }
   }, [activeDogeId, doges])
   return (
     <Page>
@@ -121,6 +158,22 @@ const BattleMonsters: React.FC<BattleMonstersProps> = (props) => {
       </Hero>
       {(doges.length)?(
         <MyDoges>
+          {(rewardTokenAmount)&&(parseInt(rewardTokenAmount.toString()) > 0)?(
+          <div>
+            <RewardInfo>
+              <Text fontSize="22px">Pending 1Doge: {parseInt(rewardTokenAmount.toString())/10**18}</Text>
+              <TokenIcon width={30} height={30} src="/images/egg/9.png"/>
+            </RewardInfo>
+            <Button size="sm"
+            disabled={pendingTx}
+            onClick={async () => {
+                setPendingTx(true)
+                await handleClaimReward()
+                setPendingTx(false)
+            }}>{pendingTx ? 'Pending Claim Reward' : 'Claim Reward'}</Button>
+          </div>
+          ):(<div />)}
+          
         <Heading as="h3" size="xl" mb="24px" color="contrast">
             Choose A Doge
         </Heading>

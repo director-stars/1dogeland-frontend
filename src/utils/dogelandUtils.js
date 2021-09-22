@@ -24,6 +24,8 @@ export const getDoges = async (cryptoDogeNFTContract, account) => {
     const doges = await res.json();
     for (let i = 0; i < doges.length; i ++) {
       const result = await cryptoDogeNFTContract.methods.getdoger(doges[i].Doge_ID).call();
+      // console.log('Doge_ID', doges[i].Doge_ID)
+      // console.log('result', result);
       let rare = 0;
       const rareParser = result.dna / 10**26;
       if (rareParser < 5225) {
@@ -76,6 +78,8 @@ export const getDoges = async (cryptoDogeNFTContract, account) => {
       doges[i].rare = rare;
       doges[i].tribe = tribe;
       doges[i].exp = exp;
+      doges[i].farmTime = result.farmTime;
+      // console.log(doges[i]);
     }
     // doges.forEach(async (doge) => {
     //   const result = await cryptoDogeNFTContract.methods.getdoger(doge.Doge_ID);
@@ -137,7 +141,7 @@ export const createDoge = async (dogeInfo, tokenId, account) => {
           owner: account
       })
   });
-  console.log('res', res);
+  // console.log('res', res);
   const response = await res.json();
   return response
 }
@@ -187,15 +191,34 @@ export const getDogeInfo = async(cryptoDogeNFTContract, tokenId) => {
 export const fightMonster = async (cryptoDogeControllerContract, tokenId, account, probability) => {
   try {
     const result = await cryptoDogeControllerContract.methods.fight(tokenId, account, probability).send({ from: account });
-    console.log(result.events.Fight.returnValues);
-    return result.events.Fight.returnValues._win;
-    // return cryptoDogeControllerContract.methods
-    //   .fight(tokenId, account, probability)
-    //   .send({ from: account })
-    //   .on('logs', (tx) => {
-    //     console.log(tx);
-    //     return tx.transactionHash
-    //   })
+    // console.log(result.events.Fight.returnValues);
+    return result.events.Fight.returnValues;
+  } catch (err) {
+    return console.error(err)
+  }
+}
+
+export const getRewardTokenInfo = async (cryptoDogeControllerContract, account) => {
+  try {
+    const result = await cryptoDogeControllerContract.methods.claimTokenAmount(account).call();
+    return result;
+  } catch (err) {
+    return console.error(err)
+  }
+}
+
+export const claimReward = async (cryptoDogeControllerContract, account) => {
+  try {
+    // console.log(account);
+    // console.log(cryptoDogeControllerContract);
+    // const result = await cryptoDogeControllerContract.methods.claimToken().send({ from: account });
+    return cryptoDogeControllerContract.methods
+      .claimToken()
+      .send({ from: account })
+      .on('transactionHash', (tx) => {
+        return tx.transactionHash
+      })
+    // return result;
   } catch (err) {
     return console.error(err)
   }

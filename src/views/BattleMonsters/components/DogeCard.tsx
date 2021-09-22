@@ -3,6 +3,7 @@ import { Heading, Text, useWalletModal, Card, CardBody, CardHeader, CardFooter, 
 import styled from 'styled-components'
 import { useFetchPublicData } from 'state/hooks'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
+import Timestamp from './Timestamp'
 
 interface DogeCardProps {
     imgUrl: string
@@ -14,6 +15,7 @@ interface DogeCardProps {
     id: string
     activeDoge: number
     setActiveDoge: any
+    farmTime: string
 }
 
 const StyledImage = styled.div<{
@@ -51,7 +53,7 @@ const Id = styled.div`
 const DogeCardAction = styled.div`
     margin-top: 10px;
 `
-const DogeCard: React.FC<DogeCardProps> = ({imgUrl, name, rare, level, exp, tribe, id, activeDoge, setActiveDoge}) => {
+const DogeCard: React.FC<DogeCardProps> = ({imgUrl, name, rare, level, exp, tribe, id, activeDoge, setActiveDoge, farmTime}) => {
 
     const { account, connect, reset } = useWallet()
     useEffect(() => {
@@ -61,6 +63,12 @@ const DogeCard: React.FC<DogeCardProps> = ({imgUrl, name, rare, level, exp, trib
     }, [account, connect])
 
     const { onPresentConnectModal } = useWalletModal(connect, reset)
+    // const temp = (parseInt(farmTime)*1000 - Date.now()) / 1000;
+    // const hours = temp / 3600 ;
+    // const minutes = (temp - hours * 3600) / 60;
+    // const seconds = temp - hours * 3600 - minutes * 60;
+    // let waitTime = '';
+    // waitTime = ((hours<10)?'0'+hours:hours)
 
     return (
         <div>
@@ -89,12 +97,21 @@ const DogeCard: React.FC<DogeCardProps> = ({imgUrl, name, rare, level, exp, trib
                             <Text>{tribe}</Text>
                         </div>
                     </DogeInfo>
-                    <DogeCardAction>
-                    {account? (<Button fullWidth size="sm" onClick={() => {
-                        setActiveDoge(id);
-                    }}>Use this Doge</Button>)
-                    : (<Button fullWidth size="sm" onClick={onPresentConnectModal}>Connect Wallet</Button>)}
-                    </DogeCardAction>
+                    {(parseInt(farmTime)*1000 < Date.now())?(
+                        <DogeCardAction>
+                        
+                            {account? (<Button fullWidth size="sm" onClick={() => {
+                                setActiveDoge(id);
+                            }}>Use this Doge</Button>)
+                            : (<Button fullWidth size="sm" onClick={onPresentConnectModal}>Connect Wallet</Button>)}
+                            
+                        </DogeCardAction>
+                        ): (
+                        <DogeCardAction>
+                            <Button disabled fullWidth size="sm" onClick={onPresentConnectModal}>Wait for <Timestamp timeValue={parseInt(farmTime)*1000} /></Button>
+                        </DogeCardAction>
+                        )
+                    }
                 </CardFooter>
                 
             </Card>

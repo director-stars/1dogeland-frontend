@@ -93,6 +93,7 @@ const MarketCardActions: React.FC = () => {
             setPendingTx(true)
             await handleBuy()
             setPendingTx(false)
+            window.scrollTo(0, 0);
             handleClick()
         }}>{pendingTx ? 'Pending Buy Doge' : 'Buy Doge'}</Button>
     )

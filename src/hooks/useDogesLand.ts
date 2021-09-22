@@ -3,7 +3,7 @@ import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
 import { useCryptoDogeController, useCryptoDogeNFT } from 'hooks/useContract'
 import useRefresh from './useRefresh'
-import { getBattleBosses, getDoges, getMonsters, buyDoge, getLastTokenId, getDogeInfo, createDoge, fightMonster } from '../utils/dogelandUtils'
+import { getBattleBosses, getDoges, getMonsters, buyDoge, getLastTokenId, getDogeInfo, createDoge, fightMonster, getRewardTokenInfo, claimReward } from '../utils/dogelandUtils'
 
 export const useBattleBosses = () => {
   const [bosses, setBosses] = useState([])
@@ -92,4 +92,38 @@ export const useFightCryptoMonster = () => {
   )
 
   return { onFightMonster: handleFight }
+}
+
+export const useRewardTokenInfo = () => {
+  const { account } = useWallet()
+  const cryptoDogeControllerContract = useCryptoDogeController()
+  const [rewardAmount, setRewardAmount] = useState([])
+  const { fastRefresh } = useRefresh()
+  useEffect(() => {
+    const fetchBalance = async () => {
+      const res = await getRewardTokenInfo(cryptoDogeControllerContract, account);
+      setRewardAmount(res)
+    }
+    fetchBalance()
+  }, [account, fastRefresh, cryptoDogeControllerContract])
+
+  return rewardAmount
+}
+
+export const useClaimReward = () => {
+  const { account } = useWallet()
+  const cryptoDogeControllerContract = useCryptoDogeController()
+  const handleClaimReward = useCallback(
+    async () => {
+      try {
+        const claimResult = await claimReward(cryptoDogeControllerContract, account)
+        return claimResult
+      } catch (e) {
+        return false
+      }
+    },
+    [account, cryptoDogeControllerContract],
+  )
+
+  return { onClaimReward: handleClaimReward }
 }
