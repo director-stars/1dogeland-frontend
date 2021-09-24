@@ -4,7 +4,11 @@ import { Button, ToastContainer, useModal, useWalletModal } from '@pancakeswap-l
 import { useCryptoDogeControllerAllowance } from 'hooks/useAllowance'
 import { useCryptoDogeControllerApprove } from 'hooks/useApprove'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { useBuyCryptoDoge } from 'hooks/useDogesLand'
+import { useOrderCryptoDoge } from 'hooks/useDogesLand'
+
+interface DogeCardActionsProps {
+  dogeId: string
+}
 
 const CardActions = styled.div`
   display: flex;
@@ -17,7 +21,7 @@ const CardActions = styled.div`
   margin-top: 20px;
 `
 
-const MarketCardActions: React.FC = () => {
+const DogeCardActions: React.FC<DogeCardActionsProps> = ({ dogeId }) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
   const [toasts, setToasts] = useState([]);
   const allowance = useCryptoDogeControllerAllowance()
@@ -48,12 +52,12 @@ const MarketCardActions: React.FC = () => {
   const [pendingTx, setPendingTx] = useState(false)
 
   const [, setRequestedBuy] = useState(false)
-  const { onBuyDoge } = useBuyCryptoDoge()
+  const { onOrderDoge } = useOrderCryptoDoge()
 
-  const handleBuy = useCallback(async () => {
+  const handleOrder = useCallback(async () => {
     try {
       setRequestedBuy(true)
-      const txHash = await onBuyDoge()
+      const txHash = await onOrderDoge(dogeId)
       // user rejected tx or didn't go thru
       if (txHash) {
         setRequestedBuy(false)
@@ -61,23 +65,23 @@ const MarketCardActions: React.FC = () => {
     } catch (e) {
       console.error(e)
     }
-  }, [onBuyDoge, setRequestedBuy])
+  }, [onOrderDoge, setRequestedBuy, dogeId])
 
-  const handleClick = (description = "") => {
-    const now = Date.now();
-    const randomToast = {
-      id: `id-${now}`,
-      title: `New Doge has been borned.`,
-      description,
-      type: "success",
-    };
+  // const handleClick = (description = "") => {
+  //   const now = Date.now();
+  //   const randomToast = {
+  //     id: `id-${now}`,
+  //     title: `New Doge has been borned.`,
+  //     description,
+  //     type: "success",
+  //   };
 
-    setToasts((prevToasts) => [randomToast, ...prevToasts]);
-  };
+  //   setToasts((prevToasts) => [randomToast, ...prevToasts]);
+  // };
 
-  const handleRemove = (id: string) => {
-    setToasts((prevToasts) => prevToasts.filter((prevToast) => prevToast.id !== id));
-  };
+  // const handleRemove = (id: string) => {
+  //   setToasts((prevToasts) => prevToasts.filter((prevToast) => prevToast.id !== id));
+  // };
 
   const renderDogeCardButtons = () => {
     if (!allowance.toNumber()) {
@@ -92,11 +96,11 @@ const MarketCardActions: React.FC = () => {
         disabled={pendingTx}
         onClick={async () => {
             setPendingTx(true)
-            await handleBuy()
+            await handleOrder()
             setPendingTx(false)
-            window.scrollTo(0, 0);
-            handleClick()
-        }}>{pendingTx ? 'Pending Buy Doge' : 'Buy Doge'}</Button>
+            // window.scrollTo(0, 0);
+            // handleClick()
+        }}>{pendingTx ? 'Pending Order Doge' : 'Order Doge'}</Button>
     )
   }
 
@@ -104,9 +108,9 @@ const MarketCardActions: React.FC = () => {
     <CardActions>
       {account? (renderDogeCardButtons())
         : (<Button fullWidth size="sm" onClick={onPresentConnectModal}>Connect Wallet</Button>)}
-    <ToastContainer toasts={toasts} onRemove={handleRemove} />
+    {/* <ToastContainer toasts={toasts} onRemove={handleRemove} /> */}
     </CardActions>
   )
 }
 
-export default MarketCardActions
+export default DogeCardActions

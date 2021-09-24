@@ -63,6 +63,7 @@ const RewardInfo = styled.div`
 const BattleMonsters: React.FC<BattleMonstersProps> = (props) => {
   const { url, title } = props
   const [activeDogeId, setActiveDogeId] = useState();
+  const [activeFightNumber, setActiveFightNumber] = useState();
   const rewardTokenAmount = useRewardTokenInfo();
   const chevronWidth = 40;
   const monsters = useMonsters();
@@ -88,6 +89,7 @@ const BattleMonsters: React.FC<BattleMonstersProps> = (props) => {
             activeDoge={activeDogeId}
             setActiveDoge={setActiveDogeId}
             farmTime={doge.farmTime}
+            fightNumber={doge.fightNumber}
           />
         </DogeItem>
       ))
@@ -101,12 +103,15 @@ const BattleMonsters: React.FC<BattleMonstersProps> = (props) => {
         <div style={{ padding: "16px"}}>
           <MonsterCard 
             // imgUrl={process.env.REACT_APP_API_URL+monster.asset.url}
+            id={monster.id}
             imgUrl={monster.asset}
-            name={monster.name}
-            health={monster.HP}
-            successRate={monster.Success_Rate}
-            tokenReward={monster.Token_Reward}
-            expReward={monster.Exp_Reward}
+            name={monster._name}
+            health={monster._hp}
+            successRate={monster._successRate}
+            rewardTokenFrom={monster._rewardTokenFrom}
+            rewardTokenTo={monster._rewardTokenTo}
+            rewardExpFrom={monster._rewardExpFrom}
+            rewardExpTo={monster._rewardExpTo}
             activeDoge={activeDogeId}
           />
         </div>

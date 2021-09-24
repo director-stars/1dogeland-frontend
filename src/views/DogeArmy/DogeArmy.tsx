@@ -59,7 +59,7 @@ const DogeArmy: React.FC<DogeArmyProps> = (props) => {
   const [activeItemIndex, setActiveItemIndex] = useState(0);
   const chevronWidth = 40;
   const doges = useDoges();
-  console.log('doges', doges)
+  // console.log('doges', doges)
   const dogeList = useCallback(
     (dogesToDisplay, removed: boolean) => {
       return dogesToDisplay.map((doge) => (

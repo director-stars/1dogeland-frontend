@@ -3,6 +3,7 @@ import { Heading, Text, useWalletModal, Card, CardBody, CardHeader, CardFooter, 
 import styled from 'styled-components'
 import { useFetchPublicData } from 'state/hooks'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
+import DogeCardActions from './DogeCardActions'
 
 interface MartketCardProps {
     imgUrl: string
@@ -81,6 +82,7 @@ const DogeCard: React.FC<MartketCardProps> = ({imgUrl, name, rare, level, exp, t
                             <Text>{tribe}</Text>
                         </div>
                     </DogeInfo>
+                    <DogeCardActions dogeId={id}/>
                 </CardFooter>
             </Card>
         </div>

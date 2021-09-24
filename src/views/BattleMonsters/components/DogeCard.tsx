@@ -16,6 +16,7 @@ interface DogeCardProps {
     activeDoge: number
     setActiveDoge: any
     farmTime: string
+    fightNumber: string
 }
 
 const StyledImage = styled.div<{
@@ -53,7 +54,7 @@ const Id = styled.div`
 const DogeCardAction = styled.div`
     margin-top: 10px;
 `
-const DogeCard: React.FC<DogeCardProps> = ({imgUrl, name, rare, level, exp, tribe, id, activeDoge, setActiveDoge, farmTime}) => {
+const DogeCard: React.FC<DogeCardProps> = ({imgUrl, name, rare, level, exp, tribe, id, activeDoge, setActiveDoge, farmTime, fightNumber}) => {
 
     const { account, connect, reset } = useWallet()
     useEffect(() => {
@@ -83,18 +84,24 @@ const DogeCard: React.FC<DogeCardProps> = ({imgUrl, name, rare, level, exp, trib
                 <CardFooter>
                     <DogeInfo>
                         <div>
-                            <Text>Rare: </Text>
+                            <Text>Rare : </Text>
                             <Text>{rare}</Text>
                         </div>
                         <div>
-                            <Text>Level:</Text>
+                            <Text>Level :</Text>
                             <Text>{level} / {exp} exp</Text>
                         </div>
                     </DogeInfo>
                     <DogeInfo>
                         <div>
-                            <Text>Tribe:</Text>
+                            <Text>Tribe :</Text>
                             <Text>{tribe}</Text>
+                        </div>
+                    </DogeInfo>
+                    <DogeInfo>
+                        <div>
+                            <Text>Remained Turns Fight :</Text>
+                            <Text>{fightNumber}</Text>
                         </div>
                     </DogeInfo>
                     {(parseInt(farmTime)*1000 < Date.now())?(

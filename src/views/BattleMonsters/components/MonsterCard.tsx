@@ -1,19 +1,22 @@
 import React, { useEffect, useCallback, useState } from 'react'
-import { Heading, Text, useWalletModal, Card, CardBody, CardHeader, CardFooter, Button, Image, ToastContainer } from '@pancakeswap-libs/uikit'
+import { Heading, Text, useWalletModal, Card, CardBody, CardHeader, CardFooter, Button, Image, useModal } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import { useCryptoDogeControllerAllowance } from 'hooks/useAllowance'
-import { useFetchPublicData } from 'state/hooks'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { useFightCryptoMonster } from 'hooks/useDogesLand'
 import { useCryptoDogeControllerApprove } from 'hooks/useApprove'
+import ResultModal from 'components/ResultModal'
 
 interface MonsterCardProps {
+    id: number
     imgUrl: string
     name: string
     health: string
     successRate: string
-    tokenReward: string
-    expReward: string
+    rewardTokenFrom: string
+    rewardTokenTo: string
+    rewardExpFrom: string
+    rewardExpTo: string
     activeDoge: string
 }
 
@@ -43,6 +46,7 @@ const StyledHeading = styled(Heading)`
 `
 const MonsterInfo = styled.div`
     display: grid;
+    line-height: 24px;
 `
 const PriceInfo = styled.div`
     display: flex;
@@ -50,11 +54,7 @@ const PriceInfo = styled.div`
 const TokenIcon = styled(Image)`
     width: 24px;
 `
-const OwnerInfo = styled.div`
-    display: flex;
-    justify-content: space-evenly;
-`
-const MonsterCard: React.FC<MonsterCardProps> = ({imgUrl, name, health, successRate, tokenReward, expReward, activeDoge}) => {
+const MonsterCard: React.FC<MonsterCardProps> = ({id, imgUrl, name, health, successRate, rewardTokenFrom, rewardTokenTo, rewardExpFrom, rewardExpTo, activeDoge}) => {
     const { account, connect, reset } = useWallet()
     useEffect(() => {
         if (!account && window.localStorage.getItem('accountStatus')) {
@@ -63,14 +63,14 @@ const MonsterCard: React.FC<MonsterCardProps> = ({imgUrl, name, health, successR
     }, [account, connect])
 
     const [pendingTx, setPendingTx] = useState(false)
-    const [toasts, setToasts] = useState([]);
     const allowance = useCryptoDogeControllerAllowance()
     const [requestedApproval, setRequestedApproval] = useState(false)
 
     const { onPresentConnectModal } = useWalletModal(connect, reset)
-    const [, setRequestedFight] = useState(false)
-    const [battleResult, setBattleResult] = useState(false)
-    const [transactionResult, setTransactionResult] = useState(false)
+    const [rewardExp, setRewardExp] = useState("0")
+    const [battleResult, setBattleResult] = useState('false')
+    const [tx, setTx] = useState('')
+    const [error, setError] = useState(false);
     const { onFightMonster } = useFightCryptoMonster()
     const { onApprove } = useCryptoDogeControllerApprove()
 
@@ -88,54 +88,27 @@ const MonsterCard: React.FC<MonsterCardProps> = ({imgUrl, name, health, successR
         }
       }, [onApprove])
 
-    const handleFight = useCallback(async (dogeId, probability) => {
-        try {
-          setRequestedFight(true)
-          const fightResult = await onFightMonster(dogeId, probability)
-          console.log('fightResult: ',fightResult);
-          // user rejected tx or didn't go thru
-          if(fightResult === undefined){
-            console.log('undefiend');
-            setTransactionResult(false)
-          }
-          else if (fightResult._win) {
-            setTransactionResult(true)
-            setRequestedFight(false)
-            setBattleResult(true)
-            // console.log('_win', transactionResult)
-          }
-          else{
-            setTransactionResult(true)
-            // console.log('else',transactionResult)
-          }
-        } catch (e) {
-          console.error(e)
-        }
-      }, [onFightMonster, setRequestedFight, setTransactionResult])
+    const handleFight = useCallback(async (monsterId, dogeId) => {
+          const fightResult = await onFightMonster(monsterId, dogeId)
+          // console.log('fightResult',fightResult)
+          const temp = Date.now();
+          setTx(fightResult.transactionHash?fightResult.transactionHash:'')
+          setRewardExp(fightResult.returnValues?fightResult.returnValues._rewardExp.toString():'');
+          setError(fightResult.code);
+          setBattleResult(temp.toString());
+          setBattleResult(fightResult.code?fightResult.message:fightResult.returnValues._win);
+            
+      }, [onFightMonster])
+
+    const [onPresentResult] = useModal(<ResultModal title="Battle Result" result={battleResult} rewardExp={rewardExp} tx={tx} error={error}/>) 
+
 
     useEffect(() => {
-      const handleClick = (description = "") => {
-          const now = Date.now();
-          const randomToast = {
-            id: `id-${now}`,
-            title: battleResult?`Win.`:`Loss`,
-            description,
-            type: battleResult?`success`:`danger`,
-          };
-      
-          setToasts((prevToasts) => [randomToast, ...prevToasts]);
-      };
-    
-      console.log('useEffect', transactionResult)
-      if(pendingTx === false && transactionResult === true){
-        window.scrollTo(0, 0);
-        handleClick()
+      if ((battleResult !== 'false') && (battleResult !== 'true')) {
+        onPresentResult()
       }
-    }, [transactionResult, pendingTx, battleResult])
-
-    const handleRemove = (id: string) => {
-        setToasts((prevToasts) => prevToasts.filter((prevToast) => prevToast.id !== id));
-    };
+      setBattleResult('true')
+    }, [ battleResult, setBattleResult, onPresentResult ])
       
     const renderDogeCardButtons = () => {
         if (!allowance.toNumber()) {
@@ -155,13 +128,8 @@ const MonsterCard: React.FC<MonsterCardProps> = ({imgUrl, name, health, successR
             disabled={pendingTx}
             onClick={async () => {
                 setPendingTx(true)
-                await handleFight(activeDoge, successRate)
+                await handleFight(id, activeDoge)
                 setPendingTx(false)
-                // console.log(transactionResult);
-                // if(transactionResult){
-                //   window.scrollTo(0, 0);
-                //   handleClick()
-                // }
             }}>{pendingTx ? 'Pending Fight' : 'Fight'}</Button>
         )
     }
@@ -181,12 +149,11 @@ const MonsterCard: React.FC<MonsterCardProps> = ({imgUrl, name, health, successR
                     <MonsterInfo>
                         <Block><Label>HP:</Label><Text>{health}HP</Text></Block>
                         <Block><Label>Success Rate:</Label><Text>~{successRate}%</Text></Block>
-                        <Block><Label>Token Reward:</Label><PriceInfo><TokenIcon width={24} height={24} src="/images/egg/9.png"/><Text>{tokenReward} 1doge</Text></PriceInfo></Block>
-                        <Block><Label>EXP Reward:</Label><Text>{expReward} EXP</Text></Block>
+                        <Block><Label>Token Reward:</Label><PriceInfo>{rewardTokenFrom} ~ {rewardTokenTo}<TokenIcon width={24} height={24} src="/images/egg/9.png"/><Text> 1doge</Text></PriceInfo></Block>
+                        <Block><Label>EXP Reward:</Label><Text>{rewardExpFrom} EXP</Text></Block>
                     </MonsterInfo>
                 </CardFooter>
             </Card>
-            <ToastContainer toasts={toasts} onRemove={handleRemove} />
         </div>
     )
 }

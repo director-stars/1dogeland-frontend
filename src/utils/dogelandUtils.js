@@ -138,7 +138,8 @@ export const createDoge = async (dogeInfo, tokenId, account) => {
           name: dogeName,
           asset: dogeAsset,
           Doge_ID: tokenId,
-          owner: account
+          owner: account,
+          fightNumber: 10
       })
   });
   // console.log('res', res);
@@ -146,12 +147,27 @@ export const createDoge = async (dogeInfo, tokenId, account) => {
   return response
 }
 
-export const getMonsters = async () => {
+export const getMonsters = async (cryptoDogeControllerContract) => {
+  const monsters = Array(4);
+  monsters[0] = await cryptoDogeControllerContract.methods.monsters(0).call();
+  monsters[1] = await cryptoDogeControllerContract.methods.monsters(1).call();
+  monsters[2] = await cryptoDogeControllerContract.methods.monsters(2).call();
+  monsters[3] = await cryptoDogeControllerContract.methods.monsters(3).call();
+  // console.log('monsters', monsters[0]._name);
   const res = await fetch(`${API_URL}/monsters`, {
       method: "GET",
   });
   const response = await res.json();
-  return response
+  monsters[0].id = 0;
+  monsters[0].asset = response[0].asset;
+  monsters[1].id = 1;
+  monsters[1].asset = response[1].asset;
+  monsters[2].id = 2;
+  monsters[2].asset = response[2].asset;
+  monsters[3].id = 3;
+  monsters[3].asset = response[3].asset;  
+
+  return monsters
 }
 
 export const buyDoge = async (cryptoDogeControllerContract, account) => {
@@ -188,13 +204,23 @@ export const getDogeInfo = async(cryptoDogeNFTContract, tokenId) => {
   }
 }
 
-export const fightMonster = async (cryptoDogeControllerContract, tokenId, account, probability) => {
+export const fightMonster = async (cryptoDogeControllerContract, account, monsterId, tokenId) => {
+  const doge = await fetch(`${API_URL}/crypto-doges/${tokenId}`, {
+    method: "GET",
+  });
+  const dogeInfo = await doge.json()
+  const activeFightNumber = dogeInfo.fightNumber;
+  // console.log('activeFightNumber', activeFightNumber)
+  const finalFight = (activeFightNumber < 2);
+  // console.log('finalFight', finalFight);
   try {
-    const result = await cryptoDogeControllerContract.methods.fight(tokenId, account, probability).send({ from: account });
-    // console.log(result.events.Fight.returnValues);
-    return result.events.Fight.returnValues;
+    const result = await cryptoDogeControllerContract.methods.fight(tokenId, account, monsterId, finalFight).send({ from: account });
+    const res = await fetch(`${API_URL}/crypto-doges-decreaseFN/${tokenId}`, {
+      method: "POST",
+    });
+    return result.events.Fight;
   } catch (err) {
-    return console.error(err)
+    return err
   }
 }
 
@@ -209,17 +235,26 @@ export const getRewardTokenInfo = async (cryptoDogeControllerContract, account) 
 
 export const claimReward = async (cryptoDogeControllerContract, account) => {
   try {
-    // console.log(account);
-    // console.log(cryptoDogeControllerContract);
-    // const result = await cryptoDogeControllerContract.methods.claimToken().send({ from: account });
     return cryptoDogeControllerContract.methods
       .claimToken()
       .send({ from: account })
       .on('transactionHash', (tx) => {
         return tx.transactionHash
       })
-    // return result;
   } catch (err) {
     return console.error(err)
   }
+}
+
+export const orderDoge = async (cryptoDogeNFTContract, account, tokenId) => {
+  // try {
+  //   return cryptoDogeNFTContract.methods
+  //     .claimToken()
+  //     .send({ from: account })
+  //     .on('transactionHash', (tx) => {
+  //       return tx.transactionHash
+  //     })
+  // } catch (err) {
+    return console.error('err')
+  // }
 }

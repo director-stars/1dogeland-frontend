@@ -68,7 +68,6 @@ const StyledCardHeader = styled(CardHeader)`
 
 const StyledHeading = styled(Heading)`
     text-align: center;
-    margin-bottom: 20px;
 `
 const DogeInfo = styled.div`
     display: flex;
@@ -102,7 +101,9 @@ const MarketCard: React.FC<MartketCardProps> = ({imgUrl, name, price}) => {
                     </ImageSlider>
                 </StyledCardHeader>
                 <CardBody>
-                    <StyledHeading size="lg">{name}</StyledHeading>
+                    <StyledHeading size="lg" color="primary">{name}</StyledHeading>
+                </CardBody>
+                <CardFooter>
                     <DogeInfo>
                         <Text>Price</Text>
                         <PriceInfo>
@@ -114,8 +115,6 @@ const MarketCard: React.FC<MartketCardProps> = ({imgUrl, name, price}) => {
                         <Text>Payment</Text>
                         <Text>1Doge</Text>
                     </OwnerInfo>
-                </CardBody>
-                <CardFooter>
                     <MarketCardActions />
                 </CardFooter>
             </Card>
