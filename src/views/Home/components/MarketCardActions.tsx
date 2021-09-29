@@ -1,8 +1,8 @@
 import React, { useEffect, useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { Button, ToastContainer, useModal, useWalletModal } from '@pancakeswap-libs/uikit'
-import { useCryptoDogeControllerAllowance } from 'hooks/useAllowance'
-import { useCryptoDogeControllerApprove } from 'hooks/useApprove'
+import { useCreateCryptoDogeAllowance } from 'hooks/useAllowance'
+import { useCreateCryptoDogeApprove } from 'hooks/useApprove'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { useBuyCryptoDoge } from 'hooks/useDogesLand'
 
@@ -20,8 +20,8 @@ const CardActions = styled.div`
 const MarketCardActions: React.FC = () => {
   const [requestedApproval, setRequestedApproval] = useState(false)
   const [toasts, setToasts] = useState([]);
-  const allowance = useCryptoDogeControllerAllowance()
-  const { onApprove } = useCryptoDogeControllerApprove()
+  const allowance = useCreateCryptoDogeAllowance()
+  const { onApprove } = useCreateCryptoDogeApprove()
   // const [onPresentApprove] = useModal(<PurchaseWarningModal />)
   const handleApprove = useCallback(async () => {
     try {
@@ -67,7 +67,7 @@ const MarketCardActions: React.FC = () => {
     const now = Date.now();
     const randomToast = {
       id: `id-${now}`,
-      title: `New Doge has been borned.`,
+      title: `Please check your doge army.`,
       description,
       type: "success",
     };

@@ -92,12 +92,12 @@ const MarketCard: React.FC<MartketCardProps> = ({imgUrl, name, price}) => {
             <Card>
                 <StyledCardHeader>
                     <ImageSlider>
-                        <StyledImage imageUrl="/images/chests/1.gif"/>
-                        <StyledImage imageUrl="/images/chests/2.gif"/>
-                        <StyledImage imageUrl="/images/chests/3.gif"/>
-                        <StyledImage imageUrl="/images/chests/4.gif"/>
-                        <StyledImage imageUrl="/images/chests/5.gif"/>
-                        <StyledImage imageUrl="/images/chests/6.gif"/>
+                        <StyledImage imageUrl="/images/chests/fire.gif"/>
+                        <StyledImage imageUrl="/images/chests/sky.gif"/>
+                        <StyledImage imageUrl="/images/chests/electric.gif"/>
+                        <StyledImage imageUrl="/images/chests/grass.gif"/>
+                        <StyledImage imageUrl="/images/chests/wind.gif"/>
+                        <StyledImage imageUrl="/images/chests/water.gif"/>
                     </ImageSlider>
                 </StyledCardHeader>
                 <CardBody>

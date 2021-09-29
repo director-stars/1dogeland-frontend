@@ -1,10 +1,11 @@
 import React, { useContext, useRef, useState, useCallback } from 'react'
 import styled from 'styled-components'
-import { Button, Heading, Text } from '@pancakeswap-libs/uikit'
+import { Button, Heading, Text, ButtonMenu, ButtonMenuItem } from '@pancakeswap-libs/uikit'
 import Page from 'components/layout/Page'
-import { useDoges } from 'hooks/useDogesLand'
+import { useMySaleDoges, useMyUnSaleDoges } from 'hooks/useDogesLand'
 import FlexLayout from 'components/layout/Flex'
 import DogeCard from './components/DogeCard'
+import ChestCard from './components/ChestCard'
 
 interface DogeArmyProps {
   url?: string
@@ -54,32 +55,74 @@ const StyledDiv = styled.div`
   margin-bottom: 20px;
 `
 
+const Row = styled.div`
+  margin-bottom: 32px;
+
+  & > button + button {
+    margin-left: 16px;
+  }
+`;
+
 const DogeArmy: React.FC<DogeArmyProps> = (props) => {
   const { url, title } = props
-  const [activeItemIndex, setActiveItemIndex] = useState(0);
+  const [isSaleDoges, setIsSaleDoges] = useState(true);
+  const [isUnSaleDoges, setIsUnSaleDoges] = useState(true);
   const chevronWidth = 40;
-  const doges = useDoges();
+  let saleDoges = useMySaleDoges();
+  if(saleDoges === undefined) saleDoges = [];
+  // console.log('saleDoges',saleDoges)
+  let unSaleDoges = useMyUnSaleDoges();
+  if(unSaleDoges === undefined) unSaleDoges = [];
+  // console.log('unSaleDoges', unSaleDoges)
   // console.log('doges', doges)
   const dogeList = useCallback(
     (dogesToDisplay, removed: boolean) => {
       return dogesToDisplay.map((doge) => (
         <DogeItem>
-          <DogeCard 
-            // imgUrl={process.env.REACT_APP_API_URL+doge.asset.url}
-            imgUrl={doge.asset}
-            name={doge.name}
-            rare={doge.rare}
-            level={doge.level}
-            exp={doge.exp}
-            tribe={doge.tribe}
-            id={doge.Doge_ID}
+          {(doge._rare !== "0")?(
+          <DogeCard
+            id={doge._tokenId}
+            classInfo={doge._classInfo}
+            price={doge._salePrice}
+            owner={doge._owner}
+            level={doge._level}
+            rare={doge._rare}
+            exp={doge._exp}
+            tribe={doge._tribe}
           />
+          ):(
+          <ChestCard 
+            id={doge._tokenId}
+            tribe={doge._tribe}
+          />
+          )}
         </DogeItem>
       ))
-    }
-    ,
+    },
     [],
   )
+  const [index, setIndex] = useState(0);
+  const handleClick = (newIndex) => {
+    setIndex(newIndex)
+    switch(newIndex){
+      case 0:
+        setIsSaleDoges(true);
+        setIsUnSaleDoges(true);
+        break;
+      case 1:
+        setIsSaleDoges(false);
+        setIsUnSaleDoges(true);
+        break;
+      case 2:
+        setIsSaleDoges(true);
+        setIsUnSaleDoges(false);
+        break;
+      default:
+        setIsSaleDoges(true);
+        setIsUnSaleDoges(true);
+        break;
+    }
+  };
   return (
     <Page>
       <Hero>
@@ -88,7 +131,7 @@ const DogeArmy: React.FC<DogeArmyProps> = (props) => {
             You have
           </Heading>
           <Heading as="h1" size="xxl" mb="24px" color="primary">
-            {doges.length}
+            {saleDoges.length + unSaleDoges.length}
           </Heading>
           <Heading as="h1" size="xxl" mb="24px" color="contrast">
             doge(s) in your 1doge army!
@@ -98,16 +141,16 @@ const DogeArmy: React.FC<DogeArmyProps> = (props) => {
       </Hero>
       
       <MyDoges>
-        <StyledDiv>
-          <Button as="a" href="/#/" size="sm">
-            Starter Doges
-          </Button>
-          <Button as="a" href="/#/marketplace" size="sm">
-            Marketplace
-          </Button>
-        </StyledDiv>
+        <Row>
+          <ButtonMenu size="sm" activeIndex={index} onClick={handleClick}>
+            <ButtonMenuItem>ALL</ButtonMenuItem>
+            <ButtonMenuItem>Available</ButtonMenuItem>
+            <ButtonMenuItem>In Order</ButtonMenuItem>
+          </ButtonMenu>
+        </Row>
         <FlexLayout>
-          {dogeList(doges, true)}
+        {((typeof saleDoges === typeof []) && isSaleDoges)?dogeList(saleDoges, true):(<></>)}
+        {((typeof unSaleDoges === typeof []) && isUnSaleDoges)?dogeList(unSaleDoges, true):(<></>)}
         </FlexLayout>
       </MyDoges>
     </Page>

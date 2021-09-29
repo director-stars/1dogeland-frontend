@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Carousel from 'components/Carousel'
 import { Button, Heading, Text, Image } from '@pancakeswap-libs/uikit'
 import Page from 'components/layout/Page'
-import { useMonsters, useDoges, useRewardTokenInfo, useClaimReward } from 'hooks/useDogesLand'
+import { useMonsters, useMyFightDoges, useRewardTokenInfo, useClaimReward } from 'hooks/useDogesLand'
 import FlexLayout from 'components/layout/Flex'
 import DogeCard from './components/DogeCard'
 import MonsterCard from './components/MonsterCard'
@@ -67,32 +67,32 @@ const BattleMonsters: React.FC<BattleMonstersProps> = (props) => {
   const rewardTokenAmount = useRewardTokenInfo();
   const chevronWidth = 40;
   const monsters = useMonsters();
-  const doges = useDoges();
+  const doges = useMyFightDoges();
   const [pendingTx, setPendingTx] = useState(false)
   const [, setRequestedClaim] = useState(false)
   const { onClaimReward } = useClaimReward()
-  // console.log('doges', doges)
+  // console.log('doges', doges.length)
   // 
   const dogeList = useCallback(
     (dogesToDisplay, removed: boolean) => {
-      return dogesToDisplay.map((doge) => (
-        <DogeItem>
-          <DogeCard 
-            // imgUrl={process.env.REACT_APP_API_URL+doge.asset.url}
-            imgUrl={doge.asset}
-            name={doge.name}
-            rare={doge.rare}
-            level={doge.level}
-            exp={doge.exp}
-            tribe={doge.tribe}
-            id={doge.Doge_ID}
-            activeDoge={activeDogeId}
-            setActiveDoge={setActiveDogeId}
-            farmTime={doge.farmTime}
-            fightNumber={doge.fightNumber}
-          />
-        </DogeItem>
-      ))
+      return dogesToDisplay.map((doge) => 
+        (
+          <DogeItem>
+            <DogeCard 
+              classInfo={doge._classInfo}
+              rare={doge._rare}
+              level={doge._level}
+              exp={doge._exp}
+              tribe={doge._tribe}
+              id={doge._tokenId}
+              activeDoge={activeDogeId}
+              setActiveDoge={setActiveDogeId}
+              farmTime={doge._farmTime}
+              fightNumber={doge.fightNumber}
+            />
+          </DogeItem>
+        )
+      )
     }
     ,
     [activeDogeId],
@@ -136,7 +136,7 @@ const BattleMonsters: React.FC<BattleMonstersProps> = (props) => {
   }, [onClaimReward, setRequestedClaim])
   useEffect(() => {
     if(!(doges.length === 0) && (!activeDogeId)){
-      console.log(doges.length)
+      // console.log(doges.length)
       for(let i = 0; i< doges.length; i++){
         if(parseInt(doges[i].farmTime)*1000 < Date.now()){
           setActiveDogeId(doges[i].Doge_ID)

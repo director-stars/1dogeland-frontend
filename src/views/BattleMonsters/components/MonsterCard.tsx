@@ -5,7 +5,7 @@ import { useCryptoDogeControllerAllowance } from 'hooks/useAllowance'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { useFightCryptoMonster } from 'hooks/useDogesLand'
 import { useCryptoDogeControllerApprove } from 'hooks/useApprove'
-import ResultModal from 'components/ResultModal'
+import ResultModal from './ResultModal'
 
 interface MonsterCardProps {
     id: number

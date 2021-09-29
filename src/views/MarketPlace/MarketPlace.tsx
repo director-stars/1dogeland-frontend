@@ -2,7 +2,7 @@ import React, { useEffect, useCallback, useState } from 'react'
 import { Route, useRouteMatch } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
-import { Heading, Text, BaseLayout} from '@pancakeswap-libs/uikit'
+import { Heading, Text, BaseLayout } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { useFarms, usePriceBnbBusd, usePriceCakeBusd } from 'state/hooks'
 import BigNumber from 'bignumber.js'
@@ -12,12 +12,7 @@ import Page from 'components/layout/Page'
 import FlexLayout from 'components/layout/Flex'
 import useRefresh from 'hooks/useRefresh'
 import { fetchFarmUserDataAsync } from 'state/actions'
-import { BLOCKS_PER_YEAR, CAKE_PER_BLOCK, CAKE_POOL_PID } from 'config'
-import FarmStakingCard from './components/FarmStakingCard'
-import LotteryCard from './components/LotteryCard'
-import CakeStats from './components/CakeStats'
-import TotalValueLockedCard from './components/TotalValueLockedCard'
-import TwitterCard from './components/TwitterCard'
+import { useSaleDoges } from 'hooks/useDogesLand'
 import MarketCard from './components/MarketCard'
 
 const Hero = styled.div`
@@ -68,30 +63,29 @@ const StyledHead = styled.div`
   column-gap: 20px;
 `
 
+const MarketItem = styled.div`
+  max-width: 23.5%;
+  padding: 16px;
+  margin: auto;
+`
+
 const MarketPlace: React.FC = () => {
-  const farmsLP = useFarms()
-  const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
-  // const {tokenMode} = farmsProps;
-
-  const dispatch = useDispatch()
-  const { fastRefresh } = useRefresh()
-  useEffect(() => {
-    if (account) {
-      dispatch(fetchFarmUserDataAsync(account))
-    }
-  }, [account, dispatch, fastRefresh])
-
-  const farmsList = useCallback(
-    (farmsToDisplay, removed: boolean) => {
-      return farmsToDisplay.map((farm) => (
-        <div style={{ padding: "32px", width: "500px" }}>
-          <MarketCard 
-            imgUrl="header"
-            name="name"
-            price="price"
-            owner="owner"
+  const doges = useSaleDoges()
+  const dogeList = useCallback(
+    (dogesToDisplay, removed: boolean) => {
+      return dogesToDisplay.map((doge) => (
+        <MarketItem>
+          <MarketCard
+            id={doge._tokenId}
+            classInfo={doge._classInfo}
+            price={doge._salePrice}
+            owner={doge._owner}
+            level={doge._level}
+            rare={doge._rare}
+            exp={doge._exp}
+            tribe={doge._tribe}
           />
-        </div>
+        </MarketItem>
       ))
     }
     ,
@@ -113,7 +107,7 @@ const MarketPlace: React.FC = () => {
       </Hero>
       <div>
         <FlexLayout>
-          {farmsList(farmsLP, true)}
+          {(typeof doges === typeof [])?dogeList(doges, true):(<div />)}
         </FlexLayout>
       </div>
     </Page>

@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react'
 import { Heading, Text, useWalletModal, Card, CardBody, CardHeader, CardFooter, Button, Image } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
-import { useFetchPublicData } from 'state/hooks'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { classes, tribes } from 'hooks/useDogesLand'
 import Timestamp from './Timestamp'
 
 interface DogeCardProps {
-    imgUrl: string
-    name: string
+    classInfo: string
     rare: string
     exp: string
     level: string
@@ -54,7 +53,7 @@ const Id = styled.div`
 const DogeCardAction = styled.div`
     margin-top: 10px;
 `
-const DogeCard: React.FC<DogeCardProps> = ({imgUrl, name, rare, level, exp, tribe, id, activeDoge, setActiveDoge, farmTime, fightNumber}) => {
+const DogeCard: React.FC<DogeCardProps> = ({classInfo, rare, level, exp, tribe, id, activeDoge, setActiveDoge, farmTime, fightNumber}) => {
 
     const { account, connect, reset } = useWallet()
     useEffect(() => {
@@ -62,24 +61,21 @@ const DogeCard: React.FC<DogeCardProps> = ({imgUrl, name, rare, level, exp, trib
         connect('injected')
         }
     }, [account, connect])
+    const dogeImage = classes[parseInt(rare) - 1][classInfo].asset;
+    const dogeName = classes[parseInt(rare) - 1][classInfo].name;
+    const tribeName = tribes[tribe].name;
 
     const { onPresentConnectModal } = useWalletModal(connect, reset)
-    // const temp = (parseInt(farmTime)*1000 - Date.now()) / 1000;
-    // const hours = temp / 3600 ;
-    // const minutes = (temp - hours * 3600) / 60;
-    // const seconds = temp - hours * 3600 - minutes * 60;
-    // let waitTime = '';
-    // waitTime = ((hours<10)?'0'+hours:hours)
 
     return (
         <div>
             <Card>
                 <Id>#{id}</Id>
                 <CardHeader>
-                    <StyledImage imgUrl={imgUrl}/>
+                    <StyledImage imgUrl={`/images/doges/${dogeImage}`}/>
                 </CardHeader>
                 <CardBody>
-                    <StyledHeading size="lg" color="primary">{name}</StyledHeading>
+                    <StyledHeading size="lg" color="primary">{dogeName}</StyledHeading>
                 </CardBody>
                 <CardFooter>
                     <DogeInfo>
@@ -95,7 +91,7 @@ const DogeCard: React.FC<DogeCardProps> = ({imgUrl, name, rare, level, exp, trib
                     <DogeInfo>
                         <div>
                             <Text>Tribe :</Text>
-                            <Text>{tribe}</Text>
+                            <Text>{tribeName}</Text>
                         </div>
                     </DogeInfo>
                     <DogeInfo>

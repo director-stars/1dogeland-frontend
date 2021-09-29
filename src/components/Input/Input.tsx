@@ -24,7 +24,7 @@ const StyledInputWrapper = styled.div`
   background-color: ${(props) => props.theme.colors.input};
   border-radius: ${(props) => props.theme.radii.default};
   display: flex;
-  height: 72px;
+  height: 40px;
   padding: 0 ${(props) => props.theme.spacing[3]}px;
 `
 
@@ -35,7 +35,7 @@ const StyledInput = styled.input`
   color: ${(props) => props.theme.colors.primary};
   font-size: 18px;
   flex: 1;
-  height: 56px;
+  height: 32px;
   margin: 0;
   padding: 0;
   outline: none;

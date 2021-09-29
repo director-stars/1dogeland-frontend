@@ -1,8 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Button } from '@pancakeswap-libs/uikit'
+import { Button, Image } from '@pancakeswap-libs/uikit'
 import useI18n from '../../hooks/useI18n'
 import Input, { InputProps } from '../Input'
+
+const TokenIcon = styled(Image)`
+    width: 24px;
+`
 
 interface TokenInputProps extends InputProps {
   max: number | string
@@ -11,7 +15,7 @@ interface TokenInputProps extends InputProps {
   onSelectMax?: () => void
 }
 
-const TicketInput: React.FC<TokenInputProps> = ({ max, symbol, availableSymbol, onChange, onSelectMax, value }) => {
+const TicketInput: React.FC<TokenInputProps> = ({ max, symbol, availableSymbol, onChange, value }) => {
   const TranslateString = useI18n()
 
   return (
@@ -20,19 +24,16 @@ const TicketInput: React.FC<TokenInputProps> = ({ max, symbol, availableSymbol, 
         endAdornment={
           <StyledTokenAdornmentWrapper>
             <StyledTokenSymbol>{symbol}</StyledTokenSymbol>
-            <StyledSpacer />
             <div>
-              <Button size="sm" onClick={onSelectMax}>
-                {TranslateString(452, 'Max')}
-              </Button>
+              <TokenIcon width={24} height={24} src="/images/egg/9.png"/>
             </div>
           </StyledTokenAdornmentWrapper>
         }
         onChange={onChange}
-        placeholder="0"
+        placeholder="100, 000"
         value={value}
       />
-      <StyledMaxText>{TranslateString(454, `${max.toLocaleString()} ${availableSymbol} Available`)}</StyledMaxText>
+      {/* <StyledMaxText>{TranslateString(454, `${max.toLocaleString()} ${availableSymbol} Available`)}</StyledMaxText> */}
     </StyledTokenInput>
   )
 }
@@ -54,7 +55,7 @@ const StyledMaxText = styled.div`
   display: flex;
   font-size: 14px;
   font-weight: 700;
-  height: 44px;
+  height: 20px;
   justify-content: flex-end;
 `
 

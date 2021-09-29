@@ -31,3 +31,11 @@ export const getOneDogeAddress = () => {
 export const getCryptoDogeNFTAddress = () => {
   return addresses.cryptoDogeNFT[chainId];
 }
+
+export const getMarketControllerAddress = () => {
+  return addresses.marketController[chainId];
+}
+
+export const getCreateCryptoDogeAddress = () => {
+  return addresses.createCryptoDoge[chainId];
+}

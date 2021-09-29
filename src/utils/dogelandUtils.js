@@ -16,92 +16,39 @@ export const getBattleBosses = async () => {
   return response
 }
 
-export const getDoges = async (cryptoDogeNFTContract, account) => {
+export const getMyFightDoges = async (MarketControllerContract, account) => {
   // try {
     const res = await fetch(`${API_URL}/crypto-doges_by_owner/${account}`, {
         method: "GET",
     });
-    const doges = await res.json();
-    for (let i = 0; i < doges.length; i ++) {
-      const result = await cryptoDogeNFTContract.methods.getdoger(doges[i].Doge_ID).call();
-      // console.log('Doge_ID', doges[i].Doge_ID)
-      // console.log('result', result);
-      let rare = 0;
-      const rareParser = result.dna / 10**26;
-      if (rareParser < 5225) {
-          rare = 1;
-      } else if (rareParser < 7837) {
-          rare = 2;
-      } else if (rareParser < 8707) {
-          rare = 3;
-      } else if (rareParser < 9360) {
-          rare = 4;
-      } else if (rareParser < 9708) {
-          rare = 5; 
-      } else {
-          rare = 6;
+    
+    const unSaleDoges = await MarketControllerContract.methods.getDogeByOwner().call({
+      from: account
+    });
+
+    const fightDoges = [];
+    const dogesExtraInfo = await res.json();
+    let doge = {};
+    for (let i = 0; i < unSaleDoges.length; i ++) {
+      doge = {};
+      doge._classInfo = unSaleDoges[i]._classInfo;
+      doge._rare = unSaleDoges[i]._rare;
+      doge._level = unSaleDoges[i]._level;
+      doge._exp = unSaleDoges[i]._exp;
+      doge._tribe = unSaleDoges[i]._tribe;
+      doge._tokenId = unSaleDoges[i]._tokenId;
+      doge._farmTime = unSaleDoges[i]._farmTime;
+      doge._isEvolved = unSaleDoges[i]._isEvolved;
+      doge.fightNumber = 0;
+      for (let j = 0; j < dogesExtraInfo.length; j ++){
+        if(unSaleDoges[i]._tokenId === dogesExtraInfo[j].Doge_ID){
+          doge.fightNumber = dogesExtraInfo[j].fightNumber;
+        }
       }
-      let level = 1;
-      const exp = result.exp;
-      if (exp < 100) {
-        level = 1;
-      } else if (exp < 350) {
-        level = 2;
-      } else if (exp < 1000) {
-        level = 3;
-      } else if (exp < 2000) {
-        level = 4;
-      } else if (exp < 4000) {
-        level = 5;
-      } else {
-        level = 6;
-      }
-      let tribe = '';
-      switch(result.tribe){
-        case '0':
-          tribe = 'Fire';
-          break;
-        case '1':
-          tribe = 'Electric';
-          break;
-        case '2':
-          tribe = 'Sky';
-          break;
-        case '3':
-          tribe = 'Grass';
-          break;
-        default:
-          tribe = 'Fire';
-          break;
-      }
-      doges[i].level = level;
-      doges[i].rare = rare;
-      doges[i].tribe = tribe;
-      doges[i].exp = exp;
-      doges[i].farmTime = result.farmTime;
-      // console.log(doges[i]);
+      if(unSaleDoges[i]._isEvolved&&doge.fightNumber)
+        fightDoges.push(doge);
     }
-    // doges.forEach(async (doge) => {
-    //   const result = await cryptoDogeNFTContract.methods.getdoger(doge.Doge_ID);
-    //   console.log(result);
-    // })
-    return doges;
-    // await cryptoDogeNFTContract.methods.
-    // return cryptoDogeNFTContract.methods
-    //   .buyEgg([tribe])
-    //   .send({ from: account })
-    //   .on('transactionHash', (tx) => {
-    //     return tx.transactionHash
-    //   })
-    // return;
-  // } catch (err) {
-  //   return console.error(err)
-  // }
-  // const res = await fetch(`${API_URL}/crypto-doges`, {
-  //     method: "GET",
-  // });
-  // const response = await res.json();
-  // return response
+    return fightDoges;
 }
 
 export const createDoge = async (dogeInfo, tokenId, account) => {
@@ -170,11 +117,24 @@ export const getMonsters = async (cryptoDogeControllerContract) => {
   return monsters
 }
 
-export const buyDoge = async (cryptoDogeControllerContract, account) => {
+export const buyDoge = async (createCryptoDogeContract, account) => {
   const tribe = Math.floor(Math.random() * 4);
   try {
-    return cryptoDogeControllerContract.methods
+    return createCryptoDogeContract.methods
       .buyEgg([tribe])
+      .send({ from: account })
+      .on('transactionHash', (tx) => {
+        return tx.transactionHash
+      })
+  } catch (err) {
+    return console.error(err)
+  }
+}
+
+export const openChest = async (createCryptoDogeContract, account, tokenId) => {
+  try {
+    return createCryptoDogeContract.methods
+      .setDNA(tokenId)
       .send({ from: account })
       .on('transactionHash', (tx) => {
         return tx.transactionHash
@@ -246,15 +206,72 @@ export const claimReward = async (cryptoDogeControllerContract, account) => {
   }
 }
 
-export const orderDoge = async (cryptoDogeNFTContract, account, tokenId) => {
-  // try {
-  //   return cryptoDogeNFTContract.methods
-  //     .claimToken()
-  //     .send({ from: account })
-  //     .on('transactionHash', (tx) => {
-  //       return tx.transactionHash
-  //     })
-  // } catch (err) {
+export const orderDoge = async (cryptoDogeNFTContract, account, tokenId, price) => {
+  try {
+    return cryptoDogeNFTContract.methods
+      .placeOrder(tokenId, price)
+      .send({ from: account })
+      .on('transactionHash', (tx) => {
+        return tx.transactionHash
+      })
+  } catch (err) {
     return console.error('err')
-  // }
+  }
+}
+
+export const cancelOrder = async (cryptoDogeNFTContract, account, tokenId) => {
+  try {
+    return cryptoDogeNFTContract.methods
+      .cancelOrder(tokenId)
+      .send({ from: account })
+      .on('transactionHash', (tx) => {
+        return tx.transactionHash
+      })
+  } catch (err) {
+    return console.error('err')
+  }
+}
+
+export const fillOrder = async (cryptoDogeNFTContract, account, tokenId) => {
+  try {
+    return cryptoDogeNFTContract.methods
+      .fillOrder(tokenId)
+      .send({ from: account })
+      .on('transactionHash', (tx) => {
+        return tx.transactionHash
+      })
+  } catch (err) {
+    return console.error('err')
+  }
+}
+
+export const getDogeOfSaleByOwner = async(MarketControllerContract, account) => {
+  try {
+    const result = await MarketControllerContract.methods.getDogeOfSaleByOwner().call({
+      from: account
+    });
+    return result;
+  } catch (err) {
+    return console.error(err)
+  }
+}
+
+export const getDogeOfSale = async(MarketControllerContract) => {
+  try {
+    const result = await MarketControllerContract.methods.getDogeOfSale().call();
+    return result;
+  } catch (err) {
+    return console.error(err)
+  }
+}
+
+export const getDogeByOwner = async(MarketControllerContract, account) => {
+  try {
+    const result = await MarketControllerContract.methods.getDogeByOwner().call({
+      from: account
+    });
+    return result;
+  } catch (err) {
+    return console.error(err)
+  }
 }

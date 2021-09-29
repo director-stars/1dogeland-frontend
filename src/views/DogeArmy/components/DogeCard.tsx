@@ -3,16 +3,18 @@ import { Heading, Text, useWalletModal, Card, CardBody, CardHeader, CardFooter, 
 import styled from 'styled-components'
 import { useFetchPublicData } from 'state/hooks'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { classes, tribes } from 'hooks/useDogesLand'
 import DogeCardActions from './DogeCardActions'
 
 interface MartketCardProps {
-    imgUrl: string
-    name: string
+    id: string
+    classInfo: string
+    price: string
+    owner: string
+    level: string
     rare: string
     exp: string
-    level: string
     tribe: string
-    id: string
 }
 
 const StyledImage = styled.div<{
@@ -27,12 +29,21 @@ const StyledImage = styled.div<{
 
 const StyledHeading = styled(Heading)`
     text-align: center;
+    text-transform: capitalize;
 `
 const DogeInfo = styled.div`
     display: flex;
     justify-content: space-between;
-    & * {
-        display: flex;
+`
+const PriceInfo = styled.div`
+    display: flex;
+`
+const TokenIcon = styled(Image)`
+    width: 24px;
+`
+const DogeInfoItem = styled.div`
+    display: flex;
+    & ${Text}:first-child{
         margin-right: 10px;
     }
 `
@@ -47,42 +58,55 @@ const Id = styled.div`
     border-radius: 10rem;
     margin: 10px;
 `
-const DogeCard: React.FC<MartketCardProps> = ({imgUrl, name, rare, level, exp, tribe, id}) => {
+const DogeCard: React.FC<MartketCardProps> = ({id, classInfo, price, owner, level, exp, rare, tribe}) => {
     const { account, connect, reset } = useWallet()
     useEffect(() => {
         if (!account && window.localStorage.getItem('accountStatus')) {
         connect('injected')
         }
     }, [account, connect])
+    const dogeImage = classes[parseInt(rare) - 1][classInfo].asset;
+    const dogeName = classes[parseInt(rare) - 1][classInfo].name;
+    const tribeName = tribes[tribe].name;
+    const isSale = (price !== "0");
 
     return (
         <div>
             <Card>
                 <Id>#{id}</Id>
                 <CardHeader>
-                    <StyledImage imgUrl={imgUrl}/>
+                    <StyledImage imgUrl={`/images/doges/${dogeImage}`}/>
                 </CardHeader>
                 <CardBody>
-                    <StyledHeading size="lg" color="primary">{name}</StyledHeading>
+                    <StyledHeading size="lg" color="primary">{dogeName}</StyledHeading>
                 </CardBody>
                 <CardFooter>
                     <DogeInfo>
-                        <div>
-                            <Text>Rare: </Text>
+                        <DogeInfoItem>
+                            <Text>Rare : </Text>
                             <Text>{rare}</Text>
-                        </div>
-                        <div>
-                            <Text>Level:</Text>
+                        </DogeInfoItem>
+                        <DogeInfoItem>
+                            <Text>Level :</Text>
                             <Text>{level} / {exp} exp</Text>
-                        </div>
+                        </DogeInfoItem>
                     </DogeInfo>
                     <DogeInfo>
-                        <div>
-                            <Text>Tribe:</Text>
-                            <Text>{tribe}</Text>
-                        </div>
+                        <DogeInfoItem>
+                            <Text>Tribe :</Text>
+                            <Text>{tribeName}</Text>
+                        </DogeInfoItem>
+                        {(price !== "0")?(
+                            <DogeInfoItem>
+                            <Text>Price</Text>
+                            <PriceInfo>
+                                <TokenIcon width={24} height={24} src="/images/egg/9.png"/>
+                                <Text>{price}</Text>
+                            </PriceInfo>
+                        </DogeInfoItem>
+                        ):(<div />)}
                     </DogeInfo>
-                    <DogeCardActions dogeId={id}/>
+                    <DogeCardActions dogeId={id} isSale={isSale}/>
                 </CardFooter>
             </Card>
         </div>

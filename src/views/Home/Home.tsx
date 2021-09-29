@@ -11,13 +11,6 @@ import { provider } from 'web3-core'
 import Page from 'components/layout/Page'
 import FlexLayout from 'components/layout/Flex'
 import useRefresh from 'hooks/useRefresh'
-import { fetchFarmUserDataAsync } from 'state/actions'
-import { BLOCKS_PER_YEAR, CAKE_PER_BLOCK, CAKE_POOL_PID } from 'config'
-import FarmStakingCard from './components/FarmStakingCard'
-import LotteryCard from './components/LotteryCard'
-import CakeStats from './components/CakeStats'
-import TotalValueLockedCard from './components/TotalValueLockedCard'
-import TwitterCard from './components/TwitterCard'
 import MarketCard from './components/MarketCard'
 
 const Hero = styled.div`

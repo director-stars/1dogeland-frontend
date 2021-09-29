@@ -4,10 +4,12 @@ import { Button, ToastContainer, useModal, useWalletModal } from '@pancakeswap-l
 import { useCryptoDogeControllerAllowance } from 'hooks/useAllowance'
 import { useCryptoDogeControllerApprove } from 'hooks/useApprove'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { useOrderCryptoDoge } from 'hooks/useDogesLand'
+import { useCancelOrder } from 'hooks/useDogesLand'
+import OrderModal from './OrderModal'
 
 interface DogeCardActionsProps {
   dogeId: string
+  isSale: boolean
 }
 
 const CardActions = styled.div`
@@ -21,9 +23,8 @@ const CardActions = styled.div`
   margin-top: 20px;
 `
 
-const DogeCardActions: React.FC<DogeCardActionsProps> = ({ dogeId }) => {
+const DogeCardActions: React.FC<DogeCardActionsProps> = ({ dogeId, isSale }) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
-  const [toasts, setToasts] = useState([]);
   const allowance = useCryptoDogeControllerAllowance()
   const { onApprove } = useCryptoDogeControllerApprove()
   // const [onPresentApprove] = useModal(<PurchaseWarningModal />)
@@ -52,36 +53,23 @@ const DogeCardActions: React.FC<DogeCardActionsProps> = ({ dogeId }) => {
   const [pendingTx, setPendingTx] = useState(false)
 
   const [, setRequestedBuy] = useState(false)
-  const { onOrderDoge } = useOrderCryptoDoge()
+  
+  const [onPresentResult] = useModal(<OrderModal title="Sell Doge" id={dogeId} />) 
+  const { onCancelOrder } = useCancelOrder()
 
-  const handleOrder = useCallback(async () => {
+  const handleCancelOrder = useCallback(async () => {
     try {
-      setRequestedBuy(true)
-      const txHash = await onOrderDoge(dogeId)
+        setPendingTx(true)
+      const txHash = await onCancelOrder(dogeId)
       // user rejected tx or didn't go thru
-      if (txHash) {
-        setRequestedBuy(false)
+      if (!txHash) {
+        setPendingTx(false)
       }
+      // onPresentApprove()
     } catch (e) {
       console.error(e)
     }
-  }, [onOrderDoge, setRequestedBuy, dogeId])
-
-  // const handleClick = (description = "") => {
-  //   const now = Date.now();
-  //   const randomToast = {
-  //     id: `id-${now}`,
-  //     title: `New Doge has been borned.`,
-  //     description,
-  //     type: "success",
-  //   };
-
-  //   setToasts((prevToasts) => [randomToast, ...prevToasts]);
-  // };
-
-  // const handleRemove = (id: string) => {
-  //   setToasts((prevToasts) => prevToasts.filter((prevToast) => prevToast.id !== id));
-  // };
+  }, [onCancelOrder, dogeId])
 
   const renderDogeCardButtons = () => {
     if (!allowance.toNumber()) {
@@ -91,16 +79,21 @@ const DogeCardActions: React.FC<DogeCardActionsProps> = ({ dogeId }) => {
         </Button>
       )
     }
-    return (
+    if(isSale){
+      return (
         <Button fullWidth size="sm"
         disabled={pendingTx}
-        onClick={async () => {
-            setPendingTx(true)
-            await handleOrder()
-            setPendingTx(false)
-            // window.scrollTo(0, 0);
-            // handleClick()
-        }}>{pendingTx ? 'Pending Order Doge' : 'Order Doge'}</Button>
+        onClick={handleCancelOrder}>{pendingTx ? 'Pending Cancel Order' : 'Cancel Order'}</Button>
+      )
+    }
+    return (
+      <Button fullWidth size="sm"
+      disabled={pendingTx}
+      onClick={async () => {
+          setPendingTx(true)
+          onPresentResult()
+          setPendingTx(false)
+      }}>{pendingTx ? 'Pending Order Doge' : 'Order Doge'}</Button>
     )
   }
 
