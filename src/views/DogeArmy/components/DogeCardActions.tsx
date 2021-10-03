@@ -1,8 +1,8 @@
 import React, { useEffect, useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { Button, ToastContainer, useModal, useWalletModal } from '@pancakeswap-libs/uikit'
-import { useCryptoDogeControllerAllowance } from 'hooks/useAllowance'
-import { useCryptoDogeControllerApprove } from 'hooks/useApprove'
+import { useCryptoDogeNFTAllowance } from 'hooks/useAllowance'
+import { useCryptoDogeNFTApprove } from 'hooks/useApprove'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { useCancelOrder } from 'hooks/useDogesLand'
 import OrderModal from './OrderModal'
@@ -25,8 +25,8 @@ const CardActions = styled.div`
 
 const DogeCardActions: React.FC<DogeCardActionsProps> = ({ dogeId, isSale }) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
-  const allowance = useCryptoDogeControllerAllowance()
-  const { onApprove } = useCryptoDogeControllerApprove()
+  const allowance = useCryptoDogeNFTAllowance()
+  const { onApprove } = useCryptoDogeNFTApprove()
   // const [onPresentApprove] = useModal(<PurchaseWarningModal />)
   const handleApprove = useCallback(async () => {
     try {

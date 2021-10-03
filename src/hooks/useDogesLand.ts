@@ -10,7 +10,8 @@ import {
   buyDoge, 
   getLastTokenId, 
   getDogeInfo, 
-  createDoge, 
+  dbCreateDoge, 
+  dbUpdateOwner,
   fightMonster, 
   getRewardTokenInfo, 
   claimReward, 
@@ -75,21 +76,20 @@ export const useMonsters = () => {
 export const useBuyCryptoDoge = () => {
   const { account } = useWallet()
   const createCryptoDogeContract = useCreateCryptoDoge()
-  const cryptoDogeNFTContract = useCryptoDogeNFT();
+  // const cryptoDogeNFTContract = useCryptoDogeNFT();
 
   const handleBuy = useCallback(
     async () => {
       try {
         const txHash = await buyDoge(createCryptoDogeContract, account)
-        const lastTokenId = await getLastTokenId(cryptoDogeNFTContract, account);
-        const dogeInfo = await getDogeInfo(cryptoDogeNFTContract, lastTokenId);
-        await createDoge(dogeInfo, lastTokenId, account);
+        // const lastTokenId = await getLastTokenId(cryptoDogeNFTContract, account);
+        // const dogeInfo = await getDogeInfo(cryptoDogeNFTContract, lastTokenId);
         return txHash
       } catch (e) {
         return false
       }
     },
-    [account, createCryptoDogeContract, cryptoDogeNFTContract],
+    [account, createCryptoDogeContract],
   )
 
   return { onBuyDoge: handleBuy }
@@ -188,6 +188,8 @@ export const useFillOrder = () => {
     async (_tokenId) => {
       try {
         const result = await fillOrder(cryptoDogeNFTContract, account, _tokenId)
+        console.log('result', result.events.FillOrder);
+        await dbUpdateOwner(_tokenId, account);
         return result
       } catch (e) {
         return false
@@ -205,6 +207,8 @@ export const useOpenChest = () => {
     async (_tokenId) => {
       try {
         const result = await openChest(createCryptoDogeContract, account, _tokenId)
+        console.log('result', result.events.DNASet);
+        await dbCreateDoge(_tokenId, account);
         return result
       } catch (e) {
         return false
@@ -323,4 +327,11 @@ export const tribes = [
   {asset: "grass.gif", name:"Grass"},
   {asset: "wind.gif", name:"Wind"},
   {asset: "water.gif", name:"Water"},
+]
+
+export const monsters = [
+  {asset: "Enemy_Skeleton.gif", name:"Calaca Skeleton"},
+  {asset: "Enemy_Zombie.gif", name:"Plague Zombie"},
+  {asset: "Enemy_Drowner.gif", name:"Mudkin Drowner"},
+  {asset: "Enemy_Draugr.gif", name:"Deathlord Draugr"},
 ]

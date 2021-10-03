@@ -2,7 +2,7 @@ import React, { useEffect, useCallback, useState } from 'react'
 import { Route, useRouteMatch } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
-import { Heading, Text, BaseLayout} from '@pancakeswap-libs/uikit'
+import { Heading, Text, BaseLayout, useWalletModal, Button } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import { useFarms, usePriceBnbBusd, usePriceCakeBusd } from 'state/hooks'
 import BigNumber from 'bignumber.js'
@@ -60,21 +60,32 @@ const StyledHead = styled.div`
 `
 
 const Home: React.FC = () => {
-  const { path } = useRouteMatch()
-  const TranslateString = useI18n()
+  // const { path } = useRouteMatch()
+  // const TranslateString = useI18n()
   // const farmsLP = useFarms()
   // const cakePrice = usePriceCakeBusd()
   // const bnbPrice = usePriceBnbBusd()
   // const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
   // const {tokenMode} = farmsProps;
 
-  const dispatch = useDispatch()
-  const { fastRefresh } = useRefresh()
-  // useEffect(() => {
-  //   if (account) {
-  //     dispatch(fetchFarmUserDataAsync(account))
-  //   }
-  // }, [account, dispatch, fastRefresh])
+  // const dispatch = useDispatch()
+  // const { fastRefresh } = useRefresh()
+
+  function validateInputAddresses(address) {
+    return (/^(0x){1}[0-9a-fA-F]{40}$/i.test(address));
+  }
+  const windowUrl = window.location.href;
+  const params = new URLSearchParams(windowUrl);
+  if (windowUrl.indexOf("ref=")>=-1)
+  {
+    const paras=windowUrl.split('=');
+    const ref=paras[1];
+    if (ref && validateInputAddresses(ref))
+    {
+      window.localStorage.setItem("referer",ref);
+      console.log( window.localStorage.getItem("referer"));
+    }
+  }
 
   return (
     <Page>

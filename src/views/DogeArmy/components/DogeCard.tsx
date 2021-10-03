@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import BigNumber from 'bignumber.js'
 import { Heading, Text, useWalletModal, Card, CardBody, CardHeader, CardFooter, Button, Image } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import { useFetchPublicData } from 'state/hooks'
@@ -59,6 +60,7 @@ const Id = styled.div`
     margin: 10px;
 `
 const DogeCard: React.FC<MartketCardProps> = ({id, classInfo, price, owner, level, exp, rare, tribe}) => {
+    const price1 = new BigNumber(price).div(new BigNumber(10).pow(18)).toString()
     const { account, connect, reset } = useWallet()
     useEffect(() => {
         if (!account && window.localStorage.getItem('accountStatus')) {
@@ -101,7 +103,7 @@ const DogeCard: React.FC<MartketCardProps> = ({id, classInfo, price, owner, leve
                             <Text>Price</Text>
                             <PriceInfo>
                                 <TokenIcon width={24} height={24} src="/images/egg/9.png"/>
-                                <Text>{price}</Text>
+                                <Text>{price1}</Text>
                             </PriceInfo>
                         </DogeInfoItem>
                         ):(<div />)}

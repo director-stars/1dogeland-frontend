@@ -15,6 +15,7 @@ const BattleMonsters = lazy(() => import('./views/BattleMonsters'))
 const BattleBosses = lazy(() => import('./views/BattleBosses'))
 const DogeArmy = lazy(() => import('./views/DogeArmy'))
 const MarketPlace = lazy(() => import('./views/MarketPlace'))
+const Referrals = lazy(() => import('./views/Referrals'))
 const NotFound = lazy(() => import('./views/NotFound'))
 
 // This config is required for number formating
@@ -53,6 +54,9 @@ const App: React.FC = () => {
             {/* <Route path="/battle-bosses">
              <BattleBosses />
             </Route> */}
+            <Route path="/referrals">
+             <Referrals />
+            </Route>
             <Route component={NotFound} />
           </Switch>
         </Suspense>

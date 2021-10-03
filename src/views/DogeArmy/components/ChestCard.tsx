@@ -1,8 +1,8 @@
 import React, { useEffect, useCallback, useState } from 'react'
 import { Heading, Text, useWalletModal, Card, CardBody, CardHeader, CardFooter, Button, Image } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
-import { useCryptoDogeControllerAllowance } from 'hooks/useAllowance'
-import { useCryptoDogeControllerApprove } from 'hooks/useApprove'
+import { useCreateCryptoDogeAllowance } from 'hooks/useAllowance'
+import { useCreateCryptoDogeApprove } from 'hooks/useApprove'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { tribes, useOpenChest } from 'hooks/useDogesLand'
 
@@ -64,8 +64,8 @@ const ChestCard: React.FC<ChestCardProps> = ({id, tribe}) => {
     }, [account, connect])
 
     const [requestedApproval, setRequestedApproval] = useState(false)
-    const allowance = useCryptoDogeControllerAllowance()
-    const { onApprove } = useCryptoDogeControllerApprove()
+    const allowance = useCreateCryptoDogeAllowance()
+    const { onApprove } = useCreateCryptoDogeApprove()
     const [pendingTx, setPendingTx] = useState(false)
 
     const handleApprove = useCallback(async () => {

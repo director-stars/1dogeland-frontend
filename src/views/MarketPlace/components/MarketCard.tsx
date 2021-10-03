@@ -1,4 +1,5 @@
 import React, { useEffect, useCallback, useState } from 'react'
+import BigNumber from 'bignumber.js'
 import { Heading, Text, useWalletModal, Card, CardBody, CardHeader, CardFooter, Button, Image } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
@@ -62,6 +63,7 @@ const Id = styled.div`
     margin: 10px;
 `
 const MarketCard: React.FC<MartketCardProps> = ({id, classInfo, price, owner, level, exp, rare, tribe}) => {
+    const price1 = new BigNumber(price).div(new BigNumber(10).pow(18)).toString()
     const ownerAddress = `${owner.substring(0, 4)}...${owner.substring(owner.length - 4)}`;
     const dogeImage = classes[parseInt(rare) - 1][classInfo].asset;
     const dogeName = classes[parseInt(rare) - 1][classInfo].name;
@@ -166,7 +168,7 @@ const MarketCard: React.FC<MartketCardProps> = ({id, classInfo, price, owner, le
                             <Text>Price</Text>
                             <PriceInfo>
                                 <TokenIcon width={24} height={24} src="/images/egg/9.png"/>
-                                <Text>{price}</Text>
+                                <Text>{price1}</Text>
                             </PriceInfo>
                         </DogeInfoItem>
                     </DogeInfo>

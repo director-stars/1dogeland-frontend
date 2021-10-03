@@ -1,6 +1,6 @@
-import { MenuEntry } from '@pancakeswap-libs/uikit'
+import { MenuItemsType, DropdownMenuItemType } from '@pancakeswap-libs/uikit'
 
-const config: MenuEntry[] = [
+export const config: MenuItemsType[] = [
   {
     label: 'Starter Doges',
     icon: 'HomeIcon',
@@ -27,16 +27,24 @@ const config: MenuEntry[] = [
     href: '/battle-bosses',
   },
   {
+    label: 'Referrals',
+    icon: 'PoolIcon',
+    href: '/referrals',
+  },
+  {
+    href: "",
     label: 'Help',
     icon: 'MoreIcon',
     items: [
       {
         label: 'Buy 1doge',
         href: 'https://pancakeswap.finance/swap#/swap?outputCurrency=0x40619dc9F00ea34e51D96b6EC5d8a6aD75457434&inputCurrency=BNB',
+        type: DropdownMenuItemType.EXTERNAL_LINK,
       },
       {
         label: 'How to Play',
         href: 'https://docs.1doge.io/',
+        type: DropdownMenuItemType.EXTERNAL_LINK,
       }
     ],
   }

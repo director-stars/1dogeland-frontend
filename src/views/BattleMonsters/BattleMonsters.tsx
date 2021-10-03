@@ -47,6 +47,7 @@ const Monsters = styled.div`
   text-align: center;
 `
 const DogeItem = styled.div`
+  min-width: 320px;
   max-width: 23.5%;
   padding: 16px;
   margin: auto;
@@ -102,10 +103,7 @@ const BattleMonsters: React.FC<BattleMonstersProps> = (props) => {
       return monstersToDisplay.map((monster) => (
         <div style={{ padding: "16px"}}>
           <MonsterCard 
-            // imgUrl={process.env.REACT_APP_API_URL+monster.asset.url}
             id={monster.id}
-            imgUrl={monster.asset}
-            name={monster._name}
             health={monster._hp}
             successRate={monster._successRate}
             rewardTokenFrom={monster._rewardTokenFrom}

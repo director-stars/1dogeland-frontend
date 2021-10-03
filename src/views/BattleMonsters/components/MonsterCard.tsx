@@ -3,14 +3,12 @@ import { Heading, Text, useWalletModal, Card, CardBody, CardHeader, CardFooter, 
 import styled from 'styled-components'
 import { useCryptoDogeControllerAllowance } from 'hooks/useAllowance'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { useFightCryptoMonster } from 'hooks/useDogesLand'
+import { useFightCryptoMonster, monsters } from 'hooks/useDogesLand'
 import { useCryptoDogeControllerApprove } from 'hooks/useApprove'
 import ResultModal from './ResultModal'
 
 interface MonsterCardProps {
     id: number
-    imgUrl: string
-    name: string
     health: string
     successRate: string
     rewardTokenFrom: string
@@ -54,13 +52,16 @@ const PriceInfo = styled.div`
 const TokenIcon = styled(Image)`
     width: 24px;
 `
-const MonsterCard: React.FC<MonsterCardProps> = ({id, imgUrl, name, health, successRate, rewardTokenFrom, rewardTokenTo, rewardExpFrom, rewardExpTo, activeDoge}) => {
+const MonsterCard: React.FC<MonsterCardProps> = ({id, health, successRate, rewardTokenFrom, rewardTokenTo, rewardExpFrom, rewardExpTo, activeDoge}) => {
     const { account, connect, reset } = useWallet()
     useEffect(() => {
         if (!account && window.localStorage.getItem('accountStatus')) {
         connect('injected')
         }
     }, [account, connect])
+
+    const monsterImage = monsters[id].asset;
+    const monsterName = monsters[id].name;
 
     const [pendingTx, setPendingTx] = useState(false)
     const allowance = useCryptoDogeControllerAllowance()
@@ -138,14 +139,14 @@ const MonsterCard: React.FC<MonsterCardProps> = ({id, imgUrl, name, health, succ
         <div>
             <Card>
                 <CardHeader>
-                    <StyledImage imgUrl={imgUrl}/>
+                    <StyledImage imgUrl={`/images/monsters/${monsterImage}`}/>
                 </CardHeader>
                 <CardBody>
                     {account? (renderDogeCardButtons())
                     : (<Button fullWidth size="sm" onClick={onPresentConnectModal}>Connect Wallet</Button>)}
                 </CardBody>
                 <CardFooter>
-                    <StyledHeading size="lg">{name}</StyledHeading>
+                    <StyledHeading size="lg">{monsterName}</StyledHeading>
                     <MonsterInfo>
                         <Block><Label>HP:</Label><Text>{health}HP</Text></Block>
                         <Block><Label>Success Rate:</Label><Text>~{successRate}%</Text></Block>

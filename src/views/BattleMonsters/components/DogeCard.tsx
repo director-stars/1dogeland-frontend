@@ -30,6 +30,7 @@ const StyledImage = styled.div<{
 
 const StyledHeading = styled(Heading)`
     text-align: center;
+    text-transform: capitalize;
 `
 const DogeInfo = styled.div`
     display: flex;
@@ -100,7 +101,7 @@ const DogeCard: React.FC<DogeCardProps> = ({classInfo, rare, level, exp, tribe, 
                             <Text>{fightNumber}</Text>
                         </div>
                     </DogeInfo>
-                    {(parseInt(farmTime)*1000 < Date.now())?(
+                    {(parseInt(farmTime)*1000 < Date.now() && parseInt(fightNumber) > 0)?(
                         <DogeCardAction>
                         
                             {account? (<Button fullWidth size="sm" onClick={() => {
