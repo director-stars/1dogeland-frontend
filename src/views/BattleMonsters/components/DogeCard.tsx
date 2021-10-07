@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { classes, tribes } from 'hooks/useDogesLand'
 import Timestamp from './Timestamp'
+import DogeCardActions from './DogeCardActions';
 
 interface DogeCardProps {
     classInfo: string
@@ -16,6 +17,8 @@ interface DogeCardProps {
     setActiveDoge: any
     farmTime: string
     fightNumber: string
+    battleTime: string
+    stoneInfo: string
 }
 
 const StyledImage = styled.div<{
@@ -54,8 +57,8 @@ const Id = styled.div`
 const DogeCardAction = styled.div`
     margin-top: 10px;
 `
-const DogeCard: React.FC<DogeCardProps> = ({classInfo, rare, level, exp, tribe, id, activeDoge, setActiveDoge, farmTime, fightNumber}) => {
-
+const DogeCard: React.FC<DogeCardProps> = ({classInfo, rare, level, exp, tribe, id, activeDoge, setActiveDoge, farmTime, fightNumber, battleTime, stoneInfo}) => {
+    // console.log('battleTime',battleTime)
     const { account, connect, reset } = useWallet()
     useEffect(() => {
         if (!account && window.localStorage.getItem('accountStatus')) {
@@ -95,24 +98,35 @@ const DogeCard: React.FC<DogeCardProps> = ({classInfo, rare, level, exp, tribe, 
                             <Text>{tribeName}</Text>
                         </div>
                     </DogeInfo>
-                    <DogeInfo>
-                        <div>
-                            <Text>Remained Turns Fight :</Text>
-                            <Text>{fightNumber}</Text>
-                        </div>
-                    </DogeInfo>
-                    {(parseInt(farmTime)*1000 < Date.now() && parseInt(fightNumber) > 0)?(
-                        <DogeCardAction>
+                    {(stoneInfo !== "0")?(<></>):(
+                        <DogeInfo>
+                            <div>
+                                <Text>Remained Turns Fight :</Text>
+                                <Text>{fightNumber}</Text>
+                            </div>
+                        </DogeInfo>)
+                    }
+                    {(parseInt(battleTime)*1000 < Date.now() && parseInt(fightNumber) > 0)?(
+                        (<DogeCardAction>
                         
-                            {account? (<Button fullWidth size="sm" onClick={() => {
-                                setActiveDoge(id);
-                            }}>Use this Doge</Button>)
+                            {account? (<>
+                                {(stoneInfo !== "0")?(
+                                    // <Button fullWidth size="sm" onClick={async () => {
+                                    //     await getResultAutoFight(id);
+                                    // }}>Get result of auto fighting</Button>
+                                    <DogeCardActions dogeId={id}/>
+                                ):(
+                                    <Button fullWidth size="sm" onClick={() => {
+                                        setActiveDoge(id);
+                                    }}>Use this Doge</Button>
+                                )}
+                            </>)
                             : (<Button fullWidth size="sm" onClick={onPresentConnectModal}>Connect Wallet</Button>)}
                             
-                        </DogeCardAction>
+                        </DogeCardAction>)
                         ): (
                         <DogeCardAction>
-                            <Button disabled fullWidth size="sm" onClick={onPresentConnectModal}>Wait for <Timestamp timeValue={parseInt(farmTime)*1000} /></Button>
+                            <Button disabled fullWidth size="sm" onClick={onPresentConnectModal}>Wait for <Timestamp timeValue={parseInt(battleTime)*1000} /></Button>
                         </DogeCardAction>
                         )
                     }

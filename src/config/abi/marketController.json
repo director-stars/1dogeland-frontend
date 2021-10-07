@@ -25,7 +25,7 @@
   },
   {
     "inputs": [],
-    "name": "createCryptoDoge",
+    "name": "cryptoDogeController",
     "outputs": [
       {
         "internalType": "address",
@@ -70,19 +70,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "token",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",
@@ -116,25 +103,7 @@
         "type": "address"
       }
     ],
-    "name": "setCreateCryptoDoge",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_address",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "withdraw",
+    "name": "setCryptoDogeController",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -214,6 +183,16 @@
           {
             "internalType": "uint256",
             "name": "_classInfo",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_battleTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_stoneInfo",
             "type": "uint256"
           }
         ],
@@ -295,6 +274,16 @@
             "internalType": "uint256",
             "name": "_classInfo",
             "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_battleTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_stoneInfo",
+            "type": "uint256"
           }
         ],
         "internalType": "struct MarketController.Doge[]",
@@ -375,6 +364,16 @@
             "internalType": "uint256",
             "name": "_classInfo",
             "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_battleTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_stoneInfo",
+            "type": "uint256"
           }
         ],
         "internalType": "struct MarketController.Doge[]",
@@ -454,6 +453,16 @@
           {
             "internalType": "uint256",
             "name": "_classInfo",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_battleTime",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "_stoneInfo",
             "type": "uint256"
           }
         ],

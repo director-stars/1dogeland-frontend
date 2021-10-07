@@ -17,43 +17,32 @@ const StyledDiv = styled.div`
 interface ResultModalProps {
     title?: string
     onDismiss?: () => void
-    result?: string
     rewardExp?: string
+    rewardToken?: string
     tx?: string
-    error?: boolean
+    error?: string
+    winNumber?: string
+    fightNumber?: string
 }
 
-const ResultModal: React.FC<ResultModalProps> = ({ onDismiss, title="result", result = '', rewardExp = "0", tx="" , error }) => {
-    // const [val, setVal] = useState('');
-    // const [pendingTx, setPendingTx] = useState(false)
-    // console.log('result', result)
-    const winResult = !result?"Loss":"Win";
-    // console.log('winResult', winResult)
+const ResultModal: React.FC<ResultModalProps> = ({ onDismiss, title="result", rewardExp = "0", rewardToken="0", tx="" , error="", winNumber="0", fightNumber="0" }) => {
+    const winResult = (winNumber === '0')?"lost":"won";
+    console.log('fightNumber', typeof fightNumber, fightNumber)
+    console.log('winNumber', typeof winNumber, winNumber)
     return (
         <Modal title={title} onDismiss={onDismiss}>
-          {(!error)?(
+          {(error === "")?(
           <StyledDiv>
-          <div>You {winResult} the fight!</div>
-          <div>You got {rewardExp} Exp</div>
+            {(fightNumber === "1")?(
+              <div>You {winResult} the fight!</div>
+            ):(
+              <div>You won {winNumber} time(s) on {fightNumber} fight(s)!</div>
+            )}
+          
+          <div>You got {rewardToken} 1Doge, {rewardExp} Exp</div>
           <LinkExternal href={`https://testnet.bscscan.com/tx/${tx}`} external>Check TX</LinkExternal>
           </StyledDiv>
-          ):(<StyledDiv>{result}</StyledDiv>)}
-          {/* <ModalActions>
-            <Button variant="secondary" onClick={onDismiss}>
-              Cancel
-            </Button>
-            <Button
-              disabled={pendingTx}
-              onClick={async () => {
-                setPendingTx(true)
-                // await onConfirm(val)
-                setPendingTx(false)
-                onDismiss()
-              }}
-            >
-              {pendingTx ? 'Pending Confirmation' : 'Confirm'}
-            </Button>
-          </ModalActions> */}
+          ):(<StyledDiv>{error}</StyledDiv>)}
         </Modal>
       )
 }

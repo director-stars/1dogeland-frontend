@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import { Heading, Text, useWalletModal, Card, CardBody, CardHeader, CardFooter, Button, Image } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { classes, tribes, useFillOrder } from 'hooks/useDogesLand'
+import { classes, tribes, useFillOrder, useDogeBalance } from 'hooks/useDogesLand'
 import { useCryptoDogeNFTAllowance } from 'hooks/useAllowance'
 import { useCryptoDogeNFTApprove } from 'hooks/useApprove'
 
@@ -68,6 +68,8 @@ const MarketCard: React.FC<MartketCardProps> = ({id, classInfo, price, owner, le
     const dogeImage = classes[parseInt(rare) - 1][classInfo].asset;
     const dogeName = classes[parseInt(rare) - 1][classInfo].name;
     const tribeName = tribes[tribe].name;
+    const [oneDogeBalance, setOneDogeBalance] = useState(parseInt(window.localStorage.getItem("oneDogeBalance")) / 10**18);
+    const [dogeNFTBalance, setDogeNFTBalance] = useState(parseInt(window.localStorage.getItem("dogeNFTBalance")));
     const { account, connect, reset } = useWallet()
     useEffect(() => {
         if (!account && window.localStorage.getItem('accountStatus')) {
@@ -93,6 +95,17 @@ const MarketCard: React.FC<MartketCardProps> = ({id, classInfo, price, owner, le
         }
       }, [onFillOrder])
 
+      const { onGetDogeBalance } = useDogeBalance()
+      const handleGetDogeBalance = useCallback(async () => {
+        try {
+          await onGetDogeBalance()
+          setOneDogeBalance(parseInt(window.localStorage.getItem("oneDogeBalance")) / 10**18);
+          setDogeNFTBalance(parseInt(window.localStorage.getItem("dogeNFTBalance")));
+        } catch (e) {
+          console.error(e)
+        }
+      }, [onGetDogeBalance])
+
     const { onPresentConnectModal } = useWalletModal(connect, reset)
 
     const [requestedApproval, setRequestedApproval] = useState(false)
@@ -115,9 +128,23 @@ const MarketCard: React.FC<MartketCardProps> = ({id, classInfo, price, owner, le
         if (!allowance.toNumber()) {
           return (
             <Button fullWidth disabled={requestedApproval} size="sm" onClick={handleApprove}>
-              Approve 1Doge
+              Approve
             </Button>
           )
+        }
+        if(!oneDogeBalance){
+            return (
+                <Button fullWidth disabled size="sm">
+                  Not enough 1doge
+                </Button>
+            ) 
+        }
+        if(dogeNFTBalance > 4){
+            return (
+                <Button fullWidth disabled size="sm">
+                  You have enough Doges
+                </Button>
+            ) 
         }
         return (
             <Button fullWidth size="sm"
@@ -125,6 +152,7 @@ const MarketCard: React.FC<MartketCardProps> = ({id, classInfo, price, owner, le
             onClick={async () => {
                 setPendingTx(true)
                 await handleFillOrder(id)
+                await handleGetDogeBalance();
                 setPendingTx(false)
             }}>{pendingTx ? 'Pending Buy Doge' : 'Buy Doge'}</Button>
         )

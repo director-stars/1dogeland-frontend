@@ -1,7 +1,7 @@
 import { useCallback, useState, useEffect } from 'react'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
-import { useCryptoDogeController, useCryptoDogeNFT, useMarketController, useCreateCryptoDoge } from 'hooks/useContract'
+import { useCryptoDogeController, useCryptoDogeNFT, useMagicStoneNFT, useMarketController, useOneDoge } from 'hooks/useContract'
 import useRefresh from './useRefresh'
 import { 
   getBattleBosses, 
@@ -22,6 +22,11 @@ import {
   openChest,
   cancelOrder,
   fillOrder,
+  getBalance,
+  buyStone,
+  unsetAutoFight,
+  setAutoFight,
+  getResultOfAutoFight
 } from '../utils/dogelandUtils'
 
 export const useBattleBosses = () => {
@@ -75,13 +80,13 @@ export const useMonsters = () => {
 
 export const useBuyCryptoDoge = () => {
   const { account } = useWallet()
-  const createCryptoDogeContract = useCreateCryptoDoge()
+  const cryptoDogeControllerContract = useCryptoDogeController()
   // const cryptoDogeNFTContract = useCryptoDogeNFT();
 
   const handleBuy = useCallback(
     async () => {
       try {
-        const txHash = await buyDoge(createCryptoDogeContract, account)
+        const txHash = await buyDoge(cryptoDogeControllerContract, account)
         // const lastTokenId = await getLastTokenId(cryptoDogeNFTContract, account);
         // const dogeInfo = await getDogeInfo(cryptoDogeNFTContract, lastTokenId);
         return txHash
@@ -89,10 +94,32 @@ export const useBuyCryptoDoge = () => {
         return false
       }
     },
-    [account, createCryptoDogeContract],
+    [account, cryptoDogeControllerContract],
   )
 
   return { onBuyDoge: handleBuy }
+}
+
+export const useBuyMagicStone = () => {
+  const { account } = useWallet()
+  const cryptoDogeControllerContract = useCryptoDogeController()
+  // const cryptoDogeNFTContract = useCryptoDogeNFT();
+
+  const handleBuy = useCallback(
+    async () => {
+      try {
+        const txHash = await buyStone(cryptoDogeControllerContract, account)
+        // const lastTokenId = await getLastTokenId(cryptoDogeNFTContract, account);
+        // const dogeInfo = await getDogeInfo(cryptoDogeNFTContract, lastTokenId);
+        return txHash
+      } catch (e) {
+        return false
+      }
+    },
+    [account, cryptoDogeControllerContract],
+  )
+
+  return { onBuyStone: handleBuy }
 }
 
 export const useFightCryptoMonster = () => {
@@ -202,19 +229,19 @@ export const useFillOrder = () => {
 
 export const useOpenChest = () => {
   const { account } = useWallet()
-  const createCryptoDogeContract = useCreateCryptoDoge()
+  const cryptoDogeControllerContract = useCryptoDogeController()
   const handleOpenChest = useCallback(
     async (_tokenId) => {
       try {
-        const result = await openChest(createCryptoDogeContract, account, _tokenId)
-        console.log('result', result.events.DNASet);
+        const result = await openChest(cryptoDogeControllerContract, account, _tokenId)
+        // console.log('result', result.events.DNASet);
         await dbCreateDoge(_tokenId, account);
         return result
       } catch (e) {
         return false
       }
     },
-    [account, createCryptoDogeContract],
+    [account, cryptoDogeControllerContract],
   )
 
   return { onOpenChest: handleOpenChest }
@@ -270,6 +297,87 @@ export const useSaleDoges = () => {
   }, [fastRefresh, marketController])
 
   return doges
+}
+
+export const useDogeBalance = () => {
+  const { account } = useWallet()
+  const [dogeBalance, setDogeBalance] = useState(0)
+  const { fastRefresh } = useRefresh()
+  const cryptoDogeNFTContract = useCryptoDogeNFT();
+  const magicStoneNFTContract = useMagicStoneNFT();
+  const oneDogeContract = useOneDoge();
+  const handleGetDogeBalance = useCallback(
+    async () => {
+      try {
+        const doges = await getBalance(cryptoDogeNFTContract, magicStoneNFTContract, oneDogeContract, account, );
+        setDogeBalance(doges);
+        return true;
+      } catch (e) {
+        return false
+      }
+    },
+    [account, cryptoDogeNFTContract, magicStoneNFTContract, oneDogeContract],
+  )
+  return { onGetDogeBalance: handleGetDogeBalance }
+  // useEffect(() => {
+  //   const fetchDogeBalance = async () => {
+  //     const doges = await getBalance(cryptoDogeNFTContract, magicStoneNFTContract, oneDogeContract, account, );
+  //     setDogeBalance(doges);
+  //   }
+  //   fetchDogeBalance()
+  // }, [fastRefresh, cryptoDogeNFTContract, magicStoneNFTContract, account, oneDogeContract])
+}
+
+export const useUnsetAutoFight = () => {
+  const { account } = useWallet()
+  const { fastRefresh } = useRefresh()
+  const cryptoDogeControllerContract = useCryptoDogeController()
+  const handleUnsetAutoFight = useCallback(
+    async (_tokenId) => {
+      try {
+        const result = await unsetAutoFight(cryptoDogeControllerContract, account, _tokenId)
+        return result
+      } catch (e) {
+        return false
+      }
+    },
+    [account, cryptoDogeControllerContract],
+  )
+  return { onUnsetAutoFight: handleUnsetAutoFight }
+}
+
+export const useSetAutoFight = () => {
+  const { account } = useWallet()
+  const cryptoDogeControllerContract = useCryptoDogeController()
+  const handleSetAutoFight = useCallback(
+    async (_tokenId, _monsterId) => {
+      try {
+        const result = await setAutoFight(cryptoDogeControllerContract, account, _tokenId, _monsterId)
+        return result
+      } catch (e) {
+        return false
+      }
+    },
+    [account, cryptoDogeControllerContract],
+  )
+  return { onSetAutoFight: handleSetAutoFight }
+}
+
+export const useGetResultOfAutoFight = () => {
+  const { account } = useWallet()
+  const cryptoDogeControllerContract = useCryptoDogeController()
+  const handleGetResultOfAutoFight = useCallback(
+    async (_tokenId) => {
+      try {
+        const result = await getResultOfAutoFight(cryptoDogeControllerContract, account, _tokenId)
+        return result
+      } catch (e) {
+        return false
+      }
+    },
+    [account, cryptoDogeControllerContract],
+  )
+  return { onGetResultOfAutoFight: handleGetResultOfAutoFight }
 }
 
 export const classes = [

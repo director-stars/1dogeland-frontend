@@ -198,7 +198,7 @@
         "type": "address"
       }
     ],
-    "name": "LayEgg",
+    "name": "LayDoge",
     "type": "event"
   },
   {
@@ -801,7 +801,7 @@
   },
   {
     "inputs": [],
-    "name": "priceEgg",
+    "name": "priceDoge",
     "outputs": [
       {
         "internalType": "uint256",
@@ -943,7 +943,7 @@
         "type": "uint8[]"
       }
     ],
-    "name": "layEgg",
+    "name": "layDoge",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

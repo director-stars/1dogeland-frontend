@@ -1,8 +1,8 @@
 import React, { useEffect, useCallback, useState } from 'react'
 import { Heading, Text, useWalletModal, Card, CardBody, CardHeader, CardFooter, Button, Image } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
-import { useCreateCryptoDogeAllowance } from 'hooks/useAllowance'
-import { useCreateCryptoDogeApprove } from 'hooks/useApprove'
+// import { useCreateCryptoDogeAllowance } from 'hooks/useAllowance'
+// import { useCreateCryptoDogeApprove } from 'hooks/useApprove'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { tribes, useOpenChest } from 'hooks/useDogesLand'
 
@@ -64,23 +64,23 @@ const ChestCard: React.FC<ChestCardProps> = ({id, tribe}) => {
     }, [account, connect])
 
     const [requestedApproval, setRequestedApproval] = useState(false)
-    const allowance = useCreateCryptoDogeAllowance()
-    const { onApprove } = useCreateCryptoDogeApprove()
+    // const allowance = useCreateCryptoDogeAllowance()
+    // const { onApprove } = useCreateCryptoDogeApprove()
     const [pendingTx, setPendingTx] = useState(false)
 
-    const handleApprove = useCallback(async () => {
-        try {
-          setRequestedApproval(true)
-          const txHash = await onApprove()
-          // user rejected tx or didn't go thru
-          if (!txHash) {
-            setRequestedApproval(false)
-          }
-          // onPresentApprove()
-        } catch (e) {
-          console.error(e)
-        }
-    }, [onApprove])
+    // const handleApprove = useCallback(async () => {
+    //     try {
+    //       setRequestedApproval(true)
+    //       const txHash = await onApprove()
+    //       // user rejected tx or didn't go thru
+    //       if (!txHash) {
+    //         setRequestedApproval(false)
+    //       }
+    //       // onPresentApprove()
+    //     } catch (e) {
+    //       console.error(e)
+    //     }
+    // }, [onApprove])
     const { onPresentConnectModal } = useWalletModal(connect, reset)
 
     const { onOpenChest } = useOpenChest()
@@ -100,13 +100,13 @@ const ChestCard: React.FC<ChestCardProps> = ({id, tribe}) => {
     }, [onOpenChest, id])
 
     const renderDogeCardButtons = () => {
-        if (!allowance.toNumber()) {
-          return (
-            <Button fullWidth disabled={requestedApproval} size="sm" onClick={handleApprove}>
-              Approve 1Doge
-            </Button>
-          )
-        }
+        // if (!allowance.toNumber()) {
+        //   return (
+        //     <Button fullWidth disabled={requestedApproval} size="sm" onClick={handleApprove}>
+        //       Approve 1Doge
+        //     </Button>
+        //   )
+        // }
         return (
             <Button fullWidth size="sm"
             disabled={pendingTx}

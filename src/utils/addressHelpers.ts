@@ -36,6 +36,6 @@ export const getMarketControllerAddress = () => {
   return addresses.marketController[chainId];
 }
 
-export const getCreateCryptoDogeAddress = () => {
-  return addresses.createCryptoDoge[chainId];
+export const getMagicStoneNFTAddress = () => {
+  return addresses.magicStoneNFT[chainId];
 }

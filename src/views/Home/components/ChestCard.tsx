@@ -1,9 +1,9 @@
 import React, { useEffect, useCallback, useState } from 'react'
 import { Heading, Text, useWalletModal, Card, CardBody, CardHeader, CardFooter, Button, Image } from '@pancakeswap-libs/uikit'
 import styled, { keyframes } from 'styled-components'
-import MarketCardActions from './MarketCardActions'
+import ChestCardActions from './ChestCardActions'
 
-interface MartketCardProps {
+interface ChestCardProps {
     imgUrl: string
     name: string
     price: string
@@ -86,7 +86,7 @@ const OwnerInfo = styled.div`
     justify-content: space-between;
 `
 
-const MarketCard: React.FC<MartketCardProps> = ({imgUrl, name, price}) => {
+const ChestCard: React.FC<ChestCardProps> = ({imgUrl, name, price}) => {
     return (
         <div>
             <Card>
@@ -115,11 +115,11 @@ const MarketCard: React.FC<MartketCardProps> = ({imgUrl, name, price}) => {
                         <Text>Payment</Text>
                         <Text>1Doge</Text>
                     </OwnerInfo>
-                    <MarketCardActions />
+                    <ChestCardActions />
                 </CardFooter>
             </Card>
         </div>
     )
 }
 
-export default MarketCard;
+export default ChestCard;

@@ -11,7 +11,8 @@ import { provider } from 'web3-core'
 import Page from 'components/layout/Page'
 import FlexLayout from 'components/layout/Flex'
 import useRefresh from 'hooks/useRefresh'
-import MarketCard from './components/MarketCard'
+import ChestCard from './components/ChestCard'
+import MagicStoneCard from './components/MagicStoneCard'
 
 const Hero = styled.div`
   align-items: center;
@@ -30,6 +31,9 @@ const Hero = styled.div`
     height: 165px;
     padding-top: 0;
   }
+`
+const StyledFlexLayout = styled(FlexLayout)`
+  column-gap: 100px;
 `
 
 const Cards = styled(BaseLayout)`
@@ -60,17 +64,6 @@ const StyledHead = styled.div`
 `
 
 const Home: React.FC = () => {
-  // const { path } = useRouteMatch()
-  // const TranslateString = useI18n()
-  // const farmsLP = useFarms()
-  // const cakePrice = usePriceCakeBusd()
-  // const bnbPrice = usePriceBnbBusd()
-  // const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
-  // const {tokenMode} = farmsProps;
-
-  // const dispatch = useDispatch()
-  // const { fastRefresh } = useRefresh()
-
   function validateInputAddresses(address) {
     return (/^(0x){1}[0-9a-fA-F]{40}$/i.test(address));
   }
@@ -101,15 +94,22 @@ const Home: React.FC = () => {
         <Text>Choose your young doge here, then train and build your 1doge army!</Text>
       </Hero>
       <div>
-        <FlexLayout>
-          <div style={{ width: "500px" }}>
-            <MarketCard 
+        <StyledFlexLayout>
+          {/* <div style={{ width: "500px" }}> */}
+            <MagicStoneCard 
+              imgUrl="/images/egg/egg.png"
+              name="Magic Stone"
+              price="15000"
+            />
+          {/* </div> */}
+          {/* <div style={{ width: "500px" }}> */}
+            <ChestCard 
               imgUrl="/images/egg/egg.png"
               name="Random Doge"
               price="9999"
             />
-          </div>
-        </FlexLayout>
+          {/* </div> */}
+        </StyledFlexLayout>
       </div>
     </Page>
   )

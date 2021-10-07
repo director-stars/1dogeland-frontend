@@ -92,7 +92,7 @@ const Referrals: React.FC = () => {
               <Heading as="h1" size="xl" mb="24px" color="primary">
                 Invite Your Friends. Earn Reward Together.
               </Heading>
-              <Text fontSize="26px" color="rgb(255,255,255, 0.6)">Earn 10% reward from your friends buy first doge.</Text>
+              <Text fontSize="26px" color="rgb(255,255,255, 0.6)">Earn 10% reward from your friends first Doge buy</Text>
             </Banner>
           </Hero>
         </StyledHead>

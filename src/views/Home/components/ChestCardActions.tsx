@@ -1,10 +1,10 @@
 import React, { useEffect, useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { Button, ToastContainer, useModal, useWalletModal } from '@pancakeswap-libs/uikit'
-import { useCreateCryptoDogeAllowance } from 'hooks/useAllowance'
-import { useCreateCryptoDogeApprove } from 'hooks/useApprove'
+import { useCryptoDogeControllerAllowance } from 'hooks/useAllowance'
+import { useCryptoDogeControllerApprove } from 'hooks/useApprove'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { useBuyCryptoDoge } from 'hooks/useDogesLand'
+import { useBuyCryptoDoge, useDogeBalance } from 'hooks/useDogesLand'
 
 const CardActions = styled.div`
   display: flex;
@@ -17,12 +17,15 @@ const CardActions = styled.div`
   margin-top: 20px;
 `
 
-const MarketCardActions: React.FC = () => {
+const ChestCardActions: React.FC = () => {
   const [requestedApproval, setRequestedApproval] = useState(false)
   const [toasts, setToasts] = useState([]);
-  const allowance = useCreateCryptoDogeAllowance()
-  const { onApprove } = useCreateCryptoDogeApprove()
-  // const [onPresentApprove] = useModal(<PurchaseWarningModal />)
+  const allowance = useCryptoDogeControllerAllowance()
+  const { onApprove } = useCryptoDogeControllerApprove()
+  const [oneDogeBalance, setOneDogeBalance] = useState(parseInt(window.localStorage.getItem("oneDogeBalance")) / 10**18);
+  const [dogeNFTBalance, setDogeNFTBalance] = useState(parseInt(window.localStorage.getItem("dogeNFTBalance")));
+
+  // console.log('oneDogeBalance', oneDogeBalance)
   const handleApprove = useCallback(async () => {
     try {
       setRequestedApproval(true)
@@ -62,6 +65,17 @@ const MarketCardActions: React.FC = () => {
       console.error(e)
     }
   }, [onBuyDoge, setRequestedBuy])
+  
+  const { onGetDogeBalance } = useDogeBalance()
+  const handleGetDogeBalance = useCallback(async () => {
+    try {
+      await onGetDogeBalance()
+      setOneDogeBalance(parseInt(window.localStorage.getItem("oneDogeBalance")) / 10**18);
+      setDogeNFTBalance(parseInt(window.localStorage.getItem("dogeNFTBalance")));
+    } catch (e) {
+      console.error(e)
+    }
+  }, [onGetDogeBalance])
 
   const handleClick = (description = "") => {
     const now = Date.now();
@@ -80,12 +94,26 @@ const MarketCardActions: React.FC = () => {
   };
 
   const renderDogeCardButtons = () => {
+    if(oneDogeBalance < 9999){
+      return (
+          <Button fullWidth disabled size="sm">
+            Not enough 1doge
+          </Button>
+      ) 
+    }
     if (!allowance.toNumber()) {
       return (
         <Button fullWidth disabled={requestedApproval} size="sm" onClick={handleApprove}>
-          Approve 1Doge
+          Approve
         </Button>
       )
+    }
+    if(dogeNFTBalance > 4){
+        return (
+            <Button fullWidth disabled size="sm">
+              You have enough doge army
+            </Button>
+        ) 
     }
     return (
         <Button fullWidth size="sm"
@@ -93,6 +121,7 @@ const MarketCardActions: React.FC = () => {
         onClick={async () => {
             setPendingTx(true)
             await handleBuy()
+            await handleGetDogeBalance()
             setPendingTx(false)
             window.scrollTo(0, 0);
             handleClick()
@@ -109,4 +138,4 @@ const MarketCardActions: React.FC = () => {
   )
 }
 
-export default MarketCardActions
+export default ChestCardActions

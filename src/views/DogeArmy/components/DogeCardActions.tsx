@@ -75,7 +75,7 @@ const DogeCardActions: React.FC<DogeCardActionsProps> = ({ dogeId, isSale }) => 
     if (!allowance.toNumber()) {
       return (
         <Button fullWidth disabled={requestedApproval} size="sm" onClick={handleApprove}>
-          Approve 1Doge
+          Approve
         </Button>
       )
     }

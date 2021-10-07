@@ -1,6 +1,6 @@
 import { MenuItemsType, DropdownMenuItemType } from '@pancakeswap-libs/uikit'
 
-export const config: MenuItemsType[] = [
+const config: MenuItemsType[] = [
   {
     label: 'Starter Doges',
     icon: 'HomeIcon',
@@ -15,6 +15,11 @@ export const config: MenuItemsType[] = [
     label: 'My 1Doge Army',
     icon: 'FarmIcon',
     href: '/my-doge',
+  },
+  {
+    label: 'Merge Stone',
+    icon: 'FarmIcon',
+    href: '/merge-stone',
   },
   {
     label: 'Battle Monsters',

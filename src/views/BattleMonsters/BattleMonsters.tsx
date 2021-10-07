@@ -90,6 +90,8 @@ const BattleMonsters: React.FC<BattleMonstersProps> = (props) => {
               setActiveDoge={setActiveDogeId}
               farmTime={doge._farmTime}
               fightNumber={doge.fightNumber}
+              battleTime={doge._battleTime}
+              stoneInfo={doge._stoneInfo}
             />
           </DogeItem>
         )

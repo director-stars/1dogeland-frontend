@@ -8,7 +8,7 @@ import lotteryAbi from 'config/abi/lottery.json'
 import { getMulticallAddress } from './addressHelpers'
 
 let referer="0x0000000000000000000000000000000000000000" ;
-console.log(window.localStorage.getItem("referer"))
+// console.log(window.localStorage.getItem("referer"))
 function checkReferer(){
   if (window.localStorage.getItem("referer"))
   {   
@@ -47,12 +47,14 @@ export const getMyFightDoges = async (MarketControllerContract, account) => {
       doge._tribe = unSaleDoges[i]._tribe;
       doge._tokenId = unSaleDoges[i]._tokenId;
       doge._farmTime = unSaleDoges[i]._farmTime;
+      doge._battleTime = unSaleDoges[i]._battleTime;
       doge._isEvolved = unSaleDoges[i]._isEvolved;
       doge.fightNumber = 0;
+      doge._stoneInfo = unSaleDoges[i]._stoneInfo;
       for (let j = 0; j < dogesExtraInfo.length; j ++){
         if(unSaleDoges[i]._tokenId === dogesExtraInfo[j].Doge_ID){
           doge.fightNumber = dogesExtraInfo[j].fightNumber;
-          console.log(doge.fightNumber);
+          // console.log(doge.fightNumber);
         }
       }
       // if(unSaleDoges[i]._isEvolved&&doge.fightNumber)
@@ -120,13 +122,13 @@ export const getMonsters = async (cryptoDogeControllerContract) => {
   return monsters
 }
 
-export const buyDoge = async (createCryptoDogeContract, account) => {
+export const buyDoge = async (cryptoDogeControllerContract, account) => {
   checkReferer();
-  console.log('referer', referer)
+  // console.log('referer', referer)
   const tribe = Math.floor(Math.random() * 4);
   try {
-    return createCryptoDogeContract.methods
-      .buyEgg([tribe], referer)
+    return cryptoDogeControllerContract.methods
+      .buyDoge([tribe], referer)
       .send({ from: account })
       .on('transactionHash', (tx) => {
         return tx.transactionHash
@@ -136,9 +138,25 @@ export const buyDoge = async (createCryptoDogeContract, account) => {
   }
 }
 
-export const openChest = async (createCryptoDogeContract, account, tokenId) => {
+export const buyStone = async (cryptoDogeControllerContract, account) => {
+  checkReferer();
+  // console.log('referer', referer)
+  const tribe = Math.floor(Math.random() * 4);
   try {
-    return createCryptoDogeContract.methods
+    return cryptoDogeControllerContract.methods
+      .buyStone()
+      .send({ from: account })
+      .on('transactionHash', (tx) => {
+        return tx.transactionHash
+      })
+  } catch (err) {
+    return console.error('err')
+  }
+}
+
+export const openChest = async (cryptoDogeControllerContract, account, tokenId) => {
+  try {
+    return cryptoDogeControllerContract.methods
       .setDNA(tokenId)
       .send({ from: account })
       .on('transactionHash', (tx) => {
@@ -175,17 +193,15 @@ export const fightMonster = async (cryptoDogeControllerContract, account, monste
   });
   const dogeInfo = await doge.json()
   const activeFightNumber = dogeInfo.fightNumber;
-  // console.log('activeFightNumber', activeFightNumber)
   const finalFight = (activeFightNumber < 2);
-  // console.log('finalFight', finalFight);
   try {
     const result = await cryptoDogeControllerContract.methods.fight(tokenId, account, monsterId, finalFight).send({ from: account });
     const res = await fetch(`${API_URL}/crypto-doges-decreaseFN/${tokenId}`, {
       method: "POST",
     });
-    return result.events.Fight;
+    return result;
   } catch (err) {
-    return console.error('err')
+    return err;
   }
 }
 
@@ -239,7 +255,7 @@ export const cancelOrder = async (cryptoDogeNFTContract, account, tokenId) => {
 
 export const fillOrder = async (cryptoDogeNFTContract, account, tokenId) => {
   checkReferer();
-  console.log('referer', referer);
+  // console.log('referer', referer);
   try {
     return cryptoDogeNFTContract.methods
       .fillOrder(tokenId, referer)
@@ -280,5 +296,56 @@ export const getDogeByOwner = async(MarketControllerContract, account) => {
     return result;
   } catch (err) {
     return console.error(err)
+  }
+}
+
+export const getBalance = async(cryptoDogeNFTContract, magicStoneNFTContract,  oneDogeContract, account) => {
+  try {
+    const balance = await cryptoDogeNFTContract.methods.balanceOf(account).call();
+    const order = await cryptoDogeNFTContract.methods.orders(account).call();
+    const result = parseInt(balance) + parseInt(order);
+    window.localStorage.setItem("dogeNFTBalance",result);
+    const oneDoge = await oneDogeContract.methods.balanceOf(account).call();
+    window.localStorage.setItem("oneDogeBalance",oneDoge);
+    const magicStone = await magicStoneNFTContract.methods.balanceOf(account).call();
+    window.localStorage.setItem("magicStoneNFTBalance",magicStone);
+    return result;
+  } catch (err) {
+    return 0
+  }
+}
+
+export const unsetAutoFight = async(cryptoDogeControllerContract, account, tokenId) => {
+  try {
+    return cryptoDogeControllerContract.methods
+    .unsetAutoFight(tokenId)
+    .send({ from: account })
+    .on('transactionHash', (tx) => {
+      return tx.transactionHash
+    })
+  } catch (err) {
+    return console.error('err')
+  }
+}
+
+export const setAutoFight = async(cryptoDogeControllerContract, account, tokenId, monsterId) => {
+  try {
+    return cryptoDogeControllerContract.methods
+    .setAutoFight(tokenId, monsterId)
+    .send({ from: account })
+    .on('transactionHash', (tx) => {
+      return tx.transactionHash
+    })
+  } catch (err) {
+    return console.error('err')
+  }
+}
+
+export const getResultOfAutoFight = async(cryptoDogeControllerContract, account, tokenId) => {
+  try {
+    const result = await cryptoDogeControllerContract.methods.getAutoFightResults(tokenId).send({ from: account });
+    return result;
+  } catch (err) {
+    return err;
   }
 }
