@@ -1,4 +1,4 @@
-import React, { useEffect, Suspense, lazy } from 'react'
+import React, { useEffect, Suspense, lazy, useCallback } from 'react'
 import { HashRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { ResetCSS } from '@pancakeswap-libs/uikit'
@@ -15,7 +15,7 @@ const Home = lazy(() => import('./views/Home'))
 const BattleMonsters = lazy(() => import('./views/BattleMonsters'))
 const BattleBosses = lazy(() => import('./views/BattleBosses'))
 const DogeArmy = lazy(() => import('./views/DogeArmy'))
-const MergeStone = lazy(() => import('./views/MergeStone'))
+const AutoPlay = lazy(() => import('./views/AutoPlay'))
 const MarketPlace = lazy(() => import('./views/MarketPlace'))
 const Referrals = lazy(() => import('./views/Referrals'))
 const NotFound = lazy(() => import('./views/NotFound'))
@@ -33,7 +33,18 @@ const App: React.FC = () => {
       connect('injected')
     }
   }, [account, connect])
-  useDogeBalance();
+  const { onGetDogeBalance } = useDogeBalance()
+  const handleGetDogeBalance = useCallback(async () => {
+    try {
+      await onGetDogeBalance()
+    } catch (e) {
+      console.error(e)
+    }
+  }, [onGetDogeBalance])
+  handleGetDogeBalance();
+  // console.log(window.localStorage.getItem("dogeNFTBalance"));
+  // console.log(window.localStorage.getItem("oneDogeBalance"));
+  // console.log(window.localStorage.getItem("magicStoneNFTBalance"));
 
   return (
     <Router>
@@ -51,8 +62,8 @@ const App: React.FC = () => {
             <Route path="/my-doge">
               <DogeArmy />
             </Route>
-            <Route path="/merge-stone">
-              <MergeStone />
+            <Route path="/auto-play">
+              <AutoPlay />
             </Route>
             <Route path="/battle-monsters">
              <BattleMonsters />

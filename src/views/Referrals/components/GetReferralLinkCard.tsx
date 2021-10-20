@@ -32,11 +32,7 @@ const Block = styled.div`
   margin: auto;
 `
 
-interface LinkCardProps {
-  header: string
-}
-
-const GetReferralLinkCard: React.FC<LinkCardProps> = ({ header}) => {
+const GetReferralLinkCard: React.FC = () => {
   const { account, connect, reset } = useWallet()
   useEffect(() => {
     if (!account && window.localStorage.getItem('accountStatus')) {
@@ -48,9 +44,6 @@ const GetReferralLinkCard: React.FC<LinkCardProps> = ({ header}) => {
 
   return (
     <StyledDiv>
-        <Heading size="xl" mb="40px" color="contrast">
-          {header}
-        </Heading>
         <Block>
           <StyledText>
             {`${window.location.protocol}//${window.location.host}/#?ref=${account}`}

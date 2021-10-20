@@ -27,8 +27,8 @@ interface ResultModalProps {
 
 const ResultModal: React.FC<ResultModalProps> = ({ onDismiss, title="result", rewardExp = "0", rewardToken="0", tx="" , error="", winNumber="0", fightNumber="0" }) => {
     const winResult = (winNumber === '0')?"lost":"won";
-    console.log('fightNumber', typeof fightNumber, fightNumber)
-    console.log('winNumber', typeof winNumber, winNumber)
+    // console.log('fightNumber', typeof fightNumber, fightNumber)
+    // console.log('winNumber', typeof winNumber, winNumber)
     return (
         <Modal title={title} onDismiss={onDismiss}>
           {(error === "")?(
@@ -40,7 +40,7 @@ const ResultModal: React.FC<ResultModalProps> = ({ onDismiss, title="result", re
             )}
           
           <div>You got {rewardToken} 1Doge, {rewardExp} Exp</div>
-          <LinkExternal href={`https://testnet.bscscan.com/tx/${tx}`} external>Check TX</LinkExternal>
+          <LinkExternal href={`https://bscscan.com/tx/${tx}`} external>Check TX</LinkExternal>
           </StyledDiv>
           ):(<StyledDiv>{error}</StyledDiv>)}
         </Modal>

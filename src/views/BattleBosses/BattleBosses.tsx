@@ -4,7 +4,7 @@ import Carousel from 'components/Carousel'
 import { Button, Heading, Text } from '@pancakeswap-libs/uikit'
 import Page from 'components/layout/Page'
 import { useFarms, usePriceBnbBusd, usePriceCakeBusd } from 'state/hooks'
-import { useBattleBosses, useMyFightDoges } from 'hooks/useDogesLand'
+// import { useBattleBosses, useMyFightDoges } from 'hooks/useDogesLand'
 import FlexLayout from 'components/layout/Flex'
 import BossCard from './components/BossCard'
 import DogeCard from './components/DogeCard'
@@ -57,9 +57,9 @@ const BattleBosses: React.FC<BattleBossesProps> = (props) => {
   const { url, title } = props
   const [activeItemIndex, setActiveItemIndex] = useState(0);
   const chevronWidth = 40;
-  const doges = useMyFightDoges();
-  const battleBosses = useBattleBosses();
-  console.log('dog_views',doges);
+  // const doges = useMyFightDoges();
+  // const battleBosses = useBattleBosses();
+  // console.log('dog_views',doges);
   const dogeList = useCallback(
     (dogesToDisplay, removed: boolean) => {
       return dogesToDisplay.map((doge) => (
@@ -120,7 +120,7 @@ const BattleBosses: React.FC<BattleBossesProps> = (props) => {
             Choose A Doge
         </Text>
         <Carousel>
-          {dogeList(doges, true)}
+          {/* {dogeList(doges, true)} */}
         </Carousel>
       </MyDoges>
       <Bosses>
@@ -128,7 +128,7 @@ const BattleBosses: React.FC<BattleBossesProps> = (props) => {
           Choose A Boss
         </Text>
         <FlexLayout>
-          {bossList(battleBosses, true)}
+          {/* {bossList(battleBosses, true)} */}
         </FlexLayout>
       </Bosses>
     </Page>

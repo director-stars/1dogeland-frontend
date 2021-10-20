@@ -7,16 +7,16 @@ const Wrapper = styled.div`
   // position: absolute;
   // top: 0;
   // right: 0;
-  margin-left: 10px;
+  margin:0px 5px;
 `
 
 const Timestamp = ({ timeValue }) => {
-  const { monthAndDay, hours } = formatLotteryDate(timeValue)
+  const { hours, minutes } = formatLotteryDate(timeValue)
 
   return (
     <Wrapper>
       {/* <Text fontSize="14px"> */}
-        {monthAndDay}, {hours}:00 UTC
+        {(minutes > 0)? hours+1:hours}
       {/* </Text> */}
     </Wrapper>
   )

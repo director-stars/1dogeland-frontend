@@ -22,7 +22,7 @@ const ChestCardActions: React.FC = () => {
   const [toasts, setToasts] = useState([]);
   const allowance = useCryptoDogeControllerAllowance()
   const { onApprove } = useCryptoDogeControllerApprove()
-  const [oneDogeBalance, setOneDogeBalance] = useState(parseInt(window.localStorage.getItem("oneDogeBalance")) / 10**18);
+  const [oneDogeBalance, setOneDogeBalance] = useState(parseInt(window.localStorage.getItem("oneDogeBalance")));
   const [dogeNFTBalance, setDogeNFTBalance] = useState(parseInt(window.localStorage.getItem("dogeNFTBalance")));
 
   // console.log('oneDogeBalance', oneDogeBalance)
@@ -70,7 +70,7 @@ const ChestCardActions: React.FC = () => {
   const handleGetDogeBalance = useCallback(async () => {
     try {
       await onGetDogeBalance()
-      setOneDogeBalance(parseInt(window.localStorage.getItem("oneDogeBalance")) / 10**18);
+      setOneDogeBalance(parseInt(window.localStorage.getItem("oneDogeBalance")));
       setDogeNFTBalance(parseInt(window.localStorage.getItem("dogeNFTBalance")));
     } catch (e) {
       console.error(e)
@@ -94,7 +94,14 @@ const ChestCardActions: React.FC = () => {
   };
 
   const renderDogeCardButtons = () => {
-    if(oneDogeBalance < 9999){
+    if(dogeNFTBalance > 1){
+      return (
+          <Button fullWidth disabled size="sm">
+            You have enough doge army
+          </Button>
+      ) 
+    }
+    if(oneDogeBalance < 50000){
       return (
           <Button fullWidth disabled size="sm">
             Not enough 1doge
@@ -108,13 +115,7 @@ const ChestCardActions: React.FC = () => {
         </Button>
       )
     }
-    if(dogeNFTBalance > 4){
-        return (
-            <Button fullWidth disabled size="sm">
-              You have enough doge army
-            </Button>
-        ) 
-    }
+    
     return (
         <Button fullWidth size="sm"
         disabled={pendingTx}

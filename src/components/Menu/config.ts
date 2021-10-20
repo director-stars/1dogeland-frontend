@@ -17,9 +17,9 @@ const config: MenuItemsType[] = [
     href: '/my-doge',
   },
   {
-    label: 'Merge Stone',
+    label: 'AutoPlay',
     icon: 'FarmIcon',
-    href: '/merge-stone',
+    href: '/auto-play',
   },
   {
     label: 'Battle Monsters',

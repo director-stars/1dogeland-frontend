@@ -21,6 +21,7 @@ interface MartketCardProps {
     stoneInfo: string
     magicStoneNFTBalance: number
     setMagicStoneNFTBalance: any
+    activeStoneId: number
 }
 
 const StyledImage = styled.div<{
@@ -71,7 +72,7 @@ const Id = styled.div`
     color: #fff;
     height: fit-content;
 `
-const DogeCard: React.FC<MartketCardProps> = ({id, classInfo, price, owner, level, exp, rare, tribe, activeMonster, setActiveMonster,stoneInfo, magicStoneNFTBalance, setMagicStoneNFTBalance}) => {
+const DogeCard: React.FC<MartketCardProps> = ({id, classInfo, price, owner, level, exp, rare, tribe, activeMonster, setActiveMonster,stoneInfo, magicStoneNFTBalance, setMagicStoneNFTBalance, activeStoneId}) => {
     const price1 = new BigNumber(price).div(new BigNumber(10).pow(18)).toString()
     const { account, connect, reset } = useWallet()
     useEffect(() => {
@@ -105,7 +106,7 @@ const DogeCard: React.FC<MartketCardProps> = ({id, classInfo, price, owner, leve
                     <Text>Tribe :</Text>
                     <Text>{tribeName}</Text>
                 </DogeInfoItem>
-                <DogeCardActions dogeId={id} stoneInfo={stoneInfo} activeMonster={activeMonster} setActiveMonster={setActiveMonster} magicStoneNFTBalance={magicStoneNFTBalance} setMagicStoneNFTBalance={setMagicStoneNFTBalance}/>
+                <DogeCardActions dogeId={id} stoneInfo={stoneInfo} activeMonster={activeMonster} setActiveMonster={setActiveMonster} magicStoneNFTBalance={magicStoneNFTBalance} setMagicStoneNFTBalance={setMagicStoneNFTBalance} activeStoneId={activeStoneId}/>
             </StyledCard>
         </div>
     )

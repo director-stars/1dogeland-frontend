@@ -39,3 +39,7 @@ export const getMarketControllerAddress = () => {
 export const getMagicStoneNFTAddress = () => {
   return addresses.magicStoneNFT[chainId];
 }
+
+export const getMagicStoneControllerddress = () => {
+  return addresses.magicStoneController[chainId];
+}

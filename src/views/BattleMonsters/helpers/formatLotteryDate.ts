@@ -6,10 +6,11 @@ const formatLotteryDate = (lotteryDate: string) => {
   const date = new Date(lotteryDate)
 
   const dateString = date.toDateString()
-  const hours = date.getUTCHours()
-  const monthAndDay = dateString.split(' ').splice(1, 2).join(' ')
+  const hours = date.getHours()
+  const minutes = date.getMinutes()
+  // const monthAndDay = dateString.split(' ').splice(1, 2).join(' ')
 
-  return { hours, monthAndDay }
+  return { hours, minutes }
 }
 
 export default formatLotteryDate

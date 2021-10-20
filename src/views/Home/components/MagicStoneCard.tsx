@@ -79,7 +79,7 @@ const PriceInfo = styled.div`
 `
 const TokenIcon = styled(Image)`
     width: 24px;
-
+    margin-right: 10px;
 `
 const OwnerInfo = styled.div`
     display: flex;
@@ -107,13 +107,13 @@ const MagicStoneCard: React.FC<MagicStoneCardProps> = ({imgUrl, name, price}) =>
                     <DogeInfo>
                         <Text>Price</Text>
                         <PriceInfo>
-                            <TokenIcon width={24} height={24} src="/images/egg/9.png"/>
+                            <TokenIcon width={24} height={24} src={imgUrl}/>
                             <Text>{price}</Text>
                         </PriceInfo>
                     </DogeInfo>
                     <OwnerInfo>
                         <Text>Payment</Text>
-                        <Text>1Doge</Text>
+                        <Text>BNB</Text>
                     </OwnerInfo>
                     <MagicStoneCardActions />
                 </CardFooter>

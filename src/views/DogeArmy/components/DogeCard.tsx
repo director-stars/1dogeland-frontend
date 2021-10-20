@@ -67,6 +67,9 @@ const DogeCard: React.FC<MartketCardProps> = ({id, classInfo, price, owner, leve
         connect('injected')
         }
     }, [account, connect])
+    // console.log('id',id)
+    // console.log('rare',rare)
+    // console.log('classInfo',classInfo)
     const dogeImage = classes[parseInt(rare) - 1][classInfo].asset;
     const dogeName = classes[parseInt(rare) - 1][classInfo].name;
     const tribeName = tribes[tribe].name;

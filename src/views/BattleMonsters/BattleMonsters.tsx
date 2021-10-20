@@ -3,7 +3,9 @@ import styled from 'styled-components'
 import Carousel from 'components/Carousel'
 import { Button, Heading, Text, Image } from '@pancakeswap-libs/uikit'
 import Page from 'components/layout/Page'
-import { useMonsters, useMyFightDoges, useRewardTokenInfo, useClaimReward } from 'hooks/useDogesLand'
+import { useMonsters, useMyFightDoges, useRewardTokenInfo, useClaimReward, useNextClaimTime } from 'hooks/useDogesLand'
+import { useCryptoDogeControllerAllowance } from 'hooks/useAllowance'
+import { useCryptoDogeControllerApprove } from 'hooks/useApprove'
 import FlexLayout from 'components/layout/Flex'
 import DogeCard from './components/DogeCard'
 import MonsterCard from './components/MonsterCard'
@@ -69,11 +71,30 @@ const BattleMonsters: React.FC<BattleMonstersProps> = (props) => {
   const chevronWidth = 40;
   const monsters = useMonsters();
   const doges = useMyFightDoges();
+  // console.log(doges);
   const [pendingTx, setPendingTx] = useState(false)
   const [, setRequestedClaim] = useState(false)
   const { onClaimReward } = useClaimReward()
-  // console.log('doges', doges.length)
-  // 
+  const nextClaimTime = parseInt(useNextClaimTime())*1000 - Date.now();
+
+  const [requestedApproval, setRequestedApproval] = useState(false)
+  const allowance = useCryptoDogeControllerAllowance()
+  const { onApprove } = useCryptoDogeControllerApprove()
+  // const [onPresentApprove] = useModal(<PurchaseWarningModal />)
+  const handleApprove = useCallback(async () => {
+    try {
+      setRequestedApproval(true)
+      const txHash = await onApprove()
+      // user rejected tx or didn't go thru
+      if (!txHash) {
+        setRequestedApproval(false)
+      }
+      // onPresentApprove()
+    } catch (e) {
+      console.error(e)
+    }
+  }, [onApprove])
+  
   const dogeList = useCallback(
     (dogesToDisplay, removed: boolean) => {
       return dogesToDisplay.map((doge) => 
@@ -90,7 +111,7 @@ const BattleMonsters: React.FC<BattleMonstersProps> = (props) => {
               setActiveDoge={setActiveDogeId}
               farmTime={doge._farmTime}
               fightNumber={doge.fightNumber}
-              battleTime={doge._battleTime}
+              availableBattleTime={doge._availableBattleTime}
               stoneInfo={doge._stoneInfo}
             />
           </DogeItem>
@@ -120,6 +141,32 @@ const BattleMonsters: React.FC<BattleMonstersProps> = (props) => {
     ,
     [activeDogeId],
   )
+
+  const renderClaimButtons = () => {
+    if (!allowance.toNumber()) {
+      return (
+        <Button disabled={requestedApproval} size="sm" onClick={handleApprove}>
+          Approve
+        </Button>
+      )
+    }
+    return (
+      <Button size="sm"
+        disabled={pendingTx}
+        onClick={async () => {
+            setPendingTx(true)
+            await handleClaimReward()
+            setPendingTx(false)
+        }}>{pendingTx ? 'Pending Claim Reward' : 'Claim Reward'}</Button>
+      // <Button fullWidth size="sm"
+      // disabled={pendingTx}
+      // onClick={async () => {
+      //     setPendingTx(true)
+      //     await handleGetResultOfAutoFight()
+      //     setPendingTx(false)
+      // }}>{pendingTx ? 'Pending get result' : 'Get result of auto fighting'}</Button>
+    )
+  }
 
   const handleClaimReward = useCallback(async () => {
     try {
@@ -169,13 +216,10 @@ const BattleMonsters: React.FC<BattleMonstersProps> = (props) => {
               <Text fontSize="22px">Pending 1Doge: {parseInt(rewardTokenAmount.toString())/10**18}</Text>
               <TokenIcon width={30} height={30} src="/images/egg/9.png"/>
             </RewardInfo>
-            <Button size="sm"
-            disabled={pendingTx}
-            onClick={async () => {
-                setPendingTx(true)
-                await handleClaimReward()
-                setPendingTx(false)
-            }}>{pendingTx ? 'Pending Claim Reward' : 'Claim Reward'}</Button>
+            {( nextClaimTime < 0)?(renderClaimButtons()):(
+              <Button size="sm"
+              disabled>Next claim time in {Math.ceil( nextClaimTime / 1000 /3600)} hours</Button>
+            )}
           </div>
           ):(<div />)}
           

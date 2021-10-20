@@ -83,7 +83,7 @@ const DogeCardActions: React.FC<DogeCardActionsProps> = ({ dogeId, isSale }) => 
       return (
         <Button fullWidth size="sm"
         disabled={pendingTx}
-        onClick={handleCancelOrder}>{pendingTx ? 'Pending Cancel Order' : 'Cancel Order'}</Button>
+        onClick={handleCancelOrder}>{pendingTx ? 'Pending Cancel Sell' : 'Cancel Sell'}</Button>
       )
     }
     return (
@@ -93,7 +93,7 @@ const DogeCardActions: React.FC<DogeCardActionsProps> = ({ dogeId, isSale }) => 
           setPendingTx(true)
           onPresentResult()
           setPendingTx(false)
-      }}>{pendingTx ? 'Pending Order Doge' : 'Order Doge'}</Button>
+      }}>{pendingTx ? 'Pending Sell Doge' : 'Sell Doge'}</Button>
     )
   }
 

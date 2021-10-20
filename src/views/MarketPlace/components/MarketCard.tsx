@@ -139,7 +139,7 @@ const MarketCard: React.FC<MartketCardProps> = ({id, classInfo, price, owner, le
                 </Button>
             ) 
         }
-        if(dogeNFTBalance > 4){
+        if(dogeNFTBalance > 1){
             return (
                 <Button fullWidth disabled size="sm">
                   You have enough Doges

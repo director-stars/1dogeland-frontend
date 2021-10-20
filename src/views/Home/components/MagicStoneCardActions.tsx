@@ -1,8 +1,8 @@
 import React, { useEffect, useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { Button, ToastContainer, useModal, useWalletModal } from '@pancakeswap-libs/uikit'
-import { useCryptoDogeControllerAllowance } from 'hooks/useAllowance'
-import { useCryptoDogeControllerApprove } from 'hooks/useApprove'
+// import { useMagicStoneControllerAllowance } from 'hooks/useAllowance'
+// import { useMagicStoneControllerApprove } from 'hooks/useApprove'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { useBuyMagicStone, useDogeBalance } from 'hooks/useDogesLand'
 
@@ -20,23 +20,23 @@ const CardActions = styled.div`
 const MagicStoneCardActions: React.FC = () => {
   const [requestedApproval, setRequestedApproval] = useState(false)
   const [toasts, setToasts] = useState([]);
-  const allowance = useCryptoDogeControllerAllowance()
-  const { onApprove } = useCryptoDogeControllerApprove()
+  // const allowance = useMagicStoneControllerAllowance()
+  // const { onApprove } = useMagicStoneControllerApprove()
   const [oneDogeBalance, setOneDogeBalance] = useState(parseInt(window.localStorage.getItem("oneDogeBalance")) / 10**18);
   // const dogeNFTBalance = parseInt(window.localStorage.getItem("dogeNFTBalance")) / 10**18;
-  const handleApprove = useCallback(async () => {
-    try {
-      setRequestedApproval(true)
-      const txHash = await onApprove()
-      // user rejected tx or didn't go thru
-      if (!txHash) {
-        setRequestedApproval(false)
-      }
-      // onPresentApprove()
-    } catch (e) {
-      console.error(e)
-    }
-  }, [onApprove])
+  // const handleApprove = useCallback(async () => {
+  //   try {
+  //     setRequestedApproval(true)
+  //     const txHash = await onApprove()
+  //     // user rejected tx or didn't go thru
+  //     if (!txHash) {
+  //       setRequestedApproval(false)
+  //     }
+  //     // onPresentApprove()
+  //   } catch (e) {
+  //     console.error(e)
+  //   }
+  // }, [onApprove])
 
   const { onGetDogeBalance } = useDogeBalance()
   const handleGetDogeBalance = useCallback(async () => {
@@ -64,7 +64,7 @@ const MagicStoneCardActions: React.FC = () => {
   const handleBuy = useCallback(async () => {
     try {
       setRequestedBuy(true)
-      const txHash = await onBuyStone()
+      const txHash = await onBuyStone("1")
       // user rejected tx or didn't go thru
       if (txHash) {
         setRequestedBuy(false)
@@ -78,7 +78,7 @@ const MagicStoneCardActions: React.FC = () => {
     const now = Date.now();
     const randomToast = {
       id: `id-${now}`,
-      title: `Please check merge stone.`,
+      title: `Please check auto play.`,
       description,
       type: "success",
     };
@@ -94,17 +94,17 @@ const MagicStoneCardActions: React.FC = () => {
     if(oneDogeBalance < 15000){
       return (
           <Button fullWidth disabled size="sm">
-            Not enough 1doge
+            Not enough bnb
           </Button>
       ) 
     }
-    if (!allowance.toNumber()) {
-      return (
-        <Button fullWidth disabled={requestedApproval} size="sm" onClick={handleApprove}>
-          Approve
-        </Button>
-      )
-    }
+    // if (!allowance.toNumber()) {
+    //   return (
+    //     <Button fullWidth disabled={requestedApproval} size="sm" onClick={handleApprove}>
+    //       Approve
+    //     </Button>
+    //   )
+    // }
     return (
         <Button fullWidth size="sm"
         disabled={pendingTx}

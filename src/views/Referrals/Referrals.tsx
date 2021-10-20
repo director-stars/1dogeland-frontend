@@ -4,7 +4,7 @@ import { BaseLayout, Heading, useWalletModal, Button, Text } from '@pancakeswap-
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import Page from 'components/layout/Page'
 import useTheme from 'hooks/useTheme'
-// import FlexLayout from 'components/layout/Flex'
+import FlexLayout from 'components/layout/Flex'
 import GetReferralLinkCard from './components/GetReferralLinkCard'
 
 const Newcards = styled(BaseLayout)`
@@ -72,7 +72,10 @@ const StyledCard = styled.div`
   // max-width: 500px;
   margin: 50px auto;
 `
-
+const StyledBody = styled.div`
+  text-align:center;
+  margin-top: 30px;
+`
 const Referrals: React.FC = () => {
   const { account, connect, reset } = useWallet()
   const { theme } = useTheme()
@@ -96,18 +99,22 @@ const Referrals: React.FC = () => {
             </Banner>
           </Hero>
         </StyledHead>
-        
+        <StyledBody>
+          <Heading size="xl" mb="40px" color="contrast">
+            Invite your friends to 1DogeLand
+          </Heading>
           {account ? (
             <>
               <StyledCard>
-                <GetReferralLinkCard header="Invite your friends to 1DogeLand" />
+                <GetReferralLinkCard />
               </StyledCard>
             </>
           ) : (
-            <Newcards>
+            <FlexLayout>
               <Button fullWidth size="sm" onClick={onPresentConnectModal}>Connect Wallet</Button>
-            </Newcards>
+            </FlexLayout>
           )}
+        </StyledBody>
       </Page>
     </>
   )

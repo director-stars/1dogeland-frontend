@@ -1,14 +1,14 @@
-import React, { useContext, useRef, useState, useCallback } from 'react'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
 import styled from 'styled-components'
 import { Button, Heading, Text, ButtonMenu, ButtonMenuItem } from '@pancakeswap-libs/uikit'
 import Page from 'components/layout/Page'
-import { useMonsters, useMyFightDoges, useRewardTokenInfo, useClaimReward } from 'hooks/useDogesLand'
+import { useMonsters, useMyFightDoges, useMyStone, useClaimReward } from 'hooks/useDogesLand'
 import FlexLayout from 'components/layout/Flex'
 import DogeCard from './components/DogeCard'
 import StoneCard from './components/StoneCard'
 import MonsterCard from './components/MonsterCard'
 
-interface MergeStoneProps {
+interface AutoPlayProps {
   url?: string
   title?: string
 }
@@ -67,21 +67,45 @@ const Row = styled.div`
   }
 `;
 
-const MergeStone: React.FC<MergeStoneProps> = (props) => {
+const StyledHeading = styled(Heading)`
+  letter-spacing: 2px;
+  text-align: center;
+  font-weight: 400px;
+`
+
+const AutoPlay: React.FC<AutoPlayProps> = (props) => {
   const { url, title } = props
-  // const [isSaleDoges, setIsSaleDoges] = useState(true);
-  // const [isUnSaleDoges, setIsUnSaleDoges] = useState(true);
   const chevronWidth = 40;
-  // let saleDoges = useMySaleDoges();
-  // if(saleDoges === undefined) saleDoges = [];
-  // console.log('saleDoges',saleDoges)
+  const stones = useMyStone();
+  const stoneSize = stones.length;
   const monsters = useMonsters();
   const [activeMonsterId, setActiveMonsterId] = useState('');
   const [magicStoneNFTBalance, setMagicStoneNFTBalance] = useState(parseInt(window.localStorage.getItem("magicStoneNFTBalance")));
+  const [activeStoneId, setActiveStoneId] = useState(0);
+  let availableStone = 0;
+  let availableStoneId = 0;
+  // console.log(stones)
+  for(let i = 0; i < stoneSize; i ++){
+    // setActiveStoneId(0);
+    if(stones[i]._dogeId === "0") {
+      availableStone ++;
+      availableStoneId = stones[i]._tokenId;
+      // setActiveStoneId(stones[i]._tokenId);
+    }
+  }
+  if(availableStone !== 0 && availableStoneId !== activeStoneId)
+    setActiveStoneId(availableStoneId);
+  useEffect(() => {
+    if(stoneSize !== 0){
+      setMagicStoneNFTBalance(availableStone);
+      window.localStorage.setItem("magicStoneNFTBalance", availableStone.toString())
+    }
+  }, [ availableStone, stoneSize ])
+
+
+
   let doges = useMyFightDoges();
   if(doges === undefined) doges = [];
-  // console.log('unSaleDoges', unSaleDoges)
-  // console.log('doges', doges)
   const monsterList = useCallback(
     (monstersToDisplay, removed: boolean) => {
       return monstersToDisplay.map((monster) => (
@@ -117,20 +141,21 @@ const MergeStone: React.FC<MergeStoneProps> = (props) => {
           setActiveMonster={setActiveMonsterId}
           magicStoneNFTBalance={magicStoneNFTBalance}
           setMagicStoneNFTBalance={setMagicStoneNFTBalance}
+          activeStoneId={activeStoneId}
         />
       ))
     },
-    [activeMonsterId, magicStoneNFTBalance, setMagicStoneNFTBalance],
+    [activeMonsterId, magicStoneNFTBalance, activeStoneId, setMagicStoneNFTBalance],
   )
   return (
     <Page>
-      <Hero>
+      {/* <Hero>
         <StyledHead>
           <Heading as="h1" size="xxl" mb="24px" color="contrast">
-            Merge
+            Auto
           </Heading>
           <Heading as="h1" size="xxl" mb="24px" color="primary">
-            Stone
+            Play
           </Heading>
         </StyledHead>
       </Hero>
@@ -143,12 +168,23 @@ const MergeStone: React.FC<MergeStoneProps> = (props) => {
         </StyledFlexLayout>
       </Monsters>
       <MyDoges>
-        {/* <FlexLayout> */}
         {(typeof doges === typeof [])?dogeList(doges, true):(<></>)}
-        {/* </FlexLayout> */}
-      </MyDoges>
+      </MyDoges> */}
+      <Hero>
+        <StyledHead>
+          <Heading as="h1" size="xxl" mb="24px" color="contrast">
+            Coming
+          </Heading>
+          <Heading as="h1" size="xxl" mb="24px" color="primary">
+            Soon
+          </Heading>
+        </StyledHead>
+      </Hero>
+      <StyledHeading as="h3" size="xl" mb="24px" color="contrast">
+        With Autoplay mode , your Doges can Battle Monsters while you’re away or asleep. All you need to get started is a magic stone
+      </StyledHeading>
     </Page>
   )
 }
 
-export default MergeStone
+export default AutoPlay

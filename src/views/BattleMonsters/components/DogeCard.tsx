@@ -17,7 +17,7 @@ interface DogeCardProps {
     setActiveDoge: any
     farmTime: string
     fightNumber: string
-    battleTime: string
+    availableBattleTime: string
     stoneInfo: string
 }
 
@@ -57,8 +57,9 @@ const Id = styled.div`
 const DogeCardAction = styled.div`
     margin-top: 10px;
 `
-const DogeCard: React.FC<DogeCardProps> = ({classInfo, rare, level, exp, tribe, id, activeDoge, setActiveDoge, farmTime, fightNumber, battleTime, stoneInfo}) => {
-    // console.log('battleTime',battleTime)
+const DogeCard: React.FC<DogeCardProps> = ({classInfo , rare , level, exp, tribe, id, activeDoge, setActiveDoge, farmTime, fightNumber, availableBattleTime, stoneInfo}) => {
+    // console.log('rare',rare)
+    // console.log('classInfo',classInfo)
     const { account, connect, reset } = useWallet()
     useEffect(() => {
         if (!account && window.localStorage.getItem('accountStatus')) {
@@ -70,6 +71,14 @@ const DogeCard: React.FC<DogeCardProps> = ({classInfo, rare, level, exp, tribe, 
     const tribeName = tribes[tribe].name;
 
     const { onPresentConnectModal } = useWalletModal(connect, reset)
+    let nextTime = parseInt(availableBattleTime)*1000 - Date.now();
+    if(nextTime < 0 && parseInt(fightNumber) < 1){
+        nextTime = 0;
+    }
+    // if(!(nextTime < 0 && parseInt(fightNumber) > 0)){
+    //     if(activeDoge === parseInt(id))
+    //         setActiveDoge();
+    // }
 
     return (
         <div>
@@ -98,22 +107,19 @@ const DogeCard: React.FC<DogeCardProps> = ({classInfo, rare, level, exp, tribe, 
                             <Text>{tribeName}</Text>
                         </div>
                     </DogeInfo>
-                    {(stoneInfo !== "0")?(<></>):(
+                    {(nextTime < 0 && parseInt(fightNumber) > 0 && stoneInfo === "0")?(
                         <DogeInfo>
                             <div>
                                 <Text>Remained Turns Fight :</Text>
                                 <Text>{fightNumber}</Text>
                             </div>
-                        </DogeInfo>)
+                        </DogeInfo>):(<></>)
                     }
-                    {(parseInt(battleTime)*1000 < Date.now() && parseInt(fightNumber) > 0)?(
+                    {(nextTime <= 0 && parseInt(fightNumber) > 0)?(
                         (<DogeCardAction>
                         
                             {account? (<>
                                 {(stoneInfo !== "0")?(
-                                    // <Button fullWidth size="sm" onClick={async () => {
-                                    //     await getResultAutoFight(id);
-                                    // }}>Get result of auto fighting</Button>
                                     <DogeCardActions dogeId={id}/>
                                 ):(
                                     <Button fullWidth size="sm" onClick={() => {
@@ -126,7 +132,7 @@ const DogeCard: React.FC<DogeCardProps> = ({classInfo, rare, level, exp, tribe, 
                         </DogeCardAction>)
                         ): (
                         <DogeCardAction>
-                            <Button disabled fullWidth size="sm" onClick={onPresentConnectModal}>Wait for <Timestamp timeValue={parseInt(battleTime)*1000} /></Button>
+                            <Button disabled fullWidth size="sm" onClick={onPresentConnectModal}>Next Fight in {Math.ceil(nextTime/1000/3600)} hours</Button>
                         </DogeCardAction>
                         )
                     }

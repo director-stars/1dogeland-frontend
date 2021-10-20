@@ -149,14 +149,21 @@
     "type": "function"
   },
   {
-    "inputs": [
+    "inputs": [],
+    "name": "claimAmount",
+    "outputs": [
       {
-        "internalType": "address",
+        "internalType": "uint256",
         "name": "",
-        "type": "address"
+        "type": "uint256"
       }
     ],
-    "name": "claimTokenAmount",
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "claimTimeCycle",
     "outputs": [
       {
         "internalType": "uint256",
@@ -239,19 +246,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "magicStoneNFT",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -289,6 +283,25 @@
       {
         "internalType": "uint256",
         "name": "_rewardExpTo",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "nextClaimTime",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
         "type": "uint256"
       }
     ],
@@ -374,6 +387,25 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "stoneInfo",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "superRareEstate",
     "outputs": [
@@ -426,6 +458,10 @@
     "type": "function"
   },
   {
+    "stateMutability": "payable",
+    "type": "receive"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -434,19 +470,6 @@
       }
     ],
     "name": "setCryptoDogeNFT",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_magicStoneNFT",
-        "type": "address"
-      }
-    ],
-    "name": "setMagicStoneNFT",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -647,53 +670,14 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "getMonsters",
-    "outputs": [
+    "inputs": [
       {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "_hp",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "_successRate",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "_rewardTokenFrom",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "_rewardTokenTo",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "_rewardExpFrom",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "_rewardExpTo",
-            "type": "uint256"
-          }
-        ],
-        "internalType": "struct CryptoDogeController.Monster[]",
-        "name": "monsters",
-        "type": "tuple[]"
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
       }
     ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "buyStone",
+    "name": "setClaimAmount",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -702,42 +686,11 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_dogeId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_monsterId",
+        "name": "_newCycle",
         "type": "uint256"
       }
     ],
-    "name": "setAutoFight",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_dogeId",
-        "type": "uint256"
-      }
-    ],
-    "name": "unsetAutoFight",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_dogeId",
-        "type": "uint256"
-      }
-    ],
-    "name": "getAutoFightResults",
+    "name": "setClaimTimeCycle",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

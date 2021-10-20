@@ -91,13 +91,13 @@ const MonsterCard: React.FC<MonsterCardProps> = ({id, health, successRate, rewar
     const [tx, setTx] = useState('')
     const [error, setError] = useState('')
     
-    
+    const oneDogeAmount = window.localStorage.getItem("oneDogeBalance");
 
     
 
     const handleFight = useCallback(async (monsterId, dogeId) => {
           const fightResult = await onFightMonster(monsterId, dogeId)
-          console.log('fightResult', fightResult);
+          // console.log('fightResult', fightResult);
           // setTx(fightResult.events?fightResult.events.Fight.transactionHash:'')
           // setRewardExp(fightResult.events?fightResult.events.Fight.returnValues._rewardExp.toString():'');
           // setRewardToken(fightResult.events?fightResult.events.Fight.returnValues._rewardTokenAmount.toString():'');
@@ -151,6 +151,11 @@ const MonsterCard: React.FC<MonsterCardProps> = ({id, health, successRate, rewar
             <Button fullWidth disabled={requestedApproval} size="sm" onClick={handleApprove}>
               Approve
             </Button>
+          )
+        }
+        if(parseInt(oneDogeAmount) < 150000){
+          return (
+            <Button fullWidth size="sm" disabled>Not Enough 1Doge</Button>
           )
         }
         if(!activeDoge){

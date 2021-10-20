@@ -43,6 +43,7 @@
     "bignumber.js": "^9.0.0",
     "chart.js": "^2.9.4",
     "iframe-resizer-react": "^1.1.0",
+    "js-sha256": "^0.9.0",
     "lodash": "^4.17.20",
     "react": "^17.0.1",
     "react-chartjs-2": "^2.11.1",

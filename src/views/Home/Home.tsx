@@ -8,6 +8,7 @@ import { useFarms, usePriceBnbBusd, usePriceCakeBusd } from 'state/hooks'
 import BigNumber from 'bignumber.js'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { provider } from 'web3-core'
+import { useDogeBalance } from 'hooks/useDogesLand'
 import Page from 'components/layout/Page'
 import FlexLayout from 'components/layout/Flex'
 import useRefresh from 'hooks/useRefresh'
@@ -80,6 +81,8 @@ const Home: React.FC = () => {
     }
   }
 
+  const { onGetDogeBalance } = useDogeBalance()
+
   return (
     <Page>
       <Hero>
@@ -95,20 +98,16 @@ const Home: React.FC = () => {
       </Hero>
       <div>
         <StyledFlexLayout>
-          {/* <div style={{ width: "500px" }}> */}
-            <MagicStoneCard 
-              imgUrl="/images/egg/egg.png"
+            {/* <MagicStoneCard 
+              imgUrl="/images/egg/bnb.png"
               name="Magic Stone"
-              price="15000"
-            />
-          {/* </div> */}
-          {/* <div style={{ width: "500px" }}> */}
+              price="1"
+            /> */}
             <ChestCard 
-              imgUrl="/images/egg/egg.png"
+              imgUrl="/images/egg/9.png"
               name="Random Doge"
-              price="9999"
+              price="50000"
             />
-          {/* </div> */}
         </StyledFlexLayout>
       </div>
     </Page>

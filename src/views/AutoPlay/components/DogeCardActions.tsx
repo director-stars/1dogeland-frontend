@@ -14,6 +14,7 @@ interface DogeCardActionsProps {
   setActiveMonster: any
   magicStoneNFTBalance: number
   setMagicStoneNFTBalance: any
+  activeStoneId: number
 }
 
 const CardActions = styled.div`
@@ -27,25 +28,25 @@ const CardActions = styled.div`
   // margin-top: 20px;
 `
 
-const DogeCardActions: React.FC<DogeCardActionsProps> = ({ dogeId, stoneInfo, activeMonster, setActiveMonster, magicStoneNFTBalance, setMagicStoneNFTBalance }) => {
+const DogeCardActions: React.FC<DogeCardActionsProps> = ({ dogeId, stoneInfo, activeMonster, setActiveMonster, magicStoneNFTBalance, setMagicStoneNFTBalance, activeStoneId }) => {
   
   const [requestedApproval, setRequestedApproval] = useState(false)
-  const allowance = useCryptoDogeControllerAllowance()
-  const { onApprove } = useCryptoDogeControllerApprove()
+  // const allowance = useCryptoDogeControllerAllowance()
+  // const { onApprove } = useCryptoDogeControllerApprove()
   // const [onPresentApprove] = useModal(<PurchaseWarningModal />)
-  const handleApprove = useCallback(async () => {
-    try {
-      setRequestedApproval(true)
-      const txHash = await onApprove()
-      // user rejected tx or didn't go thru
-      if (!txHash) {
-        setRequestedApproval(false)
-      }
-      // onPresentApprove()
-    } catch (e) {
-      console.error(e)
-    }
-  }, [onApprove])
+  // const handleApprove = useCallback(async () => {
+  //   try {
+  //     setRequestedApproval(true)
+  //     const txHash = await onApprove()
+  //     // user rejected tx or didn't go thru
+  //     if (!txHash) {
+  //       setRequestedApproval(false)
+  //     }
+  //     // onPresentApprove()
+  //   } catch (e) {
+  //     console.error(e)
+  //   }
+  // }, [onApprove])
 
   const { account, connect, reset } = useWallet()
   useEffect(() => {
@@ -80,7 +81,7 @@ const DogeCardActions: React.FC<DogeCardActionsProps> = ({ dogeId, stoneInfo, ac
   const handleSetAutoFight = useCallback(async () => {
     try {
         setPendingTx(true)
-      const txHash = await onSetAutoFight(dogeId, activeMonster)
+      const txHash = await onSetAutoFight(dogeId, activeStoneId, activeMonster)
       // user rejected tx or didn't go thru
       if (!txHash) {
         setPendingTx(false)
@@ -89,7 +90,7 @@ const DogeCardActions: React.FC<DogeCardActionsProps> = ({ dogeId, stoneInfo, ac
     } catch (e) {
       console.error(e)
     }
-  }, [onSetAutoFight, dogeId, activeMonster])
+  }, [onSetAutoFight, dogeId, activeStoneId, activeMonster])
 
   const { onGetDogeBalance } = useDogeBalance()
   const handleGetDogeBalance = useCallback(async () => {
@@ -102,13 +103,13 @@ const DogeCardActions: React.FC<DogeCardActionsProps> = ({ dogeId, stoneInfo, ac
   }, [onGetDogeBalance, setMagicStoneNFTBalance])
 
   const renderDogeCardButtons = () => {
-    if (!allowance.toNumber()) {
-      return (
-        <Button fullWidth disabled={requestedApproval} size="sm" onClick={handleApprove}>
-          Approve
-        </Button>
-      )
-    }
+    // if (!allowance.toNumber()) {
+    //   return (
+    //     <Button fullWidth disabled={requestedApproval} size="sm" onClick={handleApprove}>
+    //       Approve
+    //     </Button>
+    //   )
+    // }
     if(stoneInfo !== "0"){
       return (
         <Button fullWidth size="sm"

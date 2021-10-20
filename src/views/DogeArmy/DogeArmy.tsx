@@ -69,6 +69,7 @@ const DogeArmy: React.FC<DogeArmyProps> = (props) => {
   const [isUnSaleDoges, setIsUnSaleDoges] = useState(true);
   const chevronWidth = 40;
   let saleDoges = useMySaleDoges();
+  // console.log('saleDoges', saleDoges)
   if(saleDoges === undefined) saleDoges = [];
   // console.log('saleDoges',saleDoges)
   let unSaleDoges = useMyUnSaleDoges();

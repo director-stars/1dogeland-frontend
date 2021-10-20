@@ -71,6 +71,7 @@ const MarketItem = styled.div`
 
 const MarketPlace: React.FC = () => {
   const doges = useSaleDoges()
+  // console.log(doges)
   const dogeList = useCallback(
     (dogesToDisplay, removed: boolean) => {
       return dogesToDisplay.map((doge) => (

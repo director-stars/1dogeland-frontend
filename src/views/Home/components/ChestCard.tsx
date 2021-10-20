@@ -107,7 +107,7 @@ const ChestCard: React.FC<ChestCardProps> = ({imgUrl, name, price}) => {
                     <DogeInfo>
                         <Text>Price</Text>
                         <PriceInfo>
-                            <TokenIcon width={24} height={24} src="/images/egg/9.png"/>
+                            <TokenIcon width={24} height={24} src={imgUrl}/>
                             <Text>{price}</Text>
                         </PriceInfo>
                     </DogeInfo>
