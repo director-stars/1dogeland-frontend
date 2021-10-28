@@ -22,7 +22,7 @@ const MagicStoneCardActions: React.FC = () => {
   const [toasts, setToasts] = useState([]);
   // const allowance = useMagicStoneControllerAllowance()
   // const { onApprove } = useMagicStoneControllerApprove()
-  const [oneDogeBalance, setOneDogeBalance] = useState(parseInt(window.localStorage.getItem("oneDogeBalance")) / 10**18);
+  const [bnbBalance, setBnbBalance] = useState(parseInt(window.localStorage.getItem("bnbBalance")) / 10**18);
   // const dogeNFTBalance = parseInt(window.localStorage.getItem("dogeNFTBalance")) / 10**18;
   // const handleApprove = useCallback(async () => {
   //   try {
@@ -42,7 +42,7 @@ const MagicStoneCardActions: React.FC = () => {
   const handleGetDogeBalance = useCallback(async () => {
     try {
       await onGetDogeBalance()
-      setOneDogeBalance(parseInt(window.localStorage.getItem("oneDogeBalance")) / 10**18);
+      setBnbBalance(parseInt(window.localStorage.getItem("bnbBalance")) / 10**18);
     } catch (e) {
       console.error(e)
     }
@@ -91,7 +91,7 @@ const MagicStoneCardActions: React.FC = () => {
   };
 
   const renderStoneCardButtons = () => {
-    if(oneDogeBalance < 15000){
+    if(bnbBalance < 1){
       return (
           <Button fullWidth disabled size="sm">
             Not enough bnb

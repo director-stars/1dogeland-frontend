@@ -40,6 +40,10 @@ export const getMagicStoneNFTAddress = () => {
   return addresses.magicStoneNFT[chainId];
 }
 
-export const getMagicStoneControllerddress = () => {
+export const getMagicStoneControllerAddress = () => {
   return addresses.magicStoneController[chainId];
+}
+
+export const getAirDropAddress = () => {
+  return addresses.airDrop[chainId];
 }

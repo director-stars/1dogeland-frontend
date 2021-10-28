@@ -149,7 +149,7 @@ const AutoPlay: React.FC<AutoPlayProps> = (props) => {
   )
   return (
     <Page>
-      {/* <Hero>
+      <Hero>
         <StyledHead>
           <Heading as="h1" size="xxl" mb="24px" color="contrast">
             Auto
@@ -169,8 +169,8 @@ const AutoPlay: React.FC<AutoPlayProps> = (props) => {
       </Monsters>
       <MyDoges>
         {(typeof doges === typeof [])?dogeList(doges, true):(<></>)}
-      </MyDoges> */}
-      <Hero>
+      </MyDoges>
+      {/* <Hero>
         <StyledHead>
           <Heading as="h1" size="xxl" mb="24px" color="contrast">
             Coming
@@ -182,7 +182,7 @@ const AutoPlay: React.FC<AutoPlayProps> = (props) => {
       </Hero>
       <StyledHeading as="h3" size="xl" mb="24px" color="contrast">
         With Autoplay mode , your Doges can Battle Monsters while you’re away or asleep. All you need to get started is a magic stone
-      </StyledHeading>
+      </StyledHeading> */}
     </Page>
   )
 }

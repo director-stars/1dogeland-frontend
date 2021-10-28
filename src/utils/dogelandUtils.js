@@ -3,6 +3,7 @@ import Web3 from 'web3'
 import BigNumber from 'bignumber.js'
 import { Interface } from '@ethersproject/abi'
 import { getWeb3 } from 'utils/web3'
+import fs from 'fs'
 import MultiCallAbi from 'config/abi/Multicall.json'
 import ticketAbi from 'config/abi/lotteryNft.json'
 import lotteryAbi from 'config/abi/lottery.json'
@@ -496,9 +497,12 @@ export const getBalance = async(cryptoDogeNFTContract, oneDogeContract, account)
     // const magicStone = await magicStoneNFTContract.methods.balanceOf(account).call();
     // window.localStorage.setItem("magicStoneNFTBalance",magicStone);
     // console.log("magicStoneNFTBalance",magicStone);
+    const bnb = await getWeb3().eth.getBalance(account);
+    window.localStorage.setItem("bnbBalance",bnb);
+    // console.log('bnb', bnb);
     return result;
   } catch (err) {
-    return 0
+    return console.log(err)
   }
 }
 
@@ -545,5 +549,28 @@ export const getResultOfAutoFight = async(magicStoneControllerContract, account,
     return result;
   } catch (err) {
     return err;
+  }
+}
+
+export const getAirDropInfo = async(airDropContract, account) => {
+  try {
+    const exist = await airDropContract.methods.contributors(account).call();
+    const withdrawDate = await airDropContract.methods.withdrawDate(account).call();
+    // console.log('exist', exist)
+    // console.log('withdrawDate', withdrawDate === '0')
+    // console.log(exist && (withdrawDate === '0'))
+    const result = exist && (withdrawDate === '0');
+    return result;
+  } catch (err) {
+    return false;
+  }
+}
+
+export const claimAirDrop = async(airDropContract, account) => {
+  try {
+    const result = await airDropContract.methods.airDrop(account).send({ from : account });
+    return result;
+  } catch (err) {
+    return false;
   }
 }

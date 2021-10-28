@@ -98,11 +98,11 @@ const Home: React.FC = () => {
       </Hero>
       <div>
         <StyledFlexLayout>
-            {/* <MagicStoneCard 
+            <MagicStoneCard 
               imgUrl="/images/egg/bnb.png"
               name="Magic Stone"
               price="1"
-            /> */}
+            />
             <ChestCard 
               imgUrl="/images/egg/9.png"
               name="Random Doge"

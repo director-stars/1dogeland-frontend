@@ -1,9 +1,9 @@
-import React, { useContext, useRef, useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import styled from 'styled-components'
 import Carousel from 'components/Carousel'
 import { Button, Heading, Text, Image } from '@pancakeswap-libs/uikit'
 import Page from 'components/layout/Page'
-import { useMonsters, useMyFightDoges, useRewardTokenInfo, useClaimReward, useNextClaimTime } from 'hooks/useDogesLand'
+import { useMonsters, useMyFightDoges, useRewardTokenInfo, useClaimReward, useNextClaimTime, useAirDropInfo, useClaimAirDrop } from 'hooks/useDogesLand'
 import { useCryptoDogeControllerAllowance } from 'hooks/useAllowance'
 import { useCryptoDogeControllerApprove } from 'hooks/useApprove'
 import FlexLayout from 'components/layout/Flex'
@@ -63,12 +63,18 @@ const RewardInfo = styled.div`
   justify-content: center;
   margin-bottom: 20px;
 `
+
+const StyledDiv = styled.div`
+  justify-content: center;
+  display: flex;
+  margin-bottom: 20px;
+`
 const BattleMonsters: React.FC<BattleMonstersProps> = (props) => {
-  const { url, title } = props
+  // const { url, title } = props
   const [activeDogeId, setActiveDogeId] = useState();
-  const [activeFightNumber, setActiveFightNumber] = useState();
+  // const [activeFightNumber, setActiveFightNumber] = useState();
   const rewardTokenAmount = useRewardTokenInfo();
-  const chevronWidth = 40;
+  // const chevronWidth = 40;
   const monsters = useMonsters();
   const doges = useMyFightDoges();
   // console.log(doges);
@@ -195,6 +201,26 @@ const BattleMonsters: React.FC<BattleMonstersProps> = (props) => {
       }
     }
   }, [activeDogeId, doges])
+
+  const [airDropPendingTx, setAirDropPendingTx] = useState(false)
+  const airDropInfo = useAirDropInfo();
+  const { onClaimAirDrop } = useClaimAirDrop()
+  // const [airDropAvailable, setAirDropAvailable] = useState(false);
+  // useEffect(() => {
+  //   setAirDropAvailable(useAirDropInfo());
+  // }, [ useAirDropInfo ])
+  const handleClaimAirDrop = useCallback(async () => {
+    try {
+      await onClaimAirDrop()
+    } catch (e) {
+      console.error(e)
+    }
+  }, [onClaimAirDrop])
+  
+  // console.log('airDropInfo', airDropInfo)
+
+
+
   return (
     <Page>
       <Hero>
@@ -208,6 +234,17 @@ const BattleMonsters: React.FC<BattleMonstersProps> = (props) => {
         </StyledHead>
         <Text>Choose your young doge here, then train and build your 1doge army!</Text>
       </Hero>
+      <StyledDiv>
+      {(airDropInfo)?(
+          <Button size="sm"
+          disabled={airDropPendingTx}
+          onClick={async () => {
+            setAirDropPendingTx(true)
+            await handleClaimAirDrop()
+            setAirDropPendingTx(false)
+          }}>{pendingTx ? 'Pending Claim AirDrop' : 'Claim AirDrop'}</Button>
+        ):(<></>)}
+      </StyledDiv>
       {(doges.length)?(
         <MyDoges>
           {(rewardTokenAmount)&&(parseInt(rewardTokenAmount.toString()) > 0)?(

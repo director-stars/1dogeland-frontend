@@ -2,7 +2,7 @@ import { useCallback, useState, useEffect } from 'react'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
 import { sha256 } from 'js-sha256'
-import { useCryptoDogeController, useCryptoDogeNFT, useMagicStoneNFT, useMarketController, useOneDoge, useMagicStoneController } from 'hooks/useContract'
+import { useCryptoDogeController, useCryptoDogeNFT, useMagicStoneNFT, useMarketController, useOneDoge, useMagicStoneController, useAirDropContract } from 'hooks/useContract'
 import useRefresh from './useRefresh'
 import { 
   getBattleBosses, 
@@ -30,6 +30,8 @@ import {
   getResultOfAutoFight,
   getStoneByOwner,
   getNextClaimTime,
+  getAirDropInfo,
+  claimAirDrop
 } from '../utils/dogelandUtils'
 
 // export const useBattleBosses = () => {
@@ -419,6 +421,40 @@ export const useGetResultOfAutoFight = () => {
     [account, magicStoneControllerContract],
   )
   return { onGetResultOfAutoFight: handleGetResultOfAutoFight }
+}
+
+export const useAirDropInfo = () => {
+  const { account } = useWallet()
+  const [airDropInfo, setAirDropInfo] = useState(false)
+  const airDropContract = useAirDropContract();
+  const { fastRefresh } = useRefresh()
+  useEffect(() => {
+    const fetchBalance = async () => {
+      const info = await getAirDropInfo(airDropContract, account)
+      // console.log('useDogesLand', myStones)
+      setAirDropInfo(info)
+    }
+    fetchBalance()
+  }, [account, fastRefresh, airDropContract])
+
+  return airDropInfo
+}
+
+export const useClaimAirDrop = () => {
+  const { account } = useWallet()
+  const airDropContract = useAirDropContract();
+  const handleClaimAirDrop = useCallback(
+    async () => {
+      try {
+        const result = await claimAirDrop(airDropContract, account)
+        return result
+      } catch (e) {
+        return false
+      }
+    },
+    [account, airDropContract],
+  )
+  return { onClaimAirDrop: handleClaimAirDrop }
 }
 
 export const classes = [

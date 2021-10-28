@@ -153,7 +153,7 @@ const MonsterCard: React.FC<MonsterCardProps> = ({id, health, successRate, rewar
             </Button>
           )
         }
-        if(parseInt(oneDogeAmount) < 150000){
+        if(parseInt(oneDogeAmount) < 100000){
           return (
             <Button fullWidth size="sm" disabled>Not Enough 1Doge</Button>
           )
