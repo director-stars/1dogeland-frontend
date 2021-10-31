@@ -175,7 +175,8 @@ export const buyStone = async (magicStoneControllerContract, account, price) => 
   try {
     return magicStoneControllerContract.methods
       .buyStone()
-      .send({ from: account, value: Web3.utils.toWei(price)})
+      // .send({ from: account, value: Web3.utils.toWei(price)})
+      .send({ from: account, value: price})
       .on('transactionHash', (tx) => {
         return tx.transactionHash
       })
