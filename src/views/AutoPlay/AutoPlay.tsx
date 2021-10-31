@@ -80,7 +80,8 @@ const AutoPlay: React.FC<AutoPlayProps> = (props) => {
   const stoneSize = stones.length;
   const monsters = useMonsters();
   const [activeMonsterId, setActiveMonsterId] = useState('');
-  const [magicStoneNFTBalance, setMagicStoneNFTBalance] = useState(parseInt(window.localStorage.getItem("magicStoneNFTBalance")));
+  // const [magicStoneNFTBalance, setMagicStoneNFTBalance] = useState(parseInt(window.localStorage.getItem("magicStoneNFTBalance")));
+  const [magicStoneNFTBalance, setMagicStoneNFTBalance] = useState(0);
   const [activeStoneId, setActiveStoneId] = useState(0);
   let availableStone = 0;
   let availableStoneId = 0;
