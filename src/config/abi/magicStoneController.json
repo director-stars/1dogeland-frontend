@@ -164,6 +164,19 @@
   },
   {
     "inputs": [],
+    "name": "feeAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "magicStoneNFT",
     "outputs": [
       {
@@ -311,6 +324,19 @@
       }
     ],
     "name": "setNftMaxSize",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_feeAddress",
+        "type": "address"
+      }
+    ],
+    "name": "setFeeAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
