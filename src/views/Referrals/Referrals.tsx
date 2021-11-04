@@ -32,7 +32,7 @@ const Hero = styled.div`
 
 const Banner = styled.div`
   align-items: center;
-  background-image: url('${process.env.PUBLIC_URL}/images/pan-bg-mobile.svg');
+  background-image: url('${process.env.PUBLIC_URL}/images/pet.gif');
   background-repeat: no-repeat;
   background-position: top center;
   display: flex;
@@ -40,7 +40,7 @@ const Banner = styled.div`
   flex-direction: column;
   margin: auto;
   margin-bottom: 32px;
-  padding-top: 116px;
+  padding-top: 200px;
   text-align: center;
 
   ${({ theme }) => theme.mediaQueries.lg} {

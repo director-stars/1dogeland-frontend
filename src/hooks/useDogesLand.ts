@@ -474,7 +474,12 @@ export const classes = [
     {asset: "ronin.gif", name: "ronin"},
     {asset: "kraken.gif", name: "kraken"},
     {asset: "shield.gif", name: "shield"},
-    {asset: "snowball.gif", name: "snowball"}
+    {asset: "snowball.gif", name: "snowball"},
+    {asset: "essence.gif", name: "essence"},
+    {asset: "paladin.gif", name: "paladin"},
+    {asset: "sinner.gif", name: "sinner"},
+    {asset: "berserker.gif", name: "berserker"},
+    {asset: "bard.gif", name: "bard"}
   ],
   [
     {asset: "fish.gif", name: "fish"},
@@ -484,24 +489,29 @@ export const classes = [
     {asset: "rain.gif", name: "rain"},
     {asset: "elder.gif", name: "elder"},
     {asset: "hydro.gif", name: "hydro"},
+    {asset: "lancer.gif", name: "lancer"},
   ],
   [
     {asset: "negative.gif", name: "negative"},
     {asset: "leaf.gif", name: "leaf"},
     {asset: "vamp.gif", name: "vamp"},
+    {asset: "pirate.gif", name: "pirate"},
   ],
   [
     {asset: "wind.gif", name: "wind"},
     {asset: "blades.gif", name: "blades"},
     {asset: "mystic.gif", name: "mystic"},
+    {asset: "rogue.gif", name: "rogue"},
   ],
   [
     {asset: "ninja.gif", name: "ninja"},
     {asset: "olaf.gif", name: "olaf"},
+    {asset: "plague.gif", name: "plague"},
   ],
   [
     {asset: "druid.gif", name: "druid"},
     {asset: "fur.gif", name: "fur"},
+    {asset: "spot.gif", name: "spot"},
   ]
 ]
 

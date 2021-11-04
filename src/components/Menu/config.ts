@@ -3,44 +3,47 @@ import { MenuItemsType, DropdownMenuItemType } from '@pancakeswap-libs/uikit'
 const config: MenuItemsType[] = [
   {
     label: 'Starter Doges',
-    icon: 'HomeIcon',
+    icon: 'Home',
     href: '/',
   },
   {
     label: 'Marketplace',
-    icon: 'TradeIcon',
+    icon: 'Trade',
     href: '/marketplace',
   },
   {
     label: 'My 1Doge Army',
-    icon: 'FarmIcon',
+    icon: 'Doge',
     href: '/my-doge',
   },
   {
-    label: 'AutoPlay',
-    icon: 'FarmIcon',
-    href: '/auto-play',
-  },
-  {
     label: 'Battle Monsters',
-    icon: 'PoolIcon',
+    icon: 'Battle',
     href: '/battle-monsters',
   },
   {
-    label: 'Battle Bosses',
-    icon: 'PoolIcon',
-    href: '/battle-bosses',
-  },
-  {
-    label: 'Referrals',
-    icon: 'PoolIcon',
-    href: '/referrals',
-  },
-  {
-    href: "",
-    label: 'Help',
-    icon: 'MoreIcon',
+    href: "#",
+    label: 'More',
+    icon: 'More',
     items: [
+      {
+        label: 'AutoPlay',
+        href: '/auto-play',
+        type: DropdownMenuItemType.INTERNAL_LINK,
+      },
+      {
+        label: 'Battle Bosses',
+        href: '/battle-bosses',
+        type: DropdownMenuItemType.INTERNAL_LINK,
+      },
+      {
+        label: 'Referrals',
+        href: '/referrals',
+        type: DropdownMenuItemType.INTERNAL_LINK,
+      },
+      {
+        type: DropdownMenuItemType.DIVIDER,
+      },
       {
         label: 'Buy 1doge',
         href: 'https://pancakeswap.finance/swap#/swap?outputCurrency=0x40619dc9F00ea34e51D96b6EC5d8a6aD75457434&inputCurrency=BNB',
