@@ -1836,8 +1836,8 @@
     eslint-plugin-react-hooks "^4.0.0"
 
 "@pancakeswap-libs/uikit@Starsidea/1dogeland-uikit":
-  version "0.1.7"
-  resolved "https://codeload.github.com/Starsidea/1dogeland-uikit/tar.gz/068656a9157e8920b846d9d9d55338ba4e6a0233"
+  version "0.1.8"
+  resolved "https://codeload.github.com/Starsidea/1dogeland-uikit/tar.gz/f032e2abe36bb3900497845654965ceaee1ed525"
   dependencies:
     "@types/lodash" "^4.14.162"
     "@types/styled-system" "^5.1.10"
