@@ -91,7 +91,7 @@ const MagicStoneCardActions: React.FC = () => {
   };
 
   const renderStoneCardButtons = () => {
-    if(bnbBalance < 1){
+    if(bnbBalance < 0.2){
       return (
           <Button fullWidth disabled size="sm">
             Not enough bnb
