@@ -101,7 +101,7 @@ const Home: React.FC = () => {
             <MagicStoneCard 
               imgUrl="/images/egg/bnb.png"
               name="Magic Stone"
-              price="1"
+              price="0.2"
             />
             <ChestCard 
               imgUrl="/images/egg/9.png"

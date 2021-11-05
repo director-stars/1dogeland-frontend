@@ -22,15 +22,15 @@ const config: MenuItemsType[] = [
     href: '/battle-monsters',
   },
   {
+    label: 'AutoPlay',
+    icon: 'Stone',
+    href: '/auto-play',
+  },
+  {
     href: "#",
     label: 'More',
     icon: 'More',
     items: [
-      {
-        label: 'AutoPlay',
-        href: '/auto-play',
-        type: DropdownMenuItemType.INTERNAL_LINK,
-      },
       {
         label: 'Battle Bosses',
         href: '/battle-bosses',
