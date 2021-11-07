@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react'
 import BigNumber from 'bignumber.js'
-import { Heading, Text, useWalletModal, Card, CardBody, CardHeader, CardFooter, Button, Image } from '@pancakeswap-libs/uikit'
+import { Heading, Text, Image } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
-import { useFetchPublicData } from 'state/hooks'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { classes, tribes } from 'hooks/useDogesLand'
 import DogeCardActions from './DogeCardActions'
@@ -47,12 +46,12 @@ const StyledCard = styled.div`
     padding: 10px 20px;
     border-radius: 30px;
 `
-const PriceInfo = styled.div`
-    display: flex;
-`
-const TokenIcon = styled(Image)`
-    width: 24px;
-`
+// const PriceInfo = styled.div`
+//     display: flex;
+// `
+// const TokenIcon = styled(Image)`
+//     width: 24px;
+// `
 const DogeInfoItem = styled.div`
     display: flex;
     & ${Text}:first-child{
@@ -73,8 +72,8 @@ const Id = styled.div`
     height: fit-content;
 `
 const DogeCard: React.FC<MartketCardProps> = ({id, classInfo, price, owner, level, exp, rare, tribe, activeMonster, setActiveMonster,stoneInfo, magicStoneNFTBalance, setMagicStoneNFTBalance, activeStoneId}) => {
-    const price1 = new BigNumber(price).div(new BigNumber(10).pow(18)).toString()
-    const { account, connect, reset } = useWallet()
+    // const price1 = new BigNumber(price).div(new BigNumber(10).pow(18)).toString()
+    const { account, connect } = useWallet()
     useEffect(() => {
         if (!account && window.localStorage.getItem('accountStatus')) {
         connect('injected')
@@ -83,7 +82,7 @@ const DogeCard: React.FC<MartketCardProps> = ({id, classInfo, price, owner, leve
     const dogeImage = classes[parseInt(rare) - 1][classInfo].asset;
     const dogeName = classes[parseInt(rare) - 1][classInfo].name;
     const tribeName = tribes[tribe].name;
-    const isSale = (price === "0");
+    // const isSale = (price === "0");
 
     return (
         <div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { BaseLayout, Heading, useWalletModal, Button, Text } from '@pancakeswap-libs/uikit'
 import { useWallet } from '@binance-chain/bsc-use-wallet'

@@ -178,7 +178,7 @@ const BattleMonsters: React.FC<BattleMonstersProps> = (props) => {
     try {
       setRequestedClaim(true)
       const claimResult = await onClaimReward()
-      console.log('claimResult: ',claimResult);
+      // console.log('claimResult: ',claimResult);
       if(claimResult){
         setRequestedClaim(false);
       }

@@ -1,7 +1,5 @@
-import BigNumber from 'bignumber.js'
-import React, { useCallback, useMemo, useState } from 'react'
-import { Button, Modal, LinkExternal } from '@pancakeswap-libs/uikit'
-import ModalActions from 'components/ModalActions'
+import React from 'react'
+import { Modal, LinkExternal } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 
 const StyledDiv = styled.div`

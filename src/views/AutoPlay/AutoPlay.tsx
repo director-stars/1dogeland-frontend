@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import styled from 'styled-components'
-import { Button, Heading, Text, ButtonMenu, ButtonMenuItem } from '@pancakeswap-libs/uikit'
+import { Heading } from '@pancakeswap-libs/uikit'
 import Page from 'components/layout/Page'
-import { useMonsters, useMyFightDoges, useMyStone, useClaimReward } from 'hooks/useDogesLand'
+import { useMonsters, useMyFightDoges, useMyStone } from 'hooks/useDogesLand'
 import FlexLayout from 'components/layout/Flex'
 import DogeCard from './components/DogeCard'
 import StoneCard from './components/StoneCard'
@@ -53,29 +53,29 @@ const StyledFlexLayout = styled(FlexLayout)`
     margin-bottom: 20px;
   }
 `
-const StyledDiv = styled.div`
-  column-gap: 20px;
-  display: inline-flex;
-  margin-bottom: 20px;
-`
+// const StyledDiv = styled.div`
+//   column-gap: 20px;
+//   display: inline-flex;
+//   margin-bottom: 20px;
+// `
 
-const Row = styled.div`
-  margin-bottom: 32px;
+// const Row = styled.div`
+//   margin-bottom: 32px;
 
-  & > button + button {
-    margin-left: 16px;
-  }
-`;
+//   & > button + button {
+//     margin-left: 16px;
+//   }
+// `;
 
-const StyledHeading = styled(Heading)`
-  letter-spacing: 2px;
-  text-align: center;
-  font-weight: 400px;
-`
+// const StyledHeading = styled(Heading)`
+//   letter-spacing: 2px;
+//   text-align: center;
+//   font-weight: 400px;
+// `
 
 const AutoPlay: React.FC<AutoPlayProps> = (props) => {
-  const { url, title } = props
-  const chevronWidth = 40;
+  // const { url, title } = props
+  // const chevronWidth = 40;
   const stones = useMyStone();
   const stoneSize = stones.length;
   const monsters = useMonsters();

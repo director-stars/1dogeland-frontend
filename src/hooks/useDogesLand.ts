@@ -1,16 +1,13 @@
 import { useCallback, useState, useEffect } from 'react'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import BigNumber from 'bignumber.js'
 import { sha256 } from 'js-sha256'
-import { useCryptoDogeController, useCryptoDogeNFT, useMagicStoneNFT, useMarketController, useOneDoge, useMagicStoneController, useAirDropContract } from 'hooks/useContract'
+import { useCryptoDogeController, useCryptoDogeNFT, useMarketController, useOneDoge, useMagicStoneController, useAirDropContract } from 'hooks/useContract'
 import useRefresh from './useRefresh'
 import { 
-  getBattleBosses, 
   getMyFightDoges, 
   getMonsters, 
   buyDoge, 
   getLastTokenId, 
-  getDogeInfo, 
   dbCreateDoge, 
   dbUpdateOwner,
   fightMonster, 
@@ -113,7 +110,7 @@ export const useBuyCryptoDoge = () => {
         const _classInfo = "0";
         const token = sha256(lastTokenId+temp+account+temp+_classInfo);
         await dbCreateDoge(lastTokenId, account, 0, token);
-        const doges = await getBalance(cryptoDogeNFTContract, oneDogeContract, account, );
+        await getBalance(cryptoDogeNFTContract, oneDogeContract, account, );
         return txHash
       } catch (e) {
         return false
@@ -247,7 +244,7 @@ export const useFillOrder = () => {
         // console.log('result', result.events.FillOrder);
         const token = sha256(_tokenId+temp+account);
         await dbUpdateOwner(_tokenId, account, token);
-        const doges = await getBalance(cryptoDogeNFTContract, oneDogeContract, account, );
+        await getBalance(cryptoDogeNFTContract, oneDogeContract, account, );
         return result
       } catch (e) {
         return false
@@ -335,15 +332,13 @@ export const useSaleDoges = () => {
 
 export const useDogeBalance = () => {
   const { account } = useWallet()
-  // const [dogeBalance, setDogeBalance] = useState(0)
-  const { fastRefresh } = useRefresh()
+  // const { fastRefresh } = useRefresh()
   const cryptoDogeNFTContract = useCryptoDogeNFT();
   const oneDogeContract = useOneDoge();
   const handleGetDogeBalance = useCallback(
     async () => {
       try {
-        const doges = await getBalance(cryptoDogeNFTContract, oneDogeContract, account, );
-        // setDogeBalance(doges);
+        await getBalance(cryptoDogeNFTContract, oneDogeContract, account, );
         return true;
       } catch (e) {
         return false
@@ -373,7 +368,7 @@ export const useMyStone = () => {
 
 export const useUnsetAutoFight = () => {
   const { account } = useWallet()
-  const { fastRefresh } = useRefresh()
+  // const { fastRefresh } = useRefresh()
   const magicStoneControllerContract = useMagicStoneController()
   const handleUnsetAutoFight = useCallback(
     async (_tokenId) => {

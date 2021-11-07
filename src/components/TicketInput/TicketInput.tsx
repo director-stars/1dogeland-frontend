@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Button, Image } from '@pancakeswap-libs/uikit'
-import useI18n from '../../hooks/useI18n'
+import { Image } from '@pancakeswap-libs/uikit'
 import Input, { InputProps } from '../Input'
 
 const TokenIcon = styled(Image)`
@@ -16,7 +15,6 @@ interface TokenInputProps extends InputProps {
 }
 
 const TicketInput: React.FC<TokenInputProps> = ({ max, symbol, availableSymbol, onChange, value }) => {
-  const TranslateString = useI18n()
 
   return (
     <StyledTokenInput>
@@ -33,30 +31,16 @@ const TicketInput: React.FC<TokenInputProps> = ({ max, symbol, availableSymbol, 
         placeholder="100, 000"
         value={value}
       />
-      {/* <StyledMaxText>{TranslateString(454, `${max.toLocaleString()} ${availableSymbol} Available`)}</StyledMaxText> */}
     </StyledTokenInput>
   )
 }
 
 const StyledTokenInput = styled.div``
 
-const StyledSpacer = styled.div`
-  width: ${(props) => props.theme.spacing[3]}px;
-`
 
 const StyledTokenAdornmentWrapper = styled.div`
   align-items: center;
   display: flex;
-`
-
-const StyledMaxText = styled.div`
-  align-items: center;
-  color: ${(props) => props.theme.colors.primary};
-  display: flex;
-  font-size: 14px;
-  font-weight: 700;
-  height: 20px;
-  justify-content: flex-end;
 `
 
 const StyledTokenSymbol = styled.span`

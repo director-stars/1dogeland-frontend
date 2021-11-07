@@ -1,15 +1,15 @@
-import React, { useEffect, useCallback, useState } from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
-import { Heading, Card, CardBody, Text, useWalletModal } from '@pancakeswap-libs/uikit'
+import { Text, useWalletModal } from '@pancakeswap-libs/uikit'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import CopyToClipboard from './CopyToClipboard'
 
-const StyledFarmStakingCard = styled(Card)`
-  background-image: url('${process.env.PUBLIC_URL}/images/cake-bg.svg');
-  background-repeat: no-repeat;
-  background-position: top right;
-  margin: 50px;
-`
+// const StyledFarmStakingCard = styled(Card)`
+//   background-image: url('${process.env.PUBLIC_URL}/images/cake-bg.svg');
+//   background-repeat: no-repeat;
+//   background-position: top right;
+//   margin: 50px;
+// `
 
 const StyledDiv = styled.div`
   text-align: center;

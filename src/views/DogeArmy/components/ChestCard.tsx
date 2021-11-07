@@ -1,8 +1,6 @@
 import React, { useEffect, useCallback, useState } from 'react'
-import { Heading, Text, useWalletModal, Card, CardBody, CardHeader, CardFooter, Button, Image } from '@pancakeswap-libs/uikit'
+import { Heading, Text, useWalletModal, Card, CardBody, CardHeader, CardFooter, Button } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
-// import { useCreateCryptoDogeAllowance } from 'hooks/useAllowance'
-// import { useCreateCryptoDogeApprove } from 'hooks/useApprove'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { tribes, useOpenChest } from 'hooks/useDogesLand'
 

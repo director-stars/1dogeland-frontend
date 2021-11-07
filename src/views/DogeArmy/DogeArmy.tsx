@@ -1,6 +1,6 @@
-import React, { useContext, useRef, useState, useCallback } from 'react'
+import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
-import { Button, Heading, Text, ButtonMenu, ButtonMenuItem } from '@pancakeswap-libs/uikit'
+import { Heading, Text, ButtonMenu, ButtonMenuItem } from '@pancakeswap-libs/uikit'
 import Page from 'components/layout/Page'
 import { useMySaleDoges, useMyUnSaleDoges } from 'hooks/useDogesLand'
 import FlexLayout from 'components/layout/Flex'

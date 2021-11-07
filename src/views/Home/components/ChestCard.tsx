@@ -1,5 +1,5 @@
-import React, { useEffect, useCallback, useState } from 'react'
-import { Heading, Text, useWalletModal, Card, CardBody, CardHeader, CardFooter, Button, Image } from '@pancakeswap-libs/uikit'
+import React from 'react'
+import { Heading, Text, Card, CardBody, CardHeader, CardFooter, Image } from '@pancakeswap-libs/uikit'
 import styled, { keyframes } from 'styled-components'
 import ChestCardActions from './ChestCardActions'
 

@@ -1,10 +1,9 @@
 import React, { useEffect, Suspense, lazy, useCallback } from 'react'
-import { HashRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
+import { HashRouter as Router, Route, Switch } from 'react-router-dom'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { ResetCSS } from '@pancakeswap-libs/uikit'
 import BigNumber from 'bignumber.js'
 import { useDogeBalance } from 'hooks/useDogesLand'
-import styled from 'styled-components'
 import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
 import PageLoader from './components/PageLoader'
@@ -13,7 +12,7 @@ import PageLoader from './components/PageLoader'
 // Only pool is included in the main bundle because of it's the most visited page'
 const Home = lazy(() => import('./views/Home'))
 const BattleMonsters = lazy(() => import('./views/BattleMonsters'))
-const BattleBosses = lazy(() => import('./views/BattleBosses'))
+// const BattleBosses = lazy(() => import('./views/BattleBosses'))
 const DogeArmy = lazy(() => import('./views/DogeArmy'))
 const AutoPlay = lazy(() => import('./views/AutoPlay'))
 const MarketPlace = lazy(() => import('./views/MarketPlace'))

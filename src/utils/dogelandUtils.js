@@ -1,13 +1,6 @@
 /* eslint-disable no-await-in-loop */
 import Web3 from 'web3'
-import BigNumber from 'bignumber.js'
-import { Interface } from '@ethersproject/abi'
 import { getWeb3 } from 'utils/web3'
-import fs from 'fs'
-import MultiCallAbi from 'config/abi/Multicall.json'
-import ticketAbi from 'config/abi/lotteryNft.json'
-import lotteryAbi from 'config/abi/lottery.json'
-import { getMulticallAddress } from './addressHelpers'
 
 let referer="0x0000000000000000000000000000000000000000" ;
 // console.log(window.localStorage.getItem("referer"))
@@ -232,7 +225,7 @@ export const fightMonster = async (cryptoDogeControllerContract, account, monste
       gas: 300000,
     });
     
-    const res = await fetch(`${API_URL}/crypto-doges-decreaseFN/${tokenId}`, {
+    await fetch(`${API_URL}/crypto-doges-decreaseFN/${tokenId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -503,7 +496,7 @@ export const getBalance = async(cryptoDogeNFTContract, oneDogeContract, account)
     // console.log('bnb', bnb);
     return result;
   } catch (err) {
-    return console.log(err)
+    return console.log('err')
   }
 }
 

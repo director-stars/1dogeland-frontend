@@ -1,11 +1,8 @@
 import React, { useEffect, useCallback, useState } from 'react'
 import styled from 'styled-components'
-import { Button, ToastContainer, useModal, useWalletModal } from '@pancakeswap-libs/uikit'
-import { useCryptoDogeControllerAllowance } from 'hooks/useAllowance'
-import { useCryptoDogeControllerApprove } from 'hooks/useApprove'
+import { Button, useWalletModal } from '@pancakeswap-libs/uikit'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { useUnsetAutoFight, useSetAutoFight, useDogeBalance } from 'hooks/useDogesLand'
-// import OrderModal from './OrderModal'
 
 interface DogeCardActionsProps {
   dogeId: string
@@ -30,7 +27,7 @@ const CardActions = styled.div`
 
 const DogeCardActions: React.FC<DogeCardActionsProps> = ({ dogeId, stoneInfo, activeMonster, setActiveMonster, magicStoneNFTBalance, setMagicStoneNFTBalance, activeStoneId }) => {
   
-  const [requestedApproval, setRequestedApproval] = useState(false)
+  // const [requestedApproval, setRequestedApproval] = useState(false)
   // const allowance = useCryptoDogeControllerAllowance()
   // const { onApprove } = useCryptoDogeControllerApprove()
   // const [onPresentApprove] = useModal(<PurchaseWarningModal />)
@@ -58,7 +55,7 @@ const DogeCardActions: React.FC<DogeCardActionsProps> = ({ dogeId, stoneInfo, ac
   const { onPresentConnectModal } = useWalletModal(connect, reset)
   const [pendingTx, setPendingTx] = useState(false)
 
-  const [, setRequestedBuy] = useState(false)
+  // const [, setRequestedBuy] = useState(false)
   
   // const [onPresentResult] = useModal(<OrderModal title="Sell Doge" id={dogeId} />) 
   const { onUnsetAutoFight } = useUnsetAutoFight()

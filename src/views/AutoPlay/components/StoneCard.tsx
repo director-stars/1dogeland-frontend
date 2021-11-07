@@ -1,8 +1,6 @@
-import React, { useEffect, useCallback, useState } from 'react'
-import { Heading, Text, useWalletModal, Card, CardBody, CardHeader, CardFooter, CardRibbon, Button, Image } from '@pancakeswap-libs/uikit'
+import React, { useEffect } from 'react'
+import { Heading, Card, CardBody, CardRibbon } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
-// import { useCreateCryptoDogeAllowance } from 'hooks/useAllowance'
-// import { useCreateCryptoDogeApprove } from 'hooks/useApprove'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 
 interface StoneCardProps {
@@ -35,7 +33,7 @@ const StyledCard = styled(Card)`
     min-width: 400px;
 `
 const StoneCard: React.FC<StoneCardProps> = ({magicStoneNFTBalance}) => {
-    const { account, connect, reset } = useWallet()
+    const { account, connect } = useWallet()
     useEffect(() => {
         if (!account && window.localStorage.getItem('accountStatus')) {
         connect('injected')

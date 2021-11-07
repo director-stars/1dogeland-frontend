@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react'
-import { Heading, Text, useWalletModal, Card, CardBody, CardHeader, CardFooter, Button, Image } from '@pancakeswap-libs/uikit'
+import { Heading, Text, useWalletModal, Card, CardBody, CardHeader, CardFooter, Button } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { classes, tribes } from 'hooks/useDogesLand'
-import Timestamp from './Timestamp'
 import DogeCardActions from './DogeCardActions';
 
 interface DogeCardProps {

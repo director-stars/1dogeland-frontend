@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useState } from 'react'
 import styled from 'styled-components'
-import { Button, ToastContainer, useModal, useWalletModal } from '@pancakeswap-libs/uikit'
+import { Button, useModal, useWalletModal } from '@pancakeswap-libs/uikit'
 import { useCryptoDogeNFTAllowance } from 'hooks/useAllowance'
 import { useCryptoDogeNFTApprove } from 'hooks/useApprove'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
