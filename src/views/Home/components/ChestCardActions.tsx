@@ -16,8 +16,11 @@ const CardActions = styled.div`
   }
   margin-top: 20px;
 `
+interface ChestCardActionProps {
+  price: string
+}
 
-const ChestCardActions: React.FC = () => {
+const ChestCardActions: React.FC<ChestCardActionProps> = ({price}) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
   const [toasts, setToasts] = useState([]);
   const allowance = useCryptoDogeControllerAllowance()
@@ -101,7 +104,7 @@ const ChestCardActions: React.FC = () => {
           </Button>
       ) 
     }
-    if(oneDogeBalance < 50000){
+    if(oneDogeBalance < parseInt(price)){
       return (
           <Button fullWidth disabled size="sm">
             Not enough 1doge

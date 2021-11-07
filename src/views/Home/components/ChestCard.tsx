@@ -115,7 +115,9 @@ const ChestCard: React.FC<ChestCardProps> = ({imgUrl, name, price}) => {
                         <Text>Payment</Text>
                         <Text>1Doge</Text>
                     </OwnerInfo>
-                    <ChestCardActions />
+                    <ChestCardActions 
+                        price={price}
+                    />
                 </CardFooter>
             </Card>
         </div>

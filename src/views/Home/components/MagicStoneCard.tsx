@@ -115,7 +115,9 @@ const MagicStoneCard: React.FC<MagicStoneCardProps> = ({imgUrl, name, price}) =>
                         <Text>Payment</Text>
                         <Text>BNB</Text>
                     </OwnerInfo>
-                    <MagicStoneCardActions />
+                    <MagicStoneCardActions 
+                        price={price}
+                    />
                 </CardFooter>
             </Card>
         </div>

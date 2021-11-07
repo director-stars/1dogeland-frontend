@@ -16,8 +16,11 @@ const CardActions = styled.div`
   }
   margin-top: 20px;
 `
+interface MagicStoneCardActionProps {
+  price: string
+}
 
-const MagicStoneCardActions: React.FC = () => {
+const MagicStoneCardActions: React.FC<MagicStoneCardActionProps> = ({price}) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
   const [toasts, setToasts] = useState([]);
   // const allowance = useMagicStoneControllerAllowance()
@@ -64,7 +67,7 @@ const MagicStoneCardActions: React.FC = () => {
   const handleBuy = useCallback(async () => {
     try {
       setRequestedBuy(true)
-      const txHash = await onBuyStone("1")
+      const txHash = await onBuyStone(price)
       // user rejected tx or didn't go thru
       if (txHash) {
         setRequestedBuy(false)
@@ -72,7 +75,7 @@ const MagicStoneCardActions: React.FC = () => {
     } catch (e) {
       console.error(e)
     }
-  }, [onBuyStone, setRequestedBuy])
+  }, [onBuyStone, setRequestedBuy, price])
 
   const handleClick = (description = "") => {
     const now = Date.now();
@@ -91,7 +94,7 @@ const MagicStoneCardActions: React.FC = () => {
   };
 
   const renderStoneCardButtons = () => {
-    if(bnbBalance < 0.2){
+    if(bnbBalance < parseInt(price)){
       return (
           <Button fullWidth disabled size="sm">
             Not enough bnb
