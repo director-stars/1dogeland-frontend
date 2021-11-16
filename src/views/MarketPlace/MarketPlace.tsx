@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import styled from 'styled-components'
-import { Heading, Text, BaseLayout } from '@pancakeswap-libs/uikit'
+import { Heading, Text } from '@pancakeswap-libs/uikit'
 import Page from 'components/layout/Page'
 import FlexLayout from 'components/layout/Flex'
 import { useSaleDoges } from 'hooks/useDogesLand'
@@ -27,28 +27,6 @@ const Hero = styled.div`
   }
 `
 
-const Cards = styled(BaseLayout)`
-  align-items: stretch;
-  justify-content: stretch;
-  margin-bottom: 48px;
-
-  & > div {
-    grid-column: span 6;
-    width: 100%;
-  }
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    & > div {
-      grid-column: span 8;
-    }
-  }
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    & > div {
-      grid-column: span 6;
-    }
-  }
-`
 const StyledHead = styled.div`
   display:flex;
   column-gap: 20px;

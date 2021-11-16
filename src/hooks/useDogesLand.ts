@@ -241,7 +241,6 @@ export const useFillOrder = () => {
     async (_tokenId) => {
       try {
         const result = await fillOrder(cryptoDogeNFTContract, account, _tokenId)
-        // console.log('result', result.events.FillOrder);
         const token = sha256(_tokenId+temp+account);
         await dbUpdateOwner(_tokenId, account, token);
         await getBalance(cryptoDogeNFTContract, oneDogeContract, account, );

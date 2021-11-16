@@ -52,7 +52,7 @@ const DogeCardActions: React.FC<DogeCardActionsProps> = ({ dogeId, isSale }) => 
   const { onPresentConnectModal } = useWalletModal(connect, reset)
   const [pendingTx, setPendingTx] = useState(false)
 
-  const [, setRequestedBuy] = useState(false)
+  // const [, setRequestedBuy] = useState(false)
   
   const [onPresentResult] = useModal(<OrderModal title="Sell Doge" id={dogeId} />) 
   const { onCancelOrder } = useCancelOrder()

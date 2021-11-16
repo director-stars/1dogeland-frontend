@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
-import BigNumber from 'bignumber.js'
-import { Heading, Text, Image } from '@pancakeswap-libs/uikit'
+import { Heading, Text } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { classes, tribes } from 'hooks/useDogesLand'

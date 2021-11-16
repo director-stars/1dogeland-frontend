@@ -19,7 +19,7 @@ interface MagicStoneCardActionProps {
 }
 
 const MagicStoneCardActions: React.FC<MagicStoneCardActionProps> = ({price}) => {
-  const [requestedApproval, setRequestedApproval] = useState(false)
+  // const [requestedApproval, setRequestedApproval] = useState(false)
   const [toasts, setToasts] = useState([]);
   // const allowance = useMagicStoneControllerAllowance()
   // const { onApprove } = useMagicStoneControllerApprove()

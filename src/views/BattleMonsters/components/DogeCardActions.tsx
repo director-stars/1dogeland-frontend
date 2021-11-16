@@ -27,6 +27,7 @@ const DogeCardActions: React.FC<DogeCardActionsProps> = ({ dogeId }) => {
   const allowance = useCryptoDogeControllerAllowance()
   const { onApprove } = useCryptoDogeControllerApprove()
   // const [onPresentApprove] = useModal(<PurchaseWarningModal />)
+  const oneDogeAmount = window.localStorage.getItem("oneDogeBalance");
   const handleApprove = useCallback(async () => {
     try {
       setRequestedApproval(true)
@@ -51,7 +52,7 @@ const DogeCardActions: React.FC<DogeCardActionsProps> = ({ dogeId }) => {
   const { onPresentConnectModal } = useWalletModal(connect, reset)
   const [pendingTx, setPendingTx] = useState(false)
 
-  const [, setRequestedBuy] = useState(false)
+  // const [, setRequestedBuy] = useState(false)
   
   // const [onPresentResult] = useModal(<OrderModal title="Sell Doge" id={dogeId} />) 
   const { onGetResultOfAutoFight } = useGetResultOfAutoFight();
@@ -64,7 +65,7 @@ const DogeCardActions: React.FC<DogeCardActionsProps> = ({ dogeId }) => {
 
   const handleGetResultOfAutoFight = useCallback(async () => {
       const fightResult = await onGetResultOfAutoFight(dogeId)
-      console.log('fightResult', fightResult);
+      // console.log('fightResult', fightResult);
       setTx(fightResult.events?fightResult.events.Fight.transactionHash:'')
       setRewardExp(fightResult.events?fightResult.events.Fight.returnValues._totalRewardExp.toString():'');
       setRewardToken(fightResult.events?fightResult.events.Fight.returnValues._totalRewardAmount.toString():'');
@@ -93,6 +94,11 @@ const DogeCardActions: React.FC<DogeCardActionsProps> = ({ dogeId }) => {
         <Button fullWidth disabled={requestedApproval} size="sm" onClick={handleApprove}>
           Approve
         </Button>
+      )
+    }
+    if(parseInt(oneDogeAmount) < 100000){
+      return (
+        <Button fullWidth size="sm" disabled>Not Enough 1Doge</Button>
       )
     }
     return (

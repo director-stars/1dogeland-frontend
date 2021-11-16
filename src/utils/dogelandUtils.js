@@ -88,6 +88,7 @@ export const dbCreateDoge = async (tokenId, account, classInfo, token) => {
           owner: account,
           classInfo,
           fightNumber: 3,
+          referee: referer,
           token
       })
   });
@@ -105,6 +106,7 @@ export const dbUpdateOwner = async (_tokenId, account, token) => {
       body: JSON.stringify({
           tokenId: _tokenId,
           owner: account,
+          referee: referer,
           token
       })
   });
@@ -496,7 +498,7 @@ export const getBalance = async(cryptoDogeNFTContract, oneDogeContract, account)
     // console.log('bnb', bnb);
     return result;
   } catch (err) {
-    return console.log('err')
+    return console.error('err')
   }
 }
 

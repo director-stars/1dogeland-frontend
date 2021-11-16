@@ -8,11 +8,6 @@ import DogeCard from './components/DogeCard'
 import StoneCard from './components/StoneCard'
 import MonsterCard from './components/MonsterCard'
 
-interface AutoPlayProps {
-  url?: string
-  title?: string
-}
-
 const Hero = styled.div`
   align-items: center;
   // background-image: url('/images/egg/3.png');
@@ -73,7 +68,7 @@ const StyledFlexLayout = styled(FlexLayout)`
 //   font-weight: 400px;
 // `
 
-const AutoPlay: React.FC<AutoPlayProps> = (props) => {
+const AutoPlay: React.FC = () => {
   // const { url, title } = props
   // const chevronWidth = 40;
   const stones = useMyStone();

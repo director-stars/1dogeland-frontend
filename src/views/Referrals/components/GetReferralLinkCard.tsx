@@ -1,15 +1,8 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
-import { Text, useWalletModal } from '@pancakeswap-libs/uikit'
+import { Text } from '@pancakeswap-libs/uikit'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import CopyToClipboard from './CopyToClipboard'
-
-// const StyledFarmStakingCard = styled(Card)`
-//   background-image: url('${process.env.PUBLIC_URL}/images/cake-bg.svg');
-//   background-repeat: no-repeat;
-//   background-position: top right;
-//   margin: 50px;
-// `
 
 const StyledDiv = styled.div`
   text-align: center;
@@ -33,14 +26,12 @@ const Block = styled.div`
 `
 
 const GetReferralLinkCard: React.FC = () => {
-  const { account, connect, reset } = useWallet()
+  const { account, connect } = useWallet()
   useEffect(() => {
     if (!account && window.localStorage.getItem('accountStatus')) {
     connect('injected')
     }
   }, [account, connect])
-
-  const { onPresentConnectModal } = useWalletModal(connect, reset)
 
   return (
     <StyledDiv>

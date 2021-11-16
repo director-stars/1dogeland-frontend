@@ -10,10 +10,10 @@ import FlexLayout from 'components/layout/Flex'
 import DogeCard from './components/DogeCard'
 import MonsterCard from './components/MonsterCard'
 
-interface BattleMonstersProps {
-  url?: string
-  title?: string
-}
+// interface BattleMonstersProps {
+//   url?: string
+//   title?: string
+// }
 
 const Hero = styled.div`
   align-items: center;
@@ -69,7 +69,7 @@ const StyledDiv = styled.div`
   display: flex;
   margin-bottom: 20px;
 `
-const BattleMonsters: React.FC<BattleMonstersProps> = (props) => {
+const BattleMonsters: React.FC = () => {
   // const { url, title } = props
   const [activeDogeId, setActiveDogeId] = useState();
   // const [activeFightNumber, setActiveFightNumber] = useState();

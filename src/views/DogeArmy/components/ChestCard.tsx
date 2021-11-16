@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useState } from 'react'
-import { Heading, Text, useWalletModal, Card, CardBody, CardHeader, CardFooter, Button } from '@pancakeswap-libs/uikit'
+import { Heading, useWalletModal, Card, CardBody, CardHeader, CardFooter, Button } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { tribes, useOpenChest } from 'hooks/useDogesLand'
@@ -34,12 +34,7 @@ const DogeInfo = styled.div`
         margin-right: 10px;
     }
 `
-const DogeInfoItem = styled.div`
-    display: flex;
-    & ${Text}:first-child{
-        margin-right: 10px;
-    }
-`
+
 const Id = styled.div`
     position: absolute;
     background: linear-gradient(-45deg,#e8c456,#aa8929,#fdd325);
@@ -61,7 +56,7 @@ const ChestCard: React.FC<ChestCardProps> = ({id, tribe}) => {
         }
     }, [account, connect])
 
-    const [requestedApproval, setRequestedApproval] = useState(false)
+    // const [requestedApproval, setRequestedApproval] = useState(false)
     // const allowance = useCreateCryptoDogeAllowance()
     // const { onApprove } = useCreateCryptoDogeApprove()
     const [pendingTx, setPendingTx] = useState(false)

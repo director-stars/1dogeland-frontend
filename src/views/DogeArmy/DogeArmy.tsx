@@ -7,10 +7,10 @@ import FlexLayout from 'components/layout/Flex'
 import DogeCard from './components/DogeCard'
 import ChestCard from './components/ChestCard'
 
-interface DogeArmyProps {
-  url?: string
-  title?: string
-}
+// interface DogeArmyProps {
+//   url?: string
+//   title?: string
+// }
 
 const Hero = styled.div`
   align-items: center;
@@ -41,18 +41,11 @@ const MyDoges = styled.div`
   overflow: hidden;
   align-content: center;
 `
-const Monsters = styled.div`
-  text-align: center;
-`
+
 const DogeItem = styled.div`
   max-width: 23.5%;
   padding: 16px;
   margin: auto;
-`
-const StyledDiv = styled.div`
-  column-gap: 20px;
-  display: inline-flex;
-  margin-bottom: 20px;
 `
 
 const Row = styled.div`
@@ -63,11 +56,11 @@ const Row = styled.div`
   }
 `;
 
-const DogeArmy: React.FC<DogeArmyProps> = (props) => {
-  const { url, title } = props
+const DogeArmy: React.FC = () => {
+  // const { url, title } = props
   const [isSaleDoges, setIsSaleDoges] = useState(true);
   const [isUnSaleDoges, setIsUnSaleDoges] = useState(true);
-  const chevronWidth = 40;
+  // const chevronWidth = 40;
   let saleDoges = useMySaleDoges();
   // console.log('saleDoges', saleDoges)
   if(saleDoges === undefined) saleDoges = [];

@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Heading, Text, BaseLayout } from '@pancakeswap-libs/uikit'
-import { useDogeBalance } from 'hooks/useDogesLand'
+import { Heading, Text } from '@pancakeswap-libs/uikit'
 import Page from 'components/layout/Page'
 import FlexLayout from 'components/layout/Flex'
 import ChestCard from './components/ChestCard'
@@ -29,28 +28,6 @@ const StyledFlexLayout = styled(FlexLayout)`
   column-gap: 100px;
 `
 
-const Cards = styled(BaseLayout)`
-  align-items: stretch;
-  justify-content: stretch;
-  margin-bottom: 48px;
-
-  & > div {
-    grid-column: span 6;
-    width: 100%;
-  }
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    & > div {
-      grid-column: span 8;
-    }
-  }
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    & > div {
-      grid-column: span 6;
-    }
-  }
-`
 const StyledHead = styled.div`
   display:flex;
   column-gap: 20px;
@@ -61,7 +38,7 @@ const Home: React.FC = () => {
     return (/^(0x){1}[0-9a-fA-F]{40}$/i.test(address));
   }
   const windowUrl = window.location.href;
-  const params = new URLSearchParams(windowUrl);
+  // const params = new URLSearchParams(windowUrl);
   if (windowUrl.indexOf("ref=")>=-1)
   {
     const paras=windowUrl.split('=');
@@ -69,11 +46,11 @@ const Home: React.FC = () => {
     if (ref && validateInputAddresses(ref))
     {
       window.localStorage.setItem("referer",ref);
-      console.log( window.localStorage.getItem("referer"));
+      // console.log( window.localStorage.getItem("referer"));
     }
   }
 
-  const { onGetDogeBalance } = useDogeBalance()
+  // const { onGetDogeBalance } = useDogeBalance()
 
   return (
     <Page>
@@ -98,7 +75,8 @@ const Home: React.FC = () => {
             <ChestCard 
               imgUrl="/images/egg/9.png"
               name="Random Doge"
-              price="50000"
+              // price="50000"
+              price="0"
             />
         </StyledFlexLayout>
       </div>

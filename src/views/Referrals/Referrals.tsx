@@ -1,23 +1,11 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
-import { BaseLayout, Heading, useWalletModal, Button, Text } from '@pancakeswap-libs/uikit'
+import { Heading, useWalletModal, Button, Text } from '@pancakeswap-libs/uikit'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import Page from 'components/layout/Page'
-import useTheme from 'hooks/useTheme'
 import FlexLayout from 'components/layout/Flex'
 import GetReferralLinkCard from './components/GetReferralLinkCard'
 
-const Newcards = styled(BaseLayout)`
-  align-items: stretch;
-  justify-content: stretch;
-  grid-gap: 24px;
-  text-align: center;
-
-  & > div {
-    grid-column: span 12;
-    width: 100%;
-  }
-`
 const StyledHead = styled.div`
   background: rgba(0,0,0,.5);
   border-radius: 50px;
@@ -51,23 +39,6 @@ const Banner = styled.div`
   }
 `
 
-const Title = styled(Heading).attrs({
-  as: 'h1',
-  scale: 'xl',
-})`
-  color: ${({ theme }) => theme.colors.primary};
-  font-weight: 600;
-  line-height: 1.4;
-`
-
-const Description = styled(Heading).attrs({
-  as: 'h2',
-  scale: 'md',
-  color: 'textSubtle',
-})`
-  font-weight: 300;
-  line-height: 1.4;
-`
 const StyledCard = styled.div`
   // max-width: 500px;
   margin: 50px auto;
@@ -78,7 +49,6 @@ const StyledBody = styled.div`
 `
 const Referrals: React.FC = () => {
   const { account, connect, reset } = useWallet()
-  const { theme } = useTheme()
   useEffect(() => {
     if (!account && window.localStorage.getItem('accountStatus')) {
     connect('injected')
