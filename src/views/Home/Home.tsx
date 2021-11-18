@@ -75,8 +75,7 @@ const Home: React.FC = () => {
             <ChestCard 
               imgUrl="/images/egg/9.png"
               name="Random Doge"
-              // price="50000"
-              price="0"
+              price="50000"
             />
         </StyledFlexLayout>
       </div>

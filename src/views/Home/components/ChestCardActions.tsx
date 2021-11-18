@@ -97,20 +97,20 @@ const ChestCardActions: React.FC<ChestCardActionProps> = ({price}) => {
   };
 
   const renderDogeCardButtons = () => {
-    // if(dogeNFTBalance > 1){
-      // return (
-      //     <Button fullWidth disabled size="sm">
-      //       You have enough doge army
-      //     </Button>
-      // ) 
-    // }
-    // if(oneDogeBalance < parseInt(price)){
-      // return (
-      //     <Button fullWidth disabled size="sm">
-      //       Not enough 1doge
-      //     </Button>
-      // ) 
-    // }
+    if(dogeNFTBalance > 1){
+      return (
+          <Button fullWidth disabled size="sm">
+            You have enough doge army
+          </Button>
+      ) 
+    }
+    if(oneDogeBalance < parseInt(price)){
+      return (
+          <Button fullWidth disabled size="sm">
+            Not enough 1doge
+          </Button>
+      ) 
+    }
     if (!allowance.toNumber()) {
       return (
         <Button fullWidth disabled={requestedApproval} size="sm" onClick={handleApprove}>

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Heading, Text, useWalletModal, Card, CardBody, Button, Image } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { monsters } from 'hooks/useDogesLand'
+import { monsters } from 'hooks/useDogeInfo'
 
 interface MonsterCardProps {
     id: string

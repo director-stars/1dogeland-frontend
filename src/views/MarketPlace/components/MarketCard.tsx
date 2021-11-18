@@ -3,7 +3,8 @@ import BigNumber from 'bignumber.js'
 import { Heading, Text, useWalletModal, Card, CardBody, CardHeader, CardFooter, Button, Image } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { classes, tribes, useFillOrder, useDogeBalance } from 'hooks/useDogesLand'
+import { useFillOrder, useDogeBalance } from 'hooks/useDogesLand'
+import { classes, tribes } from 'hooks/useDogeInfo'
 import { useCryptoDogeNFTAllowance } from 'hooks/useAllowance'
 import { useCryptoDogeNFTApprove } from 'hooks/useApprove'
 
@@ -65,8 +66,17 @@ const Id = styled.div`
 const MarketCard: React.FC<MartketCardProps> = ({id, classInfo, price, owner, level, exp, rare, tribe}) => {
     const price1 = new BigNumber(price).div(new BigNumber(10).pow(18)).toString()
     const ownerAddress = `${owner.substring(0, 4)}...${owner.substring(owner.length - 4)}`;
-    const dogeImage = classes[parseInt(rare) - 1][classInfo].asset;
-    const dogeName = classes[parseInt(rare) - 1][classInfo].name;
+    let dogeImage;
+    let dogeName;
+    if(classInfo){
+        dogeImage = classes[parseInt(rare) - 1][classInfo].asset;
+        dogeName = classes[parseInt(rare) - 1][classInfo].name;
+    }
+    else{
+        dogeImage = "warm.gif";
+        dogeName = "Doge";
+    }
+    
     const tribeName = tribes[tribe].name;
     const [oneDogeBalance, setOneDogeBalance] = useState(parseInt(window.localStorage.getItem("oneDogeBalance")) / 10**18);
     const [dogeNFTBalance, setDogeNFTBalance] = useState(parseInt(window.localStorage.getItem("dogeNFTBalance")));

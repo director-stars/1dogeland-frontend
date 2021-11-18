@@ -2,7 +2,8 @@ import React, { useEffect, useCallback, useState } from 'react'
 import { Heading, useWalletModal, Card, CardBody, CardHeader, CardFooter, Button } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { tribes, useOpenChest } from 'hooks/useDogesLand'
+import { useOpenChest } from 'hooks/useDogesLand'
+import { tribes } from 'hooks/useDogeInfo'
 
 interface ChestCardProps {
     id: string

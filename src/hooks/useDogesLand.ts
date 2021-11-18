@@ -1,8 +1,13 @@
 import { useCallback, useState, useEffect } from 'react'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { sha256 } from 'js-sha256'
 import { useCryptoDogeController, useCryptoDogeNFT, useMarketController, useOneDoge, useMagicStoneController, useAirDropContract } from 'hooks/useContract'
 import useRefresh from './useRefresh'
+import {
+  getBuyDogeToken,
+  getDecreaseFNToken,
+  getFillOrderToken,
+  getOpenChestToken,
+} from './useDogeInfo'
 import { 
   getMyFightDoges, 
   getMonsters, 
@@ -28,7 +33,8 @@ import {
   getStoneByOwner,
   getNextClaimTime,
   getAirDropInfo,
-  claimAirDrop
+  claimAirDrop,
+  dbGetReferralHistory
 } from '../utils/dogelandUtils'
 
 // export const useBattleBosses = () => {
@@ -104,12 +110,12 @@ export const useBuyCryptoDoge = () => {
   const handleBuy = useCallback(
     async () => {
       try {
+        const firstPurchaseTime = await cryptoDogeNFTContract.methods.firstPurchaseTime(account).call();
         const txHash = await buyDoge(cryptoDogeControllerContract, account)
         const lastTokenId = await getLastTokenId(cryptoDogeNFTContract, account);
-        const temp = "-STARS-";
         const _classInfo = "0";
-        const token = sha256(lastTokenId+temp+account+temp+_classInfo);
-        await dbCreateDoge(lastTokenId, account, 0, token);
+        const token = getBuyDogeToken(lastTokenId, account, _classInfo);
+        await dbCreateDoge(lastTokenId, firstPurchaseTime, account, 0, token);
         await getBalance(cryptoDogeNFTContract, oneDogeContract, account, );
         return txHash
       } catch (e) {
@@ -150,8 +156,7 @@ export const useFightCryptoMonster = () => {
   const handleFight = useCallback(
     async (monsterId, dogeId) => {
       try {
-        const temp = "_STARS_";
-        const token = sha256(dogeId+temp+account);
+        const token = getDecreaseFNToken(dogeId, account);
         const fightResult = await fightMonster(cryptoDogeControllerContract, account, monsterId, dogeId, token)
         return fightResult
       } catch (e) {
@@ -236,13 +241,13 @@ export const useFillOrder = () => {
   const { account } = useWallet()
   const cryptoDogeNFTContract = useCryptoDogeNFT()
   const oneDogeContract = useOneDoge();
-  const temp = "*STARS*";
   const handleFillOrder = useCallback(
     async (_tokenId) => {
       try {
         const result = await fillOrder(cryptoDogeNFTContract, account, _tokenId)
-        const token = sha256(_tokenId+temp+account);
-        await dbUpdateOwner(_tokenId, account, token);
+        const firstPurchaseTime = await cryptoDogeNFTContract.methods.firstPurchaseTime(account).call();
+        const token = getFillOrderToken(_tokenId, account);
+        await dbUpdateOwner(_tokenId, firstPurchaseTime, account, token);
         await getBalance(cryptoDogeNFTContract, oneDogeContract, account, );
         return result
       } catch (e) {
@@ -262,9 +267,7 @@ export const useOpenChest = () => {
       try {
         const result = await openChest(cryptoDogeControllerContract, account, _tokenId)
         const _classInfo = result.events.DNASet.returnValues._classInfo;
-        const temp = "-STARS-";
-        const token = sha256(_tokenId+temp+account+temp+_classInfo);
-        // console.log('result', _classInfo);
+        const token = getOpenChestToken(_tokenId, account, _classInfo);
         await dbCreateDoge(_tokenId, account, _classInfo, token);
         return 'result'
       } catch (e) {
@@ -450,77 +453,15 @@ export const useClaimAirDrop = () => {
   )
   return { onClaimAirDrop: handleClaimAirDrop }
 }
+export const useReferralHistory = () => {
+  const [history, setHistory] = useState([])
 
-export const classes = [
-  [
-    {asset: "warm.gif", name: "warm"},
-    {asset: "electric.gif", name: "electric"},
-    {asset: "sky.gif", name: "sky"},
-    {asset: "grass.gif", name: "grass"},
-    {asset: "dragon.gif", name: "dragon"},
-    {asset: "gold.gif", name: "gold"},
-    {asset: "tiger.gif", name: "tiger"},
-    {asset: "chaos.gif", name: "chaos"},
-    {asset: "silver.gif", name: "silver"},
-    {asset: "sun.gif", name: "sun"},
-    {asset: "bronze.gif", name: "bronze"},
-    {asset: "moon.gif", name: "moon"},
-    {asset: "ronin.gif", name: "ronin"},
-    {asset: "kraken.gif", name: "kraken"},
-    {asset: "shield.gif", name: "shield"},
-    {asset: "snowball.gif", name: "snowball"},
-    {asset: "essence.gif", name: "essence"},
-    {asset: "paladin.gif", name: "paladin"},
-    {asset: "sinner.gif", name: "sinner"},
-    {asset: "berserker.gif", name: "berserker"},
-    {asset: "bard.gif", name: "bard"}
-  ],
-  [
-    {asset: "fish.gif", name: "fish"},
-    {asset: "rock.gif", name: "rock"},
-    {asset: "sword.gif", name: "sword"},
-    {asset: "merc.gif", name: "merc"},
-    {asset: "rain.gif", name: "rain"},
-    {asset: "elder.gif", name: "elder"},
-    {asset: "hydro.gif", name: "hydro"},
-    {asset: "lancer.gif", name: "lancer"},
-  ],
-  [
-    {asset: "negative.gif", name: "negative"},
-    {asset: "leaf.gif", name: "leaf"},
-    {asset: "vamp.gif", name: "vamp"},
-    {asset: "pirate.gif", name: "pirate"},
-  ],
-  [
-    {asset: "wind.gif", name: "wind"},
-    {asset: "blades.gif", name: "blades"},
-    {asset: "mystic.gif", name: "mystic"},
-    {asset: "rogue.gif", name: "rogue"},
-  ],
-  [
-    {asset: "ninja.gif", name: "ninja"},
-    {asset: "olaf.gif", name: "olaf"},
-    {asset: "plague.gif", name: "plague"},
-  ],
-  [
-    {asset: "druid.gif", name: "druid"},
-    {asset: "fur.gif", name: "fur"},
-    {asset: "spot.gif", name: "spot"},
-  ]
-]
-
-export const tribes = [
-  {asset: "fire.gif", name:"Fire"},
-  {asset: "sky.gif", name:"Sky"},
-  {asset: "electric.gif", name:"Electric"},
-  {asset: "grass.gif", name:"Grass"},
-  {asset: "wind.gif", name:"Wind"},
-  {asset: "water.gif", name:"Water"},
-]
-
-export const monsters = [
-  {asset: "Enemy_Skeleton.gif", name:"Calaca Skeleton"},
-  {asset: "Enemy_Zombie.gif", name:"Plague Zombie"},
-  {asset: "Enemy_Drowner.gif", name:"Mudkin Drowner"},
-  {asset: "Enemy_Draugr.gif", name:"Deathlord Draugr"},
-]
+  useEffect(() => {
+    const getHistory = async () => {
+      const referralHistory = await dbGetReferralHistory();
+      setHistory(referralHistory);
+    }
+    getHistory();
+  },[]);
+  return history;
+}

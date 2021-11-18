@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import { Heading, Text, Card, CardBody, CardHeader, CardFooter, Image } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { classes, tribes } from 'hooks/useDogesLand'
+import { classes, tribes } from 'hooks/useDogeInfo'
 import DogeCardActions from './DogeCardActions'
 
 interface MartketCardProps {
@@ -69,8 +69,16 @@ const DogeCard: React.FC<MartketCardProps> = ({id, classInfo, price, owner, leve
     // console.log('id',id)
     // console.log('rare',rare)
     // console.log('classInfo',classInfo)
-    const dogeImage = classes[parseInt(rare) - 1][classInfo].asset;
-    const dogeName = classes[parseInt(rare) - 1][classInfo].name;
+    let dogeImage;
+    let dogeName;
+    if(classInfo){
+        dogeImage = classes[parseInt(rare) - 1][classInfo].asset;
+        dogeName = classes[parseInt(rare) - 1][classInfo].name;
+    }
+    else{
+        dogeImage = "warm.gif";
+        dogeName = "Doge";
+    }
     const tribeName = tribes[tribe].name;
     const isSale = (price !== "0");
 

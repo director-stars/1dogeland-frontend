@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { Heading, useWalletModal, Button, Text } from '@pancakeswap-libs/uikit'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useReferralHistory } from 'hooks/useDogesLand'
 import Page from 'components/layout/Page'
 import FlexLayout from 'components/layout/Flex'
 import GetReferralLinkCard from './components/GetReferralLinkCard'
@@ -47,6 +48,36 @@ const StyledBody = styled.div`
   text-align:center;
   margin-top: 30px;
 `
+const ReferralList = styled.div`
+  display:grid;
+  background-color: #aa8929;
+  margin: auto;
+  border-radius: 20px;
+  max-width: 800px;
+  padding: 10px;
+  width: 100%;
+`
+const ReferralHeader = styled.div`
+  display: flex;
+  margin: auto;
+  padding: 20px;
+  width: 100%;
+  justify-content: space-between;
+  border-bottom: 1px solid #E9EAEB;
+`
+const ReferralInfo = styled.div`
+  display: flex;
+  margin: auto;
+  padding: 20px;
+  width: 100%;
+  justify-content: space-between;
+`
+const ReferralAddress = styled.div`
+  
+`
+const ReferralCount = styled.div`
+  
+`
 const Referrals: React.FC = () => {
   const { account, connect, reset } = useWallet()
   useEffect(() => {
@@ -55,7 +86,37 @@ const Referrals: React.FC = () => {
     }
   }, [account, connect])
   const { onPresentConnectModal } = useWalletModal(connect, reset)
-
+  const referralHistory = useReferralHistory();
+  // console.log(referralHistory.length)
+  // referralHistory.forEach((referral) => {
+  //   console.log(referral)
+  // })
+  // const list = Object.keys(referralHistory);
+  const referralList = useCallback(
+    () => {
+      // return <StyledDiv>key</StyledDiv>
+      // if(Object.keys(history).length)
+      
+      const tempList = Object.keys(referralHistory);
+      for(let i = 0; i < tempList.length; i ++){
+        for(let j = 0; j < tempList.length; j ++){
+          if(referralHistory[tempList[i]].length > referralHistory[tempList[j]].length){
+            const temp = tempList[i];
+            tempList[i] = tempList[j];
+            tempList[j] = temp;
+          }
+        }
+      }
+      if(tempList.length === 0)
+        return <ReferralInfo>There is no referral</ReferralInfo>
+      return tempList.map(address => (
+        <ReferralInfo>
+          <ReferralAddress>{address}</ReferralAddress>
+          <ReferralCount>{referralHistory[address].length}</ReferralCount>
+        </ReferralInfo>
+      ))
+    },[referralHistory])
+  
   return (
     <>
       <Page>
@@ -84,6 +145,16 @@ const Referrals: React.FC = () => {
               <Button fullWidth size="sm" onClick={onPresentConnectModal}>Connect Wallet</Button>
             </FlexLayout>
           )}
+          <Heading size="xl" mb="40px" color="contrast">
+            Referral History this week.
+          </Heading>
+          <ReferralList>
+            <ReferralHeader>
+              <ReferralAddress>Referral Address</ReferralAddress>
+              <ReferralCount>Invited Friends</ReferralCount>
+            </ReferralHeader>
+            {referralList()}
+          </ReferralList>
         </StyledBody>
       </Page>
     </>

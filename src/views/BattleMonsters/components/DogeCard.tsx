@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Heading, Text, useWalletModal, Card, CardBody, CardHeader, CardFooter, Button } from '@pancakeswap-libs/uikit'
 import styled from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { classes, tribes } from 'hooks/useDogesLand'
+import { classes, tribes } from 'hooks/useDogeInfo'
 import DogeCardActions from './DogeCardActions';
 
 interface DogeCardProps {
@@ -56,7 +56,7 @@ const Id = styled.div`
 const DogeCardAction = styled.div`
     margin-top: 10px;
 `
-const DogeCard: React.FC<DogeCardProps> = ({classInfo , rare , level, exp, tribe, id, activeDoge, setActiveDoge, farmTime, fightNumber, availableBattleTime, stoneInfo}) => {
+const DogeCard: React.FC<DogeCardProps> = ({classInfo, rare, level, exp, tribe, id, activeDoge, setActiveDoge, farmTime, fightNumber, availableBattleTime, stoneInfo}) => {
     // console.log('rare',rare)
     // console.log('classInfo',classInfo)
     const { account, connect, reset } = useWallet()
@@ -65,8 +65,16 @@ const DogeCard: React.FC<DogeCardProps> = ({classInfo , rare , level, exp, tribe
         connect('injected')
         }
     }, [account, connect])
-    const dogeImage = classes[parseInt(rare) - 1][classInfo].asset;
-    const dogeName = classes[parseInt(rare) - 1][classInfo].name;
+    let dogeImage;
+    let dogeName;
+    if(classInfo){
+        dogeImage = classes[parseInt(rare) - 1][classInfo].asset;
+        dogeName = classes[parseInt(rare) - 1][classInfo].name;
+    }
+    else{
+        dogeImage = "warm.gif";
+        dogeName = "Doge";
+    }
     const tribeName = tribes[tribe].name;
 
     const { onPresentConnectModal } = useWalletModal(connect, reset)

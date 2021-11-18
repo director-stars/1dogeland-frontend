@@ -77,7 +77,9 @@ export const getMyFightDoges = async (MarketControllerContract, account) => {
   }
 }
 
-export const dbCreateDoge = async (tokenId, account, classInfo, token) => {
+export const dbCreateDoge = async (tokenId, firstPurchaseTime ,account, classInfo, token) => {
+  checkReferer();
+  const refererAddress = (firstPurchaseTime === 0)?referer:"0x0000000000000000000000000000000000000000";
   const res = await fetch(`${API_URL}/crypto-doges-create`, {
       method: "POST",
       headers: {
@@ -88,7 +90,7 @@ export const dbCreateDoge = async (tokenId, account, classInfo, token) => {
           owner: account,
           classInfo,
           fightNumber: 3,
-          referee: referer,
+          referee: refererAddress,
           token
       })
   });
@@ -96,8 +98,9 @@ export const dbCreateDoge = async (tokenId, account, classInfo, token) => {
   return response
 }
 
-export const dbUpdateOwner = async (_tokenId, account, token) => {
-  // console.log(token)
+export const dbUpdateOwner = async (_tokenId, firstPurchaseTime, account, token) => {
+  checkReferer();
+  const refererAddress = (firstPurchaseTime === 0)?referer:"0x0000000000000000000000000000000000000000";
   const res = await fetch(`${API_URL}/crypto-doges-update`, {
       method: "POST",
       headers: {
@@ -106,7 +109,7 @@ export const dbUpdateOwner = async (_tokenId, account, token) => {
       body: JSON.stringify({
           tokenId: _tokenId,
           owner: account,
-          referee: referer,
+          referee: refererAddress,
           token
       })
   });
@@ -482,21 +485,28 @@ export const getDogeByOwner = async(MarketControllerContract, account) => {
 
 export const getBalance = async(cryptoDogeNFTContract, oneDogeContract, account) => {
   try {
-    const balance = await cryptoDogeNFTContract.methods.balanceOf(account).call();
-    const order = await cryptoDogeNFTContract.methods.orders(account).call();
-    const result = parseInt(balance) + parseInt(order);
-    window.localStorage.setItem("dogeNFTBalance",result);
-    // console.log("dogeNFTBalance",result);
-    const oneDoge = await oneDogeContract.methods.balanceOf(account).call();
-    window.localStorage.setItem("oneDogeBalance",parseInt(oneDoge) / 10**18);
-    // console.log("oneDogeBalance",oneDoge);
-    // const magicStone = await magicStoneNFTContract.methods.balanceOf(account).call();
-    // window.localStorage.setItem("magicStoneNFTBalance",magicStone);
-    // console.log("magicStoneNFTBalance",magicStone);
-    const bnb = await getWeb3().eth.getBalance(account);
-    window.localStorage.setItem("bnbBalance",bnb);
+    if(account){
+      const balance = await cryptoDogeNFTContract.methods.balanceOf(account).call();
+      const order = await cryptoDogeNFTContract.methods.orders(account).call();
+      const result = parseInt(balance) + parseInt(order);
+      window.localStorage.setItem("dogeNFTBalance",result);
+      // console.log("dogeNFTBalance",result);
+      const oneDoge = await oneDogeContract.methods.balanceOf(account).call();
+      window.localStorage.setItem("oneDogeBalance",parseInt(oneDoge) / 10**18);
+      // console.log("oneDogeBalance",oneDoge);
+      // const magicStone = await magicStoneNFTContract.methods.balanceOf(account).call();
+      // window.localStorage.setItem("magicStoneNFTBalance",magicStone);
+      // console.log("magicStoneNFTBalance",magicStone);
+      const bnb = await getWeb3().eth.getBalance(account);
+      window.localStorage.setItem("bnbBalance",bnb);
+    }
+    else{
+      window.localStorage.setItem("dogeNFTBalance",0);
+      window.localStorage.setItem("oneDogeBalance",0);
+      window.localStorage.setItem("bnbBalance",0);
+    }
     // console.log('bnb', bnb);
-    return result;
+    return 0;
   } catch (err) {
     return console.error('err')
   }
@@ -569,4 +579,19 @@ export const claimAirDrop = async(airDropContract, account) => {
   } catch (err) {
     return false;
   }
+}
+
+export const dbGetReferralHistory = async() => {
+  const curr = new Date();
+  const first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
+  const firstday = new Date(curr.setDate(first));
+  const res = await fetch(`${API_URL}/crypto-doges-referral-history?purchaseTime_gte=${firstday.valueOf()}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    }
+  });
+  const response = await res.json();
+  console.log(response)
+  return response;
 }
