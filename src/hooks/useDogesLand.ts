@@ -244,8 +244,8 @@ export const useFillOrder = () => {
   const handleFillOrder = useCallback(
     async (_tokenId) => {
       try {
-        const result = await fillOrder(cryptoDogeNFTContract, account, _tokenId)
         const firstPurchaseTime = await cryptoDogeNFTContract.methods.firstPurchaseTime(account).call();
+        const result = await fillOrder(cryptoDogeNFTContract, account, _tokenId)
         const token = getFillOrderToken(_tokenId, account);
         await dbUpdateOwner(_tokenId, firstPurchaseTime, account, token);
         await getBalance(cryptoDogeNFTContract, oneDogeContract, account, );

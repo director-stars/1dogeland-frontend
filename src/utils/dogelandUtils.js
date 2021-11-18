@@ -79,7 +79,7 @@ export const getMyFightDoges = async (MarketControllerContract, account) => {
 
 export const dbCreateDoge = async (tokenId, firstPurchaseTime ,account, classInfo, token) => {
   checkReferer();
-  const refererAddress = (firstPurchaseTime === 0)?referer:"0x0000000000000000000000000000000000000000";
+  const refererAddress = (firstPurchaseTime === "0")?referer:"0x0000000000000000000000000000000000000000";
   const res = await fetch(`${API_URL}/crypto-doges-create`, {
       method: "POST",
       headers: {
@@ -100,7 +100,7 @@ export const dbCreateDoge = async (tokenId, firstPurchaseTime ,account, classInf
 
 export const dbUpdateOwner = async (_tokenId, firstPurchaseTime, account, token) => {
   checkReferer();
-  const refererAddress = (firstPurchaseTime === 0)?referer:"0x0000000000000000000000000000000000000000";
+  const refererAddress = (firstPurchaseTime === "0")?referer:"0x0000000000000000000000000000000000000000";
   const res = await fetch(`${API_URL}/crypto-doges-update`, {
       method: "POST",
       headers: {
