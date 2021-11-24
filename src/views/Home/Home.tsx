@@ -31,6 +31,8 @@ const StyledFlexLayout = styled(FlexLayout)`
 const StyledHead = styled.div`
   display:flex;
   column-gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
 `
 
 const Home: React.FC = () => {

@@ -30,6 +30,8 @@ const Hero = styled.div`
 const StyledHead = styled.div`
   display:flex;
   column-gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
 `
 
 const MarketItem = styled.div`
